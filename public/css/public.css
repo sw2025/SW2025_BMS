@@ -1,0 +1,112 @@
+/*body{font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;}*/
+.userManage{border: 1px solid #ddd;}
+.box .userManage th,.box .userManage td{border-right: 1px solid #ddd;text-align: center;vertical-align: middle;}
+
+.tac{text-align: center;}
+.userManage .btn{width: 84px;border-radius: 3px;}
+
+
+.pages #Pagination .pagination {height: 40px; text-align: right; font-family: \u5b8b\u4f53,Arial; }
+.pages #Pagination .pagination a, .pages #Pagination .pagination span {float: left; display: inline; padding: 4px 6px; border: 1px solid #e6e6e6; border-right: none; background: #f6f6f6; color: #666666; font-family: \u5b8b\u4f53,Arial; font-size: 14px; cursor: pointer; }
+.pages #Pagination .pagination .current {background: #62584e; color: #fff; }
+.pages #Pagination .pagination .prev, .pages #Pagination .pagination .next {float: left; padding: 4px 6px; border: 1px solid #e6e6e6; background: #f6f6f6; color: #666666; cursor: pointer; }
+.pages #Pagination .pagination .prev {border-right: none; }
+.pages #Pagination .pagination .pagination-break {padding: 4px 5px; border: none; border-left: 1px solid #e6e6e6; background: none; cursor: default; }
+.pages .searchPage {float: left; padding: 8px 0; }
+.pages .page-sum {padding: 4px 6px; color: #999999; font-family: \u5b8b\u4f53,Arial; font-size: 14px; float: left;line-height: 60px;}
+.pages .searchPage .page-go {padding: 8px 0; color: #999999; font-family: \u5b8b\u4f53,Arial; font-size: 14px; padding: 10px 0\9; *padding: 6px 0; }
+.pages .searchPage .page-go input {width: 21px; height: 20px; margin: 0 5px; padding-left: 5px; border: 1px solid #e4e4e4; }
+.pages .searchPage .page-btn {margin: 9px 0 5px 5px; padding: 2px 5px; background: #ffac59; border-radius: 2px; color: #ffffff; font-family: Arial, 'Microsoft YaHei'; font-size: 14px; text-decoration: none; }
+#Pagination{float: left;}
+.pages{overflow: hidden;}
+.oh{overflow: hidden;float: right;}
+/*操作按钮*/
+.operate-btns a{display: inline-block;text-decoration: none;}
+.operate-btns button{padding:6px 12px;}
+.add-btn-link{display: block;text-align: right;padding:10px 0;margin-top: -10px;padding:0 0 20px;}
+/*修改密码*/
+.change-pwd label{font-weight: normal;color:#444;}
+.change-pwd .card-actionbar-row {text-align: center;}
+/*.change-pwd .form-control{border-top: none;border-left: none;border-right: none;} 2017-07-03*/
+.change-pwd .confirm-btn{padding:6px 25px;}
+.change-pwd .card-body .form-control{font-size: 16px;}
+/*新增操作员信息*/
+.add-tit{font-size: 16px;padding-bottom: 15px;}
+.add-tit a{float: left;font-size: 14px;color:#e3643d;}
+/*新增角色*/
+.set-right{width: 18px;height: 18px;vertical-align: -3px;margin-right: 3px;}
+.set-right-cap{font-size: 16px;margin-right: 20px;margin-left: 3px;}
+/*查看角色*/
+.role-look{font-size: 16px;text-align: center;}
+.back{color:#e3643d;text-decoration: none;}
+.role-look-right{font-size: 16px;}
+/*首页*/
+#register,#supply,#work,#video,#recharge,#member{height:600px;border: 1px solid #e8e8e8;}
+/*企业认证*/
+.cert-list{margin-top: 20px;}
+.cert-state-btns a{display: inline-block;text-decoration: none;padding:6px 25px;border: 1px solid #ccc;border-radius: 5px;background:#fff;}
+.cert-state-btns a:hover,.cert-state-btns a.current{color:#e3643d;border-color: #e3643d;}
+.cert-item{padding:10px;border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;background: #fff;margin-bottom: 15px;}
+/*.cert-border{border: 1px solid #ccc;background:#fff;border-radius: 5px;}*/
+.cert-company{font-size: 16px;margin: 10px 0 ;}
+.cert-time,.cert-telephone{display: block;color:#666;margin-bottom: 6px;}
+.cert-industry,.cert-scale,.cert-zone{font-size: 14px;text-align: justify;}
+.cert-img img{width:75%;display: block;margin:10px auto;}
+.set-certificate{padding-top: 40px;}
+.set-certificate a{text-decoration: none;display: block;}
+.set-certificate button{margin:10px 0 0;}
+.reject{padding-top: 40px;}
+.reject,.reject button{cursor: default;}
+/*办事认证*/
+.cert-cap{font-size: 16px;padding-top: 36px;line-height:1.8;position: relative;}
+.cert-work-time{position: absolute;right: 20px;top: 10px;font-size: 14px;color:#666;}
+/*提现认证*/
+.cert-recharge{padding: 20px 0;}
+.cert-recharge-item{border: 1px solid #ccc;background:#FFF;position: relative;padding:0 10px 10px;}
+.cert-recharge-item .cert-company{padding-top: 10px;}
+.cert-recharge-time{position: absolute;top: 2px;right: 10px;color:#666;}
+.cert-money{font-size: 16px;}
+.cert-recharge-btns{text-align: center;}
+.cert-recharge-btns a{display: inline-block;text-decoration: none;margin:10px;}
+.cert-recharge-btns a button{padding:6px 20px;}
+/*企业信息维护*/
+.search-bar-inp{width:75%;padding:6px;float: left;box-sizing: border-box;border-radius: 3px 0 0 3px;background:#fff;border: 1px solid #ccc;border-right: 0 none;}
+.search-bar-btn{float: left;width:15%;border-radius:0 3px 3px 0;}
+.serve-results{font-size: 16px;}
+.all-results{padding:20px 0;}
+.tip-caption{float: left;}
+.results-unit{float: left;margin-left: 5px;}
+.results-unit .results-unit-del{border: 1px solid #ccc;padding:0 20px 0 5px;margin-right: 5px;text-decoration: none;position: relative;}
+.results-unit-del{display: none;}
+.results-unit-del:hover{border-color:#e3643d;color:#e3643d;}
+.results-unit-del:before{content:'×';color:#e3643d;position: absolute;right: 5px;top: 0;}
+.serve-scale,.serve-industry,.serve-zone{float: left;margin-right: 30px;margin-bottom: 5px;}
+.result-order{padding-top: 15px;}
+.order-scale,.order-time{margin-right: 15px;border: 1px solid #ccc;padding:0 7px;border-radius: 3px;background:#fff;}
+/*提现维护*/
+.serve-recharge .cert-money{margin:10px 0;}
+/*2017-07-03*/
+.table-vertic > thead > tr > th, .table-vertic > tbody > tr > th, .table-vertic > tfoot > tr > th, .table-vertic > thead > tr > td, .table-vertic > tbody > tr > td, .table-vertic > tfoot > tr > td{vertical-align: middle;}
+.set-right-cap{padding:15px;border-bottom: 1px solid #e6e6e6;}
+.result-select{position: relative;padding:3px 22px 3px 12px;}
+.result-select:before{content:'▼';position: absolute;right: 3px;top: 3px;font-size: 10px;}
+.serve-mr{margin-right: 25px;}
+.serve-zone-sel{min-width: 100px;left:4em;}
+.serve-zone-sel li a{padding:1px 20px;}
+.look-link{color:#e3643d;}
+.look-link:hover{color:#e3643d;text-decoration: none;text-shadow: 0 0 1px #ff7145;}
+.mymodal .modal-header{border-bottom: none;}
+.mymodal .close,.modal-reason .close{opacity: 1;color:#fff;text-shadow: none;}
+.modal-img{display: block;margin:10% auto 0;}
+.money-color{color:#e3643d;}
+#header .nav .dropdown .myname{color:#e3643d;}
+.details-bg{background:#fff;margin-bottom: 10px;padding-top: 6px;padding-bottom: 6px;}
+.details-tit{margin:0;padding-bottom: 5px;padding-top: 5px;}
+.details-tit .cert-industry,.details-tit .cert-company{margin:0;padding:2px 0;}
+.details-btns a{display: inline-block;margin:0 25px 0 20px;text-decoration: none;}
+.details-btns button{padding: 6px 20px;}
+.details-desc{padding-left: 10px;padding-right: 10px;line-height: 2;}
+.modal-reason textarea{min-height: 120px;}
+.reject-reasons{width: 50%; margin: 6% auto 0; background: #fff; padding: 30px 0; box-shadow: 0 0 15px #bbb;}
+.reject-reasons .form-footer{text-align: center;}
+.modal-reason .modal-header{border-bottom: none;}
