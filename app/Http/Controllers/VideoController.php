@@ -22,5 +22,17 @@ class VideoController extends Controller
     public function update(){
         return view("video.update");
     }
-   
+    /**视频咨询维护首页
+     * @return mixed
+     */
+    public  function serveIndex(){
+        return view("video.serve");
+    }
+    /**
+     * 视频咨询信息维护详情
+     * @return mixed
+     */
+    public function serveDetail(){
+        return view("video.detail");
+    }
 }

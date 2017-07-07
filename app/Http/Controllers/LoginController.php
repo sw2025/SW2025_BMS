@@ -32,7 +32,7 @@ class LoginController extends Controller{
      * 修改密码
      * @return mixed
      */
-    public  function  change_pwd(){
+    public  function  changePwd(){
         return view("login.changePwd");
     }
 
@@ -41,7 +41,7 @@ class LoginController extends Controller{
      * @param Request $request
      * @return mixed
      */
-    public function save_pwd(Request $request){
+    public function savePwd(Request $request){
         $password=md5($_POST['password']);
         $userId=session("userId");
         $result=DB::table("T_RBAC_USER")->where("userId",$userId)->update([
@@ -60,7 +60,7 @@ class LoginController extends Controller{
      * 操作人员列表
      * @return mixed
      */
-    public  function operate_people(){
+    public  function operatePeople(){
         $datas=DB::table("T_RBAC_USER")->leftJoin("T_RBAC_USERROLE","T_RBAC_USER.userid","=","T_RBAC_USERROLE.userid")
                     ->leftJoin("T_RBAC_ROLE","T_RBAC_USERROLE.roleid","=","T_RBAC_ROLE.roleid")
                     ->where("T_RBAC_USER.state",0)
@@ -72,7 +72,7 @@ class LoginController extends Controller{
      * 添加人员
      * @return mixed
      */
-    public function add_operator(){
+    public function addOperator(){
        $datas=\UserClass::getRole();
         return view("login.addOperate",compact("datas"));
     }
@@ -81,7 +81,7 @@ class LoginController extends Controller{
      * 保存
      * @return mixed
      */
-    public function  add_operatorSave(){
+    public function  addOperatorSave(){
         $counts=DB::table("T_RBAC_USER")->where("state",0)->where("phone",$_POST['telephone'])->count();
         if(!$counts){
             return redirect()->back()->withInput()->with("msg","该手机号已存在!");
@@ -120,7 +120,7 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  edit_operator($userId){
+    public  function  editOperator($userId){
         session(["login_url"=>$_SERVER["HTTP_REFERER"]]);
         $datas=DB::table("T_RBAC_USER")->leftJoin("T_RBAC_USERROLE","T_RBAC_USER.userid","=","T_RBAC_USERROLE.userid")
             ->leftJoin("T_RBAC_ROLE","T_RBAC_USERROLE.roleid","=","T_RBAC_ROLE.roleid")
@@ -133,7 +133,7 @@ class LoginController extends Controller{
      * 保存
      * @return mixed
      */
-    public  function  edit_operatorSave(){
+    public  function  editOperatorSave(){
         $userId=$_POST['userId'];
         $counts=DB::table("T_RBAC_USER")->where("state",0)->where("userid","<>",$userId)->where("phone",$_POST['telephone'])->count();
         if($counts){
@@ -167,7 +167,7 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public function  delete_operator($userId){
+    public function  deleteOperator($userId){
         $results=DB::table("T_RBAC_USER")->where("userid",$userId)->update([
             "state"=>1,
             "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -180,7 +180,7 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  reset_operator(Request $request,$userId){
+    public  function  resetOperator(Request $request,$userId){
         $results=DB::table("T_RBAC_USER")->where("userid",$userId)->update([
             "password"=>md5("sw2025"),
             "updated_at"=>date("Y-m-d H:i:s",time()),

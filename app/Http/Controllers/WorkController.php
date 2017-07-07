@@ -24,5 +24,18 @@ class WorkController extends Controller
         return view("work.update");
     }
 
-  
+    /**办事信息维护首页
+     * @return mixed
+     */
+    public  function serveIndex(){
+        return view("work.serve");
+    }
+
+    /**
+     * 办事信息维护详情
+     * @return mixed
+     */
+    public function serveDetail(){
+        return view("work.detail");
+    }
 }

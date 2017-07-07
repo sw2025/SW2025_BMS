@@ -30,9 +30,13 @@
                             <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->enterpriseid}}">通过审核</button></a>
                             <a href="javascript:;" onclick="showReason({{$data->enterpriseid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
                         </div>
-                    @else
+                    @elseif($data->configid==2)
                         <div class="details-tit details-btns">
                             <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                        </div>
+                    @else
+                        <div class="details-tit details-btns">
+                            <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-default">待缴费</button></a>
                         </div>
                     @endif
                 @endforeach

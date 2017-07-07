@@ -23,7 +23,7 @@ class RoleController extends Controller
      * @param $roleId
      * @return mixed
      */
-    public  function  look_right($roleId){
+        public  function  lookRight($roleId){
         $auths1=\UserClass::getAuth($roleId,1);
         $auths2=\UserClass::getAuth($roleId,2);
         $roleName=DB::table("T_RBAC_ROLE")->where("roleid",$roleId)->where("state",0)->pluck("rolename");
@@ -34,7 +34,7 @@ class RoleController extends Controller
     /**添加角色
      * @return mixed
      */
-    public  function add_role(){
+    public  function addRole(){
         $auths1=\UserClass::allAuth(1);
         $auths2=\UserClass::allAuth(2);
         return view("role.addRole",compact("auths1","auths2"));
@@ -43,7 +43,7 @@ class RoleController extends Controller
     /**保存
      * @return mixed
      */
-    public  function add_roleSave(){
+    public  function addRoleSave(){
         $name=$_POST['name'];
         $counts=DB::table("T_RBAC_ROLE")->where("rolename",$name)->where("state",0)->count();
         if($counts){
@@ -75,7 +75,7 @@ class RoleController extends Controller
      * @param $roleId
      * @return mixed
      */
-    public  function  edit_role($roleId){
+    public  function  editRole($roleId){
         session(["role_url"=>$_SERVER["HTTP_REFERER"]]);
         $auths1=\UserClass::allAuth(1);
         $auths2=\UserClass::allAuth(2);
@@ -87,7 +87,7 @@ class RoleController extends Controller
     /**保存修改信息
      * @return mixed
      */
-    public function  edit_roleSave(){
+    public function  editRoleSave(){
         $roleId=$_POST['roleId'];
         $name=$_POST['name'];
         $counts=DB::table("T_RBAC_ROLE")->where("rolename",$name)->where("state",0)->where("roleid","<>",$roleId)->count();
@@ -116,7 +116,7 @@ class RoleController extends Controller
         }
     }
 
-    public  function delete_role($roleId){
+    public  function deleteRole($roleId){
         $counts=DB::table("T_RBAC_USERROLE")->where("roleid",$roleId)->count();
         if($counts){
             return redirect()->back()->with("msg","该角色存在用户,暂不能删除!");

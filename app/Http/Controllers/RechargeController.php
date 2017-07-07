@@ -25,4 +25,19 @@ class RechargeController extends Controller
         return view("recharge.update");
     }
 
+    /**
+     * 提现信息维护首页
+     * @return mixed
+     */
+    public function serveIndex(){
+        return view("recharge.serve");
+    }
+    /**
+     * 提现信息维护详情
+     * @return mixed
+     */
+    public function serveDetail(){
+        return view("recharge.detail");
+    }
+
 }
