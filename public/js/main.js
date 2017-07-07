@@ -3,8 +3,9 @@ function showimage(source)
    $(".mymodal").find(".img-show").html("<image src='"+source+"' class='modal-img' />");
    $(".mymodal").modal();
 }
-function showReason(){
+function showReason(e){
     $(".modal-reason").modal();
+    $(".btn-primary").attr("id",e);
 }
 $(document).ready(function(){
     $('.cert-state-btns a').on('click', function(event) {

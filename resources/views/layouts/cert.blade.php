@@ -126,19 +126,17 @@
     </div>
     <div class="modal-body">
         <div class="reject-reasons">
-            <form class="form-horizontal form-bordered" role="form">
-                <div class="form-group">
-                    <div class="col-lg-3 col-md-2 col-sm-3">
-                        <label for="textarea3" class="control-label">请输入拒绝原因</label>
-                    </div>
-                    <div class="col-lg-9 col-md-10 col-sm-9">
-                        <textarea name="textarea" class="form-control" rows="3" placeholder="请输入拒绝原因"></textarea>
-                    </div>
+            <div class="form-group">
+                <div class="col-lg-3 col-md-2 col-sm-3">
+                    <label class="control-label">请输入拒绝原因</label>
                 </div>
-                <div class="form-footer col-lg-offset-1 col-md-offset-2 col-sm-offset-3">
-                    <button type="submit" class="btn btn-primary">确定</button>
+                <div class="col-lg-9 col-md-10 col-sm-9">
+                    <textarea name="textarea" id="textarea" class="form-control" rows="3" placeholder="请输入拒绝原因"></textarea>
                 </div>
-            </form>
+            </div>
+            <div class="form-footer col-lg-offset-1 col-md-offset-2 col-sm-offset-3">
+                <button type="button" id="" class="btn btn-primary">确定</button>
+            </div>
         </div>
     </div>
 </div>

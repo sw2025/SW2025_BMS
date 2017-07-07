@@ -17,7 +17,7 @@
                         <div class="col-md-10 cert-border">
                             <div class="container-fluid">
                                 <div class="col-md-4">
-                                    <h2 class="cert-company"><a href="javascript:;" class="look-link">****公司</a></h2>
+                                    <h2 class="cert-company"><a href="{{asset('/details_supply')}}" class="look-link">****公司</a></h2>
                                     <span class="cert-telephone">联系电话：12345678901</span>
                                     <p class="cert-scale">需求分类：销售</p>
                                 </div>

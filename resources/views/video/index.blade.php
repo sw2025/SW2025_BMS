@@ -17,7 +17,7 @@
                         <div class="col-md-10 cert-border">
                             <div class="container-fluid">
                                 <div class="col-md-4">
-                                    <h2 class="cert-company"><a href="javascript:;" class="look-link">****公司</a></h2>
+                                    <h2 class="cert-company"><a href="{{asset('/details_video')}}" class="look-link">****公司</a></h2>
                                     <span class="cert-telephone">联系电话：12345678901</span>
                                     <span class="cert-time start-time">开始时间：2017-07-02  10:30:00</span>
                                     <span class="cert-time end-time">结束时间：2017-07-02  12:00:00</span>

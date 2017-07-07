@@ -17,7 +17,7 @@
                         <div class="col-md-10 cert-border">
                             <div class="container-fluid">
                                 <div class="col-md-4">
-                                    <h2 class="cert-company"><a href="javascript:;" class="look-link">****专家</a></h2>
+                                    <h2 class="cert-company"><a href="{{asset('/details_expert')}}" class="look-link">****专家</a></h2>
                                     <span class="cert-time">2017-07-02  12:10:35</span>
                                     <span class="cert-telephone">联系电话：12345678901</span>
                                     <p class="cert-industry">擅长问题：******</p>

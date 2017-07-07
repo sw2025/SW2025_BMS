@@ -15,7 +15,7 @@
                 <div class="cert-recharge container-fluid">
                     <div class="col-md-4">
                         <div class="cert-recharge-item">
-                            <h2 class="cert-company"><a href="javascript:;" class="look-link">****公司</a></h2>
+                            <h2 class="cert-company"><a href="{{asset('/details_recharge')}}" class="look-link">****公司</a></h2>
                             <span class="cert-telephone">联系电话：12345678901</span>
                             <span class="cert-recharge-time">2017-07-02  14:00:00</span>
                             <p class="cert-money">提现金额：<span class="money-color">￥10000</span></p>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="cert-recharge-item">
-                            <h2 class="cert-company"><a href="javascript:;" class="look-link">****公司</a></h2>
+                            <h2 class="cert-company"><a href="{{asset('/details_recharge')}}" class="look-link">****公司</a></h2>
                             <span class="cert-telephone">联系电话：12345678901</span>
                             <span class="cert-recharge-time">2017-07-02  14:00:00</span>
                             <p class="cert-money">提现金额：<span class="money-color">￥10000</span></p>

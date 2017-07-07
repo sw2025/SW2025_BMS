@@ -25,7 +25,7 @@
     <script src="{{asset('assets/js/modules/boostbox/core/App.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/dist/echarts.js')}}"></script>
     <script src="{{asset('assets/js/modules/boostbox/libs/jquery-validation/dist/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('assets/js/modules/boostbox/libs/jquery-validation/dist/additional-methods.min.js')}}"></script>
+     <script src="{{asset('assets/js/modules/boostbox/libs/jquery-validation/dist/additional-methods.min.js')}}"></script>
     <script src="{{asset('js/main.js')}}" type="text/javascript"></script>
     {{-- <script src="js/jquery.pagination.js" type="text/javascript"></script>--}}
             <!-- END STYLESHEETS -->
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="form-footer col-lg-offset-1 col-md-offset-2 col-sm-offset-3">
-                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-primary">确定</button>
                 </div>
             </form>
         </div>
