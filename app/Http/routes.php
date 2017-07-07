@@ -63,6 +63,8 @@ Route::get('/details_enterprise/{enterpriseId}','EnterpriseController@update');
 Route::post('/changeEnterprise','EnterpriseController@changeEnterprise');
 //专家审核
 Route::get('/cert_expert','ExpertController@index');
+//修改专家状态
+Route::post('/changeExpert','ExpertController@changeExpert');
 //专家审核详情
 Route::get('/details_expert','ExpertController@update');
 //供求审核
@@ -75,6 +77,8 @@ Route::get('/cert_work','WorkController@index');
 Route::get('/details_work','WorkController@update');
 //视频审核
 Route::get('/cert_video','VideoController@index');
+//修改视频状态
+Route::post('/changeVideo','VideoController@changeVideo');
 //视频审核详情
 Route::get('/details_video','VideoController@update');
 //提现申请审核
