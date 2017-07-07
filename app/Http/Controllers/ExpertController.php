@@ -83,7 +83,22 @@ class ExpertController extends Controller
             $array['code']="error";
             return $array;
         }
+
+    }
+  
+    /**专家信息维护首页
+     * @return mixed
+     */
+    public  function serveIndex(){
+        return view("expert.serve");
+
     }
 
+    /**专家信息维护详情
+     * @return mixed
+     */
+    public  function serveDetail(){
+        return view("expert.detail");
+    }
    
 }

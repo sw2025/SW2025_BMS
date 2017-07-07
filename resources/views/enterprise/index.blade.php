@@ -10,7 +10,8 @@
                 <div class="cert-state-btns">
                     <a href="javascript:;" @if($status==0) class="current"@endif>全部</a>
                     <a href="javascript:;" @if($status==1) class="current"@endif>待认证</a>
-                    <a href="javascript:;" @if($status==3) class="current"@endif>认证失败</a>
+                    <a href="javascript:;" @if($status==2) class="current"@endif>认证失败</a>
+                    <a href="javascript:;" @if($status==3) class="current"@endif>待缴费</a>
                 </div>
                 <div class="cert-list">
                     @foreach($datas as $data)
@@ -33,8 +34,10 @@
                                 @if($data->configid==1)
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->enterpriseid}}">通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason({{$data->enterpriseid}});" ><button type="button" class="btn btn-block ink-reaction btn-support5" >拒绝审核</button></a>
-                                @else
+                                @elseif($data->configid==2)
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                @else
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">未缴费</button></a>
                                 @endif
                             </div>
                         </div>
@@ -54,15 +57,17 @@
                 window.location.href="{{asset('/cert_enterprise')}}"
             }else if(condition=="待认证"){
                 window.location.href="{{asset('/cert_enterprise/1')}}"
-            }else{
+            }else if(condition=="待缴费"){
                 window.location.href="{{asset('/cert_enterprise/3')}}"
+            }else{
+                window.location.href="{{asset('/cert_enterprise/2')}}"
             }
         })
         $(".btn-support1").on("click",function(){
             var enterpriseId=$(this).attr("id");
             $.ajax({
                 url:"{{asset('/changeEnterprise')}}",
-                data:{"configid":2,"enterpriseId":enterpriseId},
+                data:{"configid":3,"enterpriseId":enterpriseId},
                 dataType:"json",
                 type:"POST",
                 success:function(res){
@@ -82,7 +87,7 @@
               var enterpriseId=$(this).attr("id");
               $.ajax({
                   url:"{{asset('/changeEnterprise')}}",
-                  data:{"remark":remark,"enterpriseId":enterpriseId,"configid":3},
+                  data:{"remark":remark,"enterpriseId":enterpriseId,"configid":2},
                   dataType:"json",
                   type:"POST",
                   success:function(res){
