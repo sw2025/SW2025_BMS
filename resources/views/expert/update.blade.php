@@ -7,7 +7,6 @@
                 <li>审核操作</li>
                 <li class="active">企业认证审核</li>
             </ol>
-
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
                     <div class="col-md-12 details-tit"><h2 class="cert-company">{{$datas->expertname}}专家</h2></div>
