@@ -19,7 +19,7 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/details_enterprise/'.$data->enterpriseid)}}" class="look-link">{{$data->enterprisename}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/details_enterprise?id='.$data->enterpriseid)}}" class="look-link">{{$data->enterprisename}}</a></h2>
                                         <span class="cert-time">{{$data->created_at}}</span>
                                         <span class="cert-telephone">联系电话：{{$data->phone}}</span>
                                         <p class="cert-industry">行业：{{$data->industry}}</p>
@@ -44,7 +44,7 @@
                     @endforeach
                 </div>
                 <div class="pages">
-                    {!! $datas->render() !!}
+                    {!! $datas->appends(["status"=>$status])->render() !!}
                     {{-- <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>--}}
                 </div>
             </div>
@@ -54,13 +54,13 @@
         $(".cert-state-btns a").on("click",function(){
             var condition=$(this).text();
             if(condition=="全部"){
-                window.location.href="{{asset('/cert_enterprise')}}"
+                window.location.href="{{asset('/cert_enterprise?status=0')}}"
             }else if(condition=="待认证"){
-                window.location.href="{{asset('/cert_enterprise/1')}}"
+                window.location.href="{{asset('/cert_enterprise?status=1')}}"
             }else if(condition=="待缴费"){
-                window.location.href="{{asset('/cert_enterprise/3')}}"
+                window.location.href="{{asset('/cert_enterprise?status=3')}}"
             }else{
-                window.location.href="{{asset('/cert_enterprise/2')}}"
+                window.location.href="{{asset('/cert_enterprise?status=2')}}"
             }
         })
         $(".btn-support1").on("click",function(){

@@ -27,10 +27,10 @@
                                         @foreach($datas as $data)
                                             <tr>
                                                 <td>{{$data->rolename}}</td>
-                                                <td><a class="look-link" href="{{asset('/look_right/'.$data->roleid)}}">查看</a></td>
+                                                <td><a class="look-link" href="{{asset('/look_right?roleId='.$data->roleid)}}">查看</a></td>
                                                 <td class="operate-btns">
-                                                    <a href="{{asset('/edit_role/'.$data->roleid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                    <a href="{{asset('/delete_role/'.$data->roleid)}}" onclick="return confirm('您确定要删除吗!')"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
+                                                    <a href="{{asset('/edit_role?roleId='.$data->roleid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
+                                                    <a href="{{asset('/delete_role?roleId='.$data->roleid)}}" onclick="return confirm('您确定要删除吗!')"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
                                                 </td>
                                             </tr>
                                         @endforeach

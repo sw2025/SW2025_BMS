@@ -120,11 +120,11 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  editOperator($userId){
+    public  function  editOperator(){
         session(["login_url"=>$_SERVER["HTTP_REFERER"]]);
         $datas=DB::table("T_RBAC_USER")->leftJoin("T_RBAC_USERROLE","T_RBAC_USER.userid","=","T_RBAC_USERROLE.userid")
             ->leftJoin("T_RBAC_ROLE","T_RBAC_USERROLE.roleid","=","T_RBAC_ROLE.roleid")
-            ->where("T_RBAC_USER.userid",$userId)
+            ->where("T_RBAC_USER.userid",$_GET['userId'])
             ->get();
         $roles=\UserClass::getRole();
         return view("login.editOperator",compact('datas',"roles"));
@@ -167,8 +167,8 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public function  deleteOperator($userId){
-        $results=DB::table("T_RBAC_USER")->where("userid",$userId)->update([
+    public function  deleteOperator(){
+        $results=DB::table("T_RBAC_USER")->where("userid",$_GET['userId'])->update([
             "state"=>1,
             "updated_at"=>date("Y-m-d H:i:s",time()),
         ]);
@@ -180,8 +180,8 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  resetOperator(Request $request,$userId){
-        $results=DB::table("T_RBAC_USER")->where("userid",$userId)->update([
+    public  function  resetOperator(Request $request){
+        $results=DB::table("T_RBAC_USER")->where("userid",$_GET['userId'])->update([
             "password"=>md5("sw2025"),
             "updated_at"=>date("Y-m-d H:i:s",time()),
         ]);

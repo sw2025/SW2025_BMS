@@ -14,7 +14,6 @@ class VideoController extends Controller
      * @return mixed
      */
     public function index(){
-
         $ids=array();
         $consultids=array();
         $results=DB::table("T_C_CONSULTVERIFY")->select("id","consultid")->orderBy("verifytime","desc")->distinct()->get();
@@ -24,7 +23,6 @@ class VideoController extends Controller
                 $ids[]=$result->id;
             }
         }
-
         $status=empty($_GET['status'])?'all' : $_GET['status'];
         $datas = DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')

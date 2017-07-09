@@ -23,7 +23,8 @@ class RoleController extends Controller
      * @param $roleId
      * @return mixed
      */
-        public  function  lookRight($roleId){
+        public  function  lookRight(){
+            $roleId=$_GET['roleId'];
         $auths1=\UserClass::getAuth($roleId,1);
         $auths2=\UserClass::getAuth($roleId,2);
         $roleName=DB::table("T_RBAC_ROLE")->where("roleid",$roleId)->where("state",0)->pluck("rolename");
@@ -75,7 +76,8 @@ class RoleController extends Controller
      * @param $roleId
      * @return mixed
      */
-    public  function  editRole($roleId){
+    public  function  editRole(){
+        $roleId=$_GET['roleId'];
         session(["role_url"=>$_SERVER["HTTP_REFERER"]]);
         $auths1=\UserClass::allAuth(1);
         $auths2=\UserClass::allAuth(2);
@@ -116,7 +118,8 @@ class RoleController extends Controller
         }
     }
 
-    public  function deleteRole($roleId){
+    public  function deleteRole(){
+        $roleId=$_GET['roleId'];
         $counts=DB::table("T_RBAC_USERROLE")->where("roleid",$roleId)->count();
         if($counts){
             return redirect()->back()->with("msg","该角色存在用户,暂不能删除!");

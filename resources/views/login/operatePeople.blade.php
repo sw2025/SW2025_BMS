@@ -29,13 +29,13 @@
                                         @foreach($datas as $data)
                                             <tr>
                                                 <td>{{$data->name}}</td>
-                                                <td><a href="{{asset('/look_right')}}" class="look-link">{{$data->rolename}}</a></td>
+                                                <td><a href="{{asset('/look_right?roleId='.$data->roleid)}}" class="look-link">{{$data->rolename}}</a></td>
                                                 <td>{{$data->phone}}</td>
                                                 <td>{{$data->position}}</td>
                                                 <td class="operate-btns">
-                                                    <a href="{{asset('/edit_operator/'.$data->userid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                    <a href="{{asset('delete_operator/'.$data->userid)}}" onclick="return confirm('您确定要删除吗!')"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
-                                                    <a href="{{asset('reset_operator/'.$data->userid)}}" onclick="return confirm('您确定要重置吗!')"><button type="button" class="btn btn-block ink-reaction btn-warning">重置密码</button></a>
+                                                    <a href="{{asset('/edit_operator?userId='.$data->userid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
+                                                    <a href="{{asset('delete_operator?userId='.$data->userid)}}" onclick="return confirm('您确定要删除吗!')"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
+                                                    <a href="{{asset('reset_operator?userId='.$data->userid)}}" onclick="return confirm('您确定要重置吗!')"><button type="button" class="btn btn-block ink-reaction btn-warning">重置密码</button></a>
                                                 </td>
                                             </tr>
                                         @endforeach
