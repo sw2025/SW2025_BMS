@@ -33,8 +33,8 @@
                                         <p class="cert-scale">专家分类：{{$data->category}}</p>
                                         <p class="cert-zone">{{$data->address}}</p>
                                     </div>
-                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
-                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
+                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('../img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
+                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('../img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
                                 </div>
                             </div>
                             <div class="col-md-2 set-certificate">
@@ -42,11 +42,14 @@
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason({{$data->expertid}});"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">拒绝审核</button></a>
                                 @else
-                                    <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
                                 @endif
                             </div>
                         </div>
                     @endforeach
+                        <div class="pages">
+                            {!! $datas->render() !!}
+                        </div>
                 </div>
             </div>
         </section>
@@ -54,13 +57,13 @@
     <script>
         $('.ver_faild').on('click',function(){
 
-            window.location = '{{url('cert_expert?status=fail')}}';
+            window.location = '{{url('cert_expert','fail')}}';
         });
         $('.ver_all').on('click',function(){
-            window.location = '{{url('cert_expert?status=all')}}';
+            window.location = '{{url('cert_expert','all')}}';
         });
         $('.ver_wait').on('click',function(){
-            window.location = '{{url('cert_expert?status=wait')}}';
+            window.location = '{{url('cert_expert','wait')}}';
         })
 
         $(".btn-support1").on("click",function(){

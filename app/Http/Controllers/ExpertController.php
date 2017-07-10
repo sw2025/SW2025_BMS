@@ -13,7 +13,7 @@ class ExpertController extends Controller
     /**专家审核首页
      * @return mixed
      */
-    public function index(){
+    public function index($status="all"){
 
         $ids=array();
         $expertids=array();
@@ -25,7 +25,7 @@ class ExpertController extends Controller
             }
         }
 
-        $status=empty($_GET['status'])?'all' : $_GET['status'];
+        //$status=empty($_GET['status'])?'all' : $_GET['status'];
 
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")

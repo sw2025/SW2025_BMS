@@ -40,28 +40,30 @@
                             @elseif($data->configid==2)
                                 <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">推送</button></a>
                             @else
-                                <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">已拒绝</button></a>
+                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
                             @endif
                         </div>
                     </div>
                     @endforeach
-
+                    <div class="pages">
+                        {!! $datas->render() !!}
+                    </div>
                 </div>
             </div>
         </section>
     </div>
     <script>
         $('.ver_faild').on('click',function(){
-            window.location = '{{url('cert_video?status=fail')}}';
+            window.location = '{{url('cert_video','fail')}}';
         });
         $('.ver_all').on('click',function(){
-            window.location = '{{url('cert_video?status=all')}}';
+            window.location = '{{url('cert_video','all')}}';
         });
         $('.ver_wait').on('click',function(){
-            window.location = '{{url('cert_video?status=wait')}}';
+            window.location = '{{url('cert_video','wait')}}';
         });
         $('.ver_pendingPush').on('click',function(){
-            window.location = '{{url('cert_video?status=pendingPush')}}';
+            window.location = '{{url('cert_video','pendingPush')}}';
         });
 
         $(".btn-support1").on("click",function(){

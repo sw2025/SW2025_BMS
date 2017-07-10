@@ -26,7 +26,7 @@
                             <span style="float:left">行业：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
                                 请选择
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-industry-sel" role="menu" style="text-align: left;">
+                            <ul class="dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
                                 <li><a href="javascript:;">IT|通信|电子|互联网</a></li>
