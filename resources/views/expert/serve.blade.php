@@ -131,4 +131,5 @@
             </div>
         </section>
     </div>
+<script src="{{asset('js/expert.js')}}" type="text/javascript"></script>
 @endsection

@@ -132,4 +132,5 @@
             </div>
         </section>
     </div>
+    <script src="{{asset('js/supply.js')}}" type="text/javascript"></script>
 @endsection

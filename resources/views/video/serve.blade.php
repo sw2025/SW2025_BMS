@@ -135,4 +135,5 @@
             </div>
         </section>
     </div>
+    <script src="{{asset('js/video.js')}}" type="text/javascript"></script>
 @endsection

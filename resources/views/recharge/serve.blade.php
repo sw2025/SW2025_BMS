@@ -133,4 +133,5 @@
             </div>
         </section>
     </div>
+<script src="{{asset('js/reCharge.js')}}" type="text/javascript"></script>
 @endsection

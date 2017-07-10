@@ -131,4 +131,5 @@
             </div>
         </section>
     </div>
+    <script src="{{asset('js/work.js')}}" type="text/javascript"></script>
 @endsection
