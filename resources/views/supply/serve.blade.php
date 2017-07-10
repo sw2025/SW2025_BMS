@@ -36,11 +36,23 @@
                             <span style="float:left">需求领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
                                 请选择
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-industry-sel" role="menu" style="text-align: left;">
+                            <ul class=" dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
-                                <li><a href="javascript:;">IT|通信|电子|互联网</a></li>
-                                <li><a href="javascript:;">金融业</a></li>
+                                <li>
+                                    <a href="javascript:;">IT|通信|电子|互联网</a>
+                                    <ul class="sub-industry-menu">
+                                        <li>Item 2</li>
+                                        <li>Open level 3</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">金融业</a>
+                                    <ul class="sub-industry-menu">
+                                        <li>Item 2</li>
+                                        <li>Open level 3</li>
+                                    </ul>
+                                </li>
                                 <li><a href="javascript:;">房地产|建筑业</a></li>
                                 <li><a href="javascript:;">商业服务</a></li>
                                 <li><a href="javascript:;">贸易|批发|零售|租赁业</a></li>
