@@ -21,8 +21,8 @@
                 </div>
                 @if($datas->configid==1)
                     <div class="details-tit details-btns">
-                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1">通过审核</button></a>
-                        <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
+                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$datas->consultid}}">通过审核</button></a>
+                        <a href="javascript:;" onclick="showReason({{$datas->consultid}});"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$datas->consultid}}">拒绝审核</button></a>
                     </div>
                 @elseif($datas->configid==2)
                     <div class="details-tit details-btns">
@@ -36,4 +36,44 @@
             </div>
         </section>
     </div>
+    <script>
+        $(".btn-support1").on("click",function(){
+            var consultid=$(this).attr("id");
+            $.ajax({
+                url:"{{asset('/changeVideo')}}",
+                data:{"configid":2,"consultid":consultid},
+                dataType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('/cert_video')}}";
+                    }else{
+                        alert("审核失败");
+                        window.location.href="{{asset('/cert_video')}}";
+                    }
+                }
+            })
+        })
+
+        $(function(){
+            $(".btn-primary").on("click",function (){
+                var remark=$("#textarea").val();
+                var consultid=$(this).attr("id");
+                $.ajax({
+                    url:"{{asset('/changeVideo')}}",
+                    data:{"remark":remark,"consultid":consultid,"configid":3},
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=="success"){
+                            window.location.href="{{asset('/cert_video')}}";
+                        }else{
+                            alert("审核失败");
+                            window.location.href="{{asset('/cert_video')}}";
+                        }
+                    }
+                })
+            });
+        })
+    </script>
 @endsection

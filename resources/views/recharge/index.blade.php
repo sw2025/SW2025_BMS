@@ -74,8 +74,6 @@
             $(".btn-primary").on("click",function (){
                 var remark=$("#textarea").val();
                 var id=$(this).attr("id");
-
-                alert(id);
                 $.ajax({
                     url:"{{asset('/changeRecharge')}}",
                     data:{"remark":remark,"id":id,"type":"收入","channel":"提现失败"},

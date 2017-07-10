@@ -25,7 +25,7 @@ class RechargeController extends Controller
                 $userids[]=$result->userid;
                 $ids[]=$result->id;
             }
-}
+        }
 
         //$status=empty($_GET['status'])?'all' : $_GET['status'];
 
@@ -90,7 +90,18 @@ class RechargeController extends Controller
      * @return mixed
      */
     public function update(){
-        return view("recharge.update");
+        $id=$_GET['id'];
+        $datas=DB::table("T_U_BILL")
+            ->leftJoin('view_userrole','view_userrole.userid', '=','T_U_BILL.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->leftJoin('t_u_user','T_U_BILL.userid' ,'=' ,'t_u_user.userid')
+            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","t_u_enterprise.enterpriseid","t_u_enterprise.enterprisename","t_u_enterprise.brief","T_U_BILL.*")
+            ->where("T_u_bill.id",$id)
+            ->orderBy("T_U_BILL.billtime","desc")
+            ->first();
+        //dd($datas);
+        return view("recharge.update",compact("datas"));
     }
 
     /**
