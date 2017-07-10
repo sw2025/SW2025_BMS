@@ -49,4 +49,16 @@ $(document).ready(function(){
             $(this).children('i').removeClass('fa-arrow-circle-o-down').addClass('fa-arrow-circle-o-up');
         }
     });
+    // 二级行业
+    $('.sub-industry>li').on('hover', function(event) {
+        event.preventDefault();
+        $(this).children('.sub-industry-menu').toggle();
+    });
+    $('.sub-industry-menu').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).html();
+        $(this).children('.sub-industry-menu').toggle();
+        $(this).closest('.sub-industry').prev('.result-select').html(valHtml);
+        $('.results-unit-industry').html(valHtml).show();
+    });
 });
