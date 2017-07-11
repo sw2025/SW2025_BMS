@@ -67,14 +67,26 @@ Route::get('/cert_expert/{status?}','ExpertController@index');
 Route::post('/changeExpert','ExpertController@changeExpert');
 //专家审核详情
 Route::get('/details_expert','ExpertController@update');
+
+/*
+ 王宁修改路由开始*/
+
 //供求审核
-Route::get('/cert_supply','SupplyController@index');
+Route::get('/cert_supply/{action?}','SupplyController@index');
 //供求审核详情
-Route::get('/details_supply','SupplyController@update');
+Route::get('/details_supply/{supplyId}','SupplyController@update');
+//修改供求审核
+Route::post('/changeSupply','SupplyController@changeSupply');
+
 //办事审核
-Route::get('/cert_work','WorkController@index');
+Route::get('/cert_work/{action?}','WorkController@index');
 //办事审核详情
-Route::get('/details_work','WorkController@update');
+Route::get('/details_work/{eventId}','WorkController@update');
+//修改办事审核
+Route::post('/changeEvent','WorkController@changeEvent');
+/*
+ 修改路由结束*/
+
 //视频审核
 Route::get('/cert_video/{status?}','VideoController@index');
 //修改视频状态
@@ -96,8 +108,9 @@ Route::get('/serve_enterpriseDet','EnterpriseController@serveDetail');
 Route::get('/serve_expert','ExpertController@serveIndex');
 //专家维护详情
 Route::get('/serve_expertDet','ExpertController@serveDetail');
+
 //供求信息维护
-Route::get('/serve_supply','SupplyController@serveIndex');
+Route::any('/serve_supply','SupplyController@serveIndex');
 //供求信息维护详情
 Route::get('/serve_supplyDet','SupplyController@serveDetail');
 //办事信息维护
