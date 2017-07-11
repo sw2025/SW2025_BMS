@@ -62,7 +62,7 @@ Route::get('/details_enterprise','EnterpriseController@update');
 //修改企业状态
 Route::post('/changeEnterprise','EnterpriseController@changeEnterprise');
 //专家审核
-Route::get('/cert_expert','ExpertController@index');
+Route::get('/cert_expert/{status?}','ExpertController@index');
 //修改专家状态
 Route::post('/changeExpert','ExpertController@changeExpert');
 //专家审核详情
@@ -88,13 +88,15 @@ Route::post('/changeEvent','WorkController@changeEvent');
  修改路由结束*/
 
 //视频审核
-Route::get('/cert_video','VideoController@index');
+Route::get('/cert_video/{status?}','VideoController@index');
 //修改视频状态
 Route::post('/changeVideo','VideoController@changeVideo');
 //视频审核详情
 Route::get('/details_video','VideoController@update');
 //提现申请审核
-Route::get('/cert_recharge','RechargeController@index');
+Route::get('/cert_recharge/{status?}','RechargeController@index');
+//提现审核状态
+Route::post('/changeRecharge','RechargeController@changeRecharge');
 //提现申请审核详情
 Route::get('/details_recharge','RechargeController@update');
 /******************************维护*************************************************/

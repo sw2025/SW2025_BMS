@@ -13,7 +13,7 @@ class VideoController extends Controller
     /**视频审核
      * @return mixed
      */
-    public function index(){
+    public function index($status='all'){
         $ids=array();
         $consultids=array();
         $results=DB::table("T_C_CONSULTVERIFY")->select("id","consultid")->orderBy("verifytime","desc")->distinct()->get();
@@ -23,7 +23,7 @@ class VideoController extends Controller
                 $ids[]=$result->id;
             }
         }
-        $status=empty($_GET['status'])?'all' : $_GET['status'];
+        //$status=empty($_GET['status'])?'all' : $_GET['status'];
         $datas = DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
@@ -35,7 +35,7 @@ class VideoController extends Controller
 
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("configid",[1,3])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("configid",[1,2,3])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
                 return view("video.index",compact("datas"));
                 break;
             case 'wait':
@@ -74,7 +74,9 @@ class VideoController extends Controller
         return view("video.update",compact("datas"));
     }
 
-
+    /**视频审核
+     * @return
+     */
     public  function changeVideo(){
         $array=array();
         $result=DB::table("T_C_CONSULTVERIFY")

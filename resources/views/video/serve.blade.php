@@ -35,6 +35,8 @@
                             <span style="float:left">需求领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
                                 请选择
                             </button>
+
+                            <ul class="dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
                             <ul class=" dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
