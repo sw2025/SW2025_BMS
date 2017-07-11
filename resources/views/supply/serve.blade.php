@@ -9,7 +9,7 @@
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
                     <input class="search-bar-inp" type="text" placeholder="请输入需求关键字" value="" />
-                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn">
+                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" id="searchsub">
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
@@ -23,10 +23,9 @@
                     <div class="choice-condition clearfix">
                         <div class="btn-group serve-mr">
                             <span style="float:left">发布方：</span><button type="button"  class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                不限
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" index="publishing" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
                                 <li><a href="javascript:;">专家</a></li>
                                 <li><a href="javascript:;">企业</a></li>
@@ -35,13 +34,11 @@
                         <div class="btn-group serve-mr">
                             <span style="float:left">
                                 需求领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                不限
                             </button>
 
                             <ul class="demo-list dropdown-menu animation-slide sub-industry" index="domain" role="menu" style="text-align: left;">
-                            <ul class=" dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
 
-                                <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
                                 <li>
                                     <a href="javascript:;">IT|通信|电子|互联网</a>
@@ -72,10 +69,9 @@
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">所在地区：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                全国
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">全国</a></li>
                                 <li><a href="javascript:;">北京市</a></li>
                                 <li><a href="javascript:;">上海市</a></li>
@@ -116,7 +112,7 @@
                     </div>
                     <div class="result-order">
                         <a href="javascript:;" class="order-time">发布时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:5</span>
+                        <span class="counts" >数量:{{$datas->count()}}</span>
                     </div>
                 </div>
                 <div class="cert-list" id="content2">
@@ -142,6 +138,6 @@
             </div>
         </section>
     </div>
-    <input type="hidden" name="where" value="1=1" id="where">
+    <input type="hidden" name="where" value="a:1:{i:1;i:1;}" id="where">
     <script src="{{asset('js/supply.js')}}" type="text/javascript"></script>
 @endsection
