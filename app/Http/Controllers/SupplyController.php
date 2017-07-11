@@ -33,7 +33,7 @@ class SupplyController extends Controller
                 $datas = $datas->where("configid", 3)->paginate(1);
                 break;
         }
-        return view("supply.index", compact('datas','status'));
+        return view("supply.index", compact('datas','action'));
     }
 
     /**供求信息详情
@@ -91,25 +91,42 @@ class SupplyController extends Controller
 
         if($request->isMethod('post')){
             $wheres = $request->input();
-            $where = $wheres['where'];
+            $arrwhere = unserialize($wheres['where']);
             $pagenum = !empty($request->input('page')) ? $request->input('page') : 1;
+            $sql = [];
             switch($wheres['key']){
                 case 'publishing':
-                    $where .= ' and needtype="'.$wheres['value'].'"';
+                    $arrwhere['needtype'] = "'".$wheres['value']."'";
+                    break;
+                case 'unpublishing':
+                    unset($arrwhere['needtype']);
                     break;
                 case 'domain':
-                    $where .= ' and t_n_need.domain1="'.$wheres['value'].'"';
+                    $arrwhere['t_n_need.domain1'] = "'".$wheres['value']."'";
+                    break;
+                case 'undomain':
+                    unset($arrwhere['t_n_need.domain1']);
                     break;
                 case 'address':
-                    $where .= ' and t_u_enterprise.address="'.$wheres['value'].'"';
+                    $arrwhere['t_u_enterprise.address'] = "'".$wheres['value']."'";
+                    break;
+                case 'unaddress':
+                    unset($arrwhere['t_u_enterprise.address']);
                     break;
                 case 'ordertime':
                     $order = $wheres['value'];
                     break;
                 case 'search':
-                    $where .= ' and brief like "'.$wheres['value'] .'"';
+                    $arrwhere['t_n_need.brief'] = '"%'. $wheres['value'] .'%"';
+                    break;
+                case 'unsearch':
+                    unset($arrwhere['t_n_need.brief']);
                     break;
             }
+            foreach($arrwhere as $k => $v){
+                $sql[] = $k != 't_n_need.brief' ? $k . '=' . $v : $k . ' like ' . $v;
+            }
+            $where = implode(' and ',$sql);
             if(!empty($order)){
                 $datas->orderBy('t_n_need.needtime',$order);
             } else {
@@ -117,12 +134,13 @@ class SupplyController extends Controller
             }
 
             $datas = $datas->whereRaw($where)
-                ->paginate();
-            $datas = $datas->forPage($pagenum,5)->toArray();
-            return ['where' => $where ,'data' => $datas];
+                ->paginate(5)->toJson();
+            /*dd($datas);
+            $datas = $datas->forPage($pagenum,5);*/
+            return ['where' => serialize($arrwhere) ,'data' => $datas];
         }
         $datas = $datas->orderBy('t_n_need.needtime','desc')
-            ->paginate(1);
+            ->paginate(5);
         return view("supply.serve",compact('datas'));
     }
 
