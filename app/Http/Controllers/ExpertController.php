@@ -14,7 +14,6 @@ class ExpertController extends Controller
      * @return mixed
      */
     public function index($status="all"){
-
         $ids=array();
         $expertids=array();
         $results=DB::table("T_U_EXPERTVERIFY")->select("id","expertid")->orderBy("verifytime","desc")->distinct()->get();
@@ -24,9 +23,7 @@ class ExpertController extends Controller
                 $ids[]=$result->id;
             }
         }
-
         //$status=empty($_GET['status'])?'all' : $_GET['status'];
-
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
@@ -36,7 +33,6 @@ class ExpertController extends Controller
         switch ($status) {
             case 'all':
                 $datas = $datas->whereIn("configid",[1,3])->whereIn("T_U_EXPERTVERIFY.id",$ids)->distinct()->paginate(2);
-
                 return view("expert.index",compact("datas"));
                 break;
             case 'wait':
@@ -51,9 +47,7 @@ class ExpertController extends Controller
     }
 
     public  function  update(){
-
         $expertid=$_GET['expertid'];
-
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
@@ -61,7 +55,6 @@ class ExpertController extends Controller
             ->where("T_U_EXPERT.expertid",$expertid)
             ->first();
         //dd($datas);
-
         return view("expert.update",compact("datas"));
     }
     //
