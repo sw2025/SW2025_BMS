@@ -112,13 +112,13 @@ Route::get('/serve_expertDet','ExpertController@serveDetail');
 //供求信息维护
 Route::any('/serve_supply','SupplyController@serveIndex');
 //供求信息维护详情
-Route::get('/serve_supplyDet','SupplyController@serveDetail');
+Route::get('/serve_supplyDet/{supplyid}','SupplyController@serveDetail');
 //办事信息维护
-Route::get('/serve_work','WorkController@serveIndex');
+Route::any('/serve_work','WorkController@serveIndex');
 //办事信息维护详情
-Route::get('/serve_workDet','WorkController@serveDetail');
+Route::get('/serve_workDet/{eventid}','WorkController@serveDetail');
 //视频咨询维护
-Route::get('/serve_video','VideoController@serveIndex');
+Route::any('/serve_video','VideoController@serveIndex');
 //视频咨询维护详情
 Route::get('/serve_videoDet','VideoController@serveDetail');
 //提现信息维护

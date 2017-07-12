@@ -15,9 +15,9 @@
             </ol>
             <div class="section-body change-pwd">
                 <div class="cert-state-btns">
-                    <a href="javascript:;" class="ver_all" @if(empty($status) || $status  == 'all') id="hoverstyle" @endif>全部</a>
-                    <a href="javascript:;" class="ver_wait" @if(!empty($status) && $status == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_faild" @if(!empty($status) && $status == 'fail') id="hoverstyle" @endif>认证失败</a>
+                    <a href="javascript:;" class="ver_all" @if(empty($action) || $action  == 'all') id="hoverstyle" @endif>全部</a>
+                    <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>待认证</a>
+                    <a href="javascript:;" class="ver_faild" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>认证失败</a>
                 </div>
                 <div class="cert-list">
                     @foreach($datas as $v)
@@ -61,13 +61,13 @@
 
                 <script>
                     $('.ver_faild').on('click',function () {
-                        window.location = '{{url('cert_work','fail')}}';
+                        window.location = '{{url('cert_supply','fail')}}';
                     });
                     $('.ver_all').on('click',function () {
-                        window.location = '{{url('cert_work','all')}}';
+                        window.location = '{{url('cert_supply','all')}}';
                     });
                     $('.ver_wait').on('click',function () {
-                        window.location = '{{url('cert_work','wait')}}';
+                        window.location = '{{url('cert_supply','wait')}}';
                     });
 
                     $('.sup_allow').on('click',function () {

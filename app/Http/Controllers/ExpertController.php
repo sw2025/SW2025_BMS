@@ -55,6 +55,7 @@ class ExpertController extends Controller
             ->where("T_U_EXPERT.expertid",$expertid)
             ->first();
         //dd($datas);
+
         return view("expert.update",compact("datas"));
     }
     //
