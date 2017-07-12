@@ -101,7 +101,6 @@ class VideoController extends Controller
      * @return mixed
      */
     public  function serveIndex(Request $request){
-
         $ids=array();
         $consultids=array();
         $results=DB::table("T_C_CONSULTVERIFY")->select("id","consultid")->orderBy("verifytime","desc")->distinct()->get();
@@ -173,7 +172,7 @@ class VideoController extends Controller
             return ['where' => serialize($arrwhere) ,'data' => $datas];
         }
         $datas = $datas->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->orderBy('t_c_consult.consulttime','desc')
-            ->paginate(3);
+            ->paginate(1);
         return view("video.serve",compact('datas'));
     }
     /**
