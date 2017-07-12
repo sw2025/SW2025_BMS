@@ -15,15 +15,6 @@ class VideoController extends Controller
      * @return mixed
      */
     public function index($status='all'){
-        $ids=array();
-        $consultids=array();
-        $results=DB::table("T_C_CONSULTVERIFY")->select("id","consultid")->orderBy("verifytime","desc")->distinct()->get();
-        foreach ($results as $result){
-            if(!in_array($result->consultid,$consultids)){
-                $consultids[]=$result->consultid;
-                $ids[]=$result->id;
-            }
-        }
 
         $datas = DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
@@ -32,23 +23,23 @@ class VideoController extends Controller
             ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
             ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
             ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
-            ->orderBy('t_c_consultverify.verifytime','desc');
-
+            ->orderBy('t_c_consultverify.verifytime','desc')
+            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)');
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("configid",[1,2,3])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("configid",[1,2,3])->paginate(2);
                 return view("video.index",compact("datas"));
                 break;
             case 'wait':
-                $datas = $datas->whereIn("configid",[1])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("configid",[1])->paginate(2);
                 return view("video.index",compact("datas"));
                 break;
             case 'fail':
-                $datas = $datas->whereIn("configid",[3])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("configid",[3])->paginate(2);
                 return view("video.index",compact("datas"));
                 break;
             case 'pendingPush':
-                $datas = $datas->whereIn("configid",[2])->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("configid",[2])->paginate(2);
                 return view("video.index",compact("datas"));
                 break;
         }
@@ -101,16 +92,6 @@ class VideoController extends Controller
      * @return mixed
      */
     public  function serveIndex(Request $request){
-        $ids=array();
-        $consultids=array();
-        $results=DB::table("T_C_CONSULTVERIFY")->select("id","consultid")->orderBy("verifytime","desc")->distinct()->get();
-        //dd($results);
-        foreach ($results as $result){
-            if(!in_array($result->consultid,$consultids)){
-                $consultids[]=$result->consultid;
-                $ids[]=$result->id;
-            }
-        }
 
         $datas=DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
@@ -118,11 +99,12 @@ class VideoController extends Controller
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
             ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid');
-
+            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
+            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)');
         if($request->isMethod('post')){
             $wheres = $request->input();
             $arrwhere = unserialize($wheres['where']);
+
             $pagenum = !empty($request->input('page')) ? $request->input('page') : 1;
             $sql = [];
             switch($wheres['key']){
@@ -155,31 +137,50 @@ class VideoController extends Controller
                     break;
             }
             foreach($arrwhere as $k => $v){
-                $sql[] = $k != 't_c_consult.brief' ? $k . '=' . $v : $k . ' like ' . $v;
+                if($v== "5,2,4"){
+                    $sql[] = $k != 't_c_consult.brief' ? whereIn($k,$v)  : $k . ' like ' . $v;
+                }else{
+                    $sql[] = $k != 't_c_consult.brief' ? $k . '=' . $v : $k . ' like ' . $v;
+                }
             }
             $where = implode(' and ',$sql);
             if(!empty($order)){
-                $datas->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->orderBy('t_c_consult.consulttime',$order);
+                $datas->orderBy('t_c_consult.consulttime',$order);
 
             } else {
-                $datas->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->orderBy('t_c_consult.consulttime','desc');
+                $datas->orderBy('t_c_consult.consulttime','desc');
             }
 
+            $count=$datas->count();
+
             $datas = $datas->whereRaw($where)
-                ->paginate(3)->toJson();
-            /*dd($datas);
-            $datas = $datas->forPage($pagenum,5);*/
+                ->paginate(1)->toJson();
+
             return ['where' => serialize($arrwhere) ,'data' => $datas];
         }
-        $datas = $datas->whereIn("T_C_CONSULTVERIFY.id",$ids)->distinct()->orderBy('t_c_consult.consulttime','desc')
+        $count=$datas->count();
+        $datas = $datas->orderBy('t_c_consult.consulttime','desc')
             ->paginate(1);
-        return view("video.serve",compact('datas'));
+
+        //dd($count);
+        return view("video.serve",compact('datas','count'));
     }
     /**
      * 视频咨询信息维护详情
      * @return mixed
      */
-    public function serveDetail(){
-        return view("video.detail");
+    public function serveDetail($consultid){
+
+        $datas=DB::table('t_c_consult')
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
+            ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
+            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
+            ->where("T_C_CONSULT.consultid",$consultid)
+            ->orderBy('t_c_consultverify.verifytime','desc')
+            ->first();
+        return view("video.detail",compact('datas'));
     }
 }

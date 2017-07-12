@@ -23,12 +23,14 @@ $(document).ready(function(){
         if(html == '不限'){
             sendAjax('un'+name,html);
         } else {
-            if(html=="已完成"){
-                sendAjax(name,html=7);
-            }else{
-                sendAjax(name,html=2);
+            if(name == 'publishing' ){
+                if(html=="已完成"){
+                   var html = 7;
+                }else{
+                   var html = '5,2,4';
+                }
             }
-
+            sendAjax(name,html);
         }
     });
 
@@ -67,7 +69,6 @@ $(document).ready(function(){
         }
     });
 
-
     /**
      * 删除的js代码
      */
@@ -77,6 +78,7 @@ $(document).ready(function(){
         event.preventDefault();
         $(this).empty().hide();
     });
+
 
     $('.result-order a').click(function(event) {
         if($(this).children('i').hasClass('fa-arrow-circle-o-up')){
@@ -109,7 +111,6 @@ $(document).ready(function(){
     }
 
 
-
 });
 /**
  * 分页post请求获取数据
@@ -136,18 +137,18 @@ function success (data) {
         str += '<div class="container-fluid cert-item">';
         str += ' <div class="col-md-4"> ';
         str += '<h2 class="cert-company"><a href="serve_videoDet" class="look-link">';
-        if(datas[$i].enterprisename != null) {
-            str += datas[$i].enterprisename;
-        } else {
-            str += datas[$i].expertname;
-        }
+        str += datas[$i].expertname;
         str += '</a></h2>';
+        str += '<div>';
         str += '<span class="cert-telephone">联系电话：'+datas[$i].phone+'</span>';
-        str += '<span class="cert-time start-time">开始时间：2017-07-02  10:30:00</span>';
-        str += '<span class="cert-time end-time">结束时间：2017-07-02  12:00:00</span>';
+        str += '<span class="cert-time start-time">2017-07-02  10:30:00</span>';
         str += '<p class="cert-scale">需求分类：销售</p>';
-        str += '<p class="cert-zone">指定专家：系统分配</p>';
-        str += '</div><div class="col-md-8 cert-cap"><span class="cert-work-time">'+datas[$i].consulttime+'</span><span>'+datas[$i].brief+'</span> </div> </div>';
+        str += '<p class="cert-scale">专家分类：'+$datas[$i].category+'</p>';
+        str += '<p class="cert-zone">地区：'+datas[$i].address+'</p>';
+        str += '</div>';
+        str += '<div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>';
+        str += '<div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>';
+        str += '</div><div class="col-md-8 cert-cap"><span class="cert-work-time">'+datas[$i].verifytime+'</span><span>'+datas[$i].brief+'</span> </div> </div>';
     }
 
     str += '<div class="pages"></div>';
