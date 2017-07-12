@@ -136,7 +136,7 @@ function success (data) {
     for ($i=0;$i<datas.length;$i++){
         str += '<div class="container-fluid cert-item">';
         str += ' <div class="col-md-4"> ';
-        str += '<h2 class="cert-company"><a href="serve_supplyDet" class="look-link">【'+datas[$i].role+'】 ';
+        str += '<h2 class="cert-company"><a href="serve_supplyDet/'+datas[$i].needid+'" class="look-link">【'+datas[$i].role+'】 ';
         if(datas[$i].enterprisename != null) {
             str += datas[$i].enterprisename;
         } else {
