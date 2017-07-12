@@ -16,25 +16,16 @@ class EnterpriseController extends Controller{
      * @return mixed
      */
     public function index(){
-        $ids=array();
-        $enterpriseids=array();
-        $results=DB::table("T_U_ENTERPRISEVERIFY")->select("id","enterpriseid")->orderBy("verifytime","desc")->distinct()->get();
-        foreach ($results as $result){
-            if(!in_array($result->enterpriseid,$enterpriseids)){
-                $enterpriseids[]=$result->enterpriseid;
-                $ids[]=$result->id;
-            }
-        }
+      /*  $ids=$this->returnIds();*/
         $status=!empty($_GET['status'])?$_GET['status']:0;
         if($status==0){
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
             ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid")
+            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEVERIFY.id")
             ->whereIn("configid",[1,2,3])
-            ->whereIn("T_U_ENTERPRISEVERIFY.id",$ids)
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
-            ->distinct()
             ->paginate(1);
         }else{
         $datas=DB::table("T_U_USER")
@@ -42,7 +33,7 @@ class EnterpriseController extends Controller{
             ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid")
             ->where("configid",$status)
-            ->whereIn("T_U_ENTERPRISEVERIFY.id",$ids)
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
             ->paginate(1);
         }
@@ -61,7 +52,7 @@ class EnterpriseController extends Controller{
             ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid")
             ->where("T_U_ENTERPRISE.enterpriseid",$enterpriseId)
-            ->where("T_U_ENTERPRISEVERIFY.id",$id)
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
             ->get();
         return view("enterprise.update",compact("datas"));
@@ -95,7 +86,6 @@ class EnterpriseController extends Controller{
      * @return mixed
      */
     public  function serveIndex(){
-
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
         $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
@@ -116,26 +106,33 @@ class EnterpriseController extends Controller{
         $data=DB::table("T_U_USER")
             ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
             ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-            ->leftJoin("T_U_ENTERPRISEMEMBER","T_U_ENTERPRISEMEMBER.enterpriseid","=","T_U_ENTERPRISE.enterpriseid");
+            ->leftJoin("T_U_ENTERPRISEMEMBER","T_U_ENTERPRISEMEMBER.enterpriseid","=","T_U_ENTERPRISE.enterpriseid")
+            ->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+            ->where("configid",4);
+        $count=DB::table("T_U_USER")
+            ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+            ->leftJoin("T_U_ENTERPRISEMEMBER","T_U_ENTERPRISEMEMBER.enterpriseid","=","T_U_ENTERPRISE.enterpriseid")
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+            ->where("configid",4);
+
         if(!empty($serveName)){
             if(!empty($idCard)){
-                $datas=$data->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
-                    ->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime) ->where("configid",4)->paginate(1);
-                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->where("configid",4)->count();
+                $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime)->paginate(1);
+                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
             }else{
-                $datas=$data->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
-                    ->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType) ->where("configid",4)->paginate(1);
-                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere) ->where("configid",4)->count();
+                $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType)->paginate(1);
+                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
             }
         }else{
             if(!empty($idCard)){
-                $datas=$data->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
-                    ->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime) ->where("configid",4)->paginate(1);
-                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->where("configid",4)->count();
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime)->paginate(1);
+                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
             }else{
-                $datas=$data->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
-                    ->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime) ->where("configid",4)->paginate(1);
-                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("configid",4)->count();
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime) ->paginate(1);
+                $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+
             }
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
@@ -164,6 +161,23 @@ class EnterpriseController extends Controller{
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
             ->get();
         return view("enterprise.detail",compact("datas"));
+    }
+
+    /**
+     * 查询企业最新的一条状态信息
+     * @return array
+     */
+    public  function  returnIds(){
+        $ids=array();
+        $enterpriseids=array();
+        $results=DB::table("T_U_ENTERPRISEVERIFY")->select("id","enterpriseid")->orderBy("verifytime","desc")->distinct()->get();
+        foreach ($results as $result){
+            if(!in_array($result->enterpriseid,$enterpriseids)){
+                $enterpriseids[]=$result->enterpriseid;
+                $ids[]=$result->id;
+            }
+        }
+        return $ids;
     }
 
 

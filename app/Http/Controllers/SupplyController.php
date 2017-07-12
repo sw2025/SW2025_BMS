@@ -72,7 +72,7 @@ class SupplyController extends Controller
                 "updated_at"=>date("Y-m-d H:i:s",time()),
                 "created_at"=>date("Y-m-d H:i:s",time())
             ]);
-        if ($result || $update) {
+        if ($result && $update) {
             return json_encode(['errorMsg' => 'success']);
         } else {
             return json_encode(['errorMsg' => 'error']);
@@ -92,7 +92,6 @@ class SupplyController extends Controller
         if($request->isMethod('post')){
             $wheres = $request->input();
             $arrwhere = unserialize($wheres['where']);
-            $pagenum = !empty($request->input('page')) ? $request->input('page') : 1;
             $sql = [];
             switch($wheres['key']){
                 case 'publishing':
@@ -133,14 +132,10 @@ class SupplyController extends Controller
                 $datas->orderBy('t_n_need.needtime','desc');
             }
 
-            $datas = $datas->whereRaw($where)
-                ->paginate(5)->toJson();
-            /*dd($datas);
-            $datas = $datas->forPage($pagenum,5);*/
+            $datas = $datas->whereRaw($where)->paginate(5)->toJson();
             return ['where' => serialize($arrwhere) ,'data' => $datas];
         }
-        $datas = $datas->orderBy('t_n_need.needtime','desc')
-            ->paginate(5);
+        $datas = $datas->orderBy('t_n_need.needtime','desc')->paginate(5);
         return view("supply.serve",compact('datas'));
     }
 
@@ -148,9 +143,16 @@ class SupplyController extends Controller
      * 供求信息维护详情
      * @return mixed
      */
-    public function serveDetail(){
-
-        return view("supply.detail");
+    public function serveDetail($supply_id){
+        $datas = DB::table('t_n_need')
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone')
+            ->where('needid',$supply_id)
+            ->first();
+        return view("supply.detail",compact('datas'));
     }
 
 

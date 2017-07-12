@@ -9,7 +9,7 @@
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
                     <input class="search-bar-inp" type="text" placeholder="请输入办事关键字" value="" />
-                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn">
+                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" id="searchsub">
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
@@ -23,20 +23,19 @@
                     <div class="choice-condition clearfix">
                         <div class="btn-group serve-mr">
                             <span style="float:left">状态：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                全部
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
+                            <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" index="publishing" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">全部</a></li>
                                 <li><a href="javascript:;">正在办事</a></li>
                                 <li><a href="javascript:;">已完成</a></li>
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">需求领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                不限
                             </button>
-                            <ul class="dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
+                            <ul class="dropdown-menu animation-slide sub-industry" index="domain" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
                                 <li>
                                     <a href="javascript:;">IT|通信|电子|互联网</a>
@@ -67,10 +66,9 @@
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">所在地区：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                全国
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
+                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">全国</a></li>
                                 <li><a href="javascript:;">北京市</a></li>
                                 <li><a href="javascript:;">上海市</a></li>
@@ -111,37 +109,44 @@
                     </div>
                     <div class="result-order">
                         <a href="javascript:;" class="order-time">发布时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:5</span>
+                        <span class="counts">数量:{{$datas->count()}}</span>
                     </div>
                 </div>
-                <div class="cert-list">
+                <div class="cert-list" id="content2">
+                    @foreach($datas as $v)
                     <div class="container-fluid cert-item">
                         <div class="col-md-4">
-                            <h2 class="cert-company"><a href="{{asset('serve_workDet')}}" class="look-link">****公司</a></h2>
-                            <span class="cert-telephone">联系电话：12345678901</span>
-                            <p class="cert-scale">需求分类：销售</p>
-                            <p class="cert-zone">指定专家：系统分配</p>
+                            <h2 class="cert-company"><a href="{{url('serve_workDet',$v->eventid)}}" class="look-link">【{{$v->role}}】 {{$v->enterprisename or $v->expertname}}</a></h2>
+                            <span class="cert-telephone">联系电话：{{$v->phone}}</span>
+                            <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
+                            <p class="cert-zone">指定专家：@if($v->state === "0") {{  App\Http\Controllers\WorkController::getExpertName($v->expertid) }} @else 无 @endif</p>
                         </div>
                         <div class="col-md-8 cert-cap">
-                            <span class="cert-work-time">2017-07-02  12:10:35</span>
-                            婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。
+                            <span class="cert-work-time">{{$v->eventtime}}</span>
+                           {{$v->brief}}
+                        </div>
+                        <div style="font-size: 18px;float: right;"><span class="label
+                            @if($v->configid == 1)  label-primary
+                            @elseif($v->configid == 2) label-success
+                            @elseif($v->configid == 3) label-default
+                            @elseif($v->configid == 4) label-info
+                            @elseif($v->configid == 9) label-danger
+                            @else  label-Warning
+                            @endif
+                            ">{{$v->name}}</span>
                         </div>
                     </div>
-                    <div class="container-fluid cert-item">
-                        <div class="col-md-4">
-                            <h2 class="cert-company"><a href="javascript:;" class="look-link">****公司</a></h2>
-                            <span class="cert-telephone">联系电话：12345678901</span>
-                            <p class="cert-scale">需求分类：销售</p>
-                            <p class="cert-zone">指定专家：系统分配</p>
-                        </div>
-                        <div class="col-md-8 cert-cap">
-                            <span class="cert-work-time">2017-07-02  12:10:35</span>
-                            婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。
-                        </div>
+                   @endforeach
+                    <div class="pages">
+                        {!! $datas->render() !!}
+                        {{-- <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>--}}
                     </div>
                 </div>
+
+
             </div>
         </section>
     </div>
+    <input type="hidden" name="where" value="a:1:{i:1;i:1;}" id="where">
     <script src="{{asset('js/work.js')}}" type="text/javascript"></script>
 @endsection
