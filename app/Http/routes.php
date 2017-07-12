@@ -105,7 +105,7 @@ Route::get('/serve_enterprise','EnterpriseController@serveIndex');
 //企业信息维护详情
 Route::get('/serve_enterpriseDet','EnterpriseController@serveDetail');
 //专家维护
-Route::get('/serve_expert','ExpertController@serveIndex');
+Route::any('/serve_expert','ExpertController@serveIndex');
 //专家维护详情
 Route::get('/serve_expertDet','ExpertController@serveDetail');
 
@@ -120,7 +120,7 @@ Route::get('/serve_workDet','WorkController@serveDetail');
 //视频咨询维护
 Route::any('/serve_video','VideoController@serveIndex');
 //视频咨询维护详情
-Route::get('/serve_videoDet','VideoController@serveDetail');
+Route::get('/serve_videoDet/{videoId}','VideoController@serveDetail');
 //提现信息维护
 Route::get('/serve_recharge','RechargeController@serveIndex');
 //提现信息维护详情
