@@ -62,7 +62,7 @@ class ExpertController extends Controller
             ->first();
         //dd($datas);
 
-        return view("expert.update",compact("datas"));
+        return view("expert.update",compact( "datas"));
     }
     //
     public  function changeExpert(){

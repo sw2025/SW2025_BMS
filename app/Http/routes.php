@@ -118,7 +118,7 @@ Route::get('/serve_work','WorkController@serveIndex');
 //办事信息维护详情
 Route::get('/serve_workDet','WorkController@serveDetail');
 //视频咨询维护
-Route::get('/serve_video','VideoController@serveIndex');
+Route::any('/serve_video','VideoController@serveIndex');
 //视频咨询维护详情
 Route::get('/serve_videoDet','VideoController@serveDetail');
 //提现信息维护
