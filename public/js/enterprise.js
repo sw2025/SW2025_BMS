@@ -155,7 +155,7 @@ $(document).ready(function(){
                     
             }
         }
-        window.location.href="http://admin_sheng.com/serve_enterprise?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&idCard="+idCard+"&sizeType="+sizeType+"&regTime="+regTime;
+        window.location.href="{{asset('/serve_enterprise')}}"+"?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&idCard="+idCard+"&sizeType="+sizeType+"&regTime="+regTime;
     }
 
 });
