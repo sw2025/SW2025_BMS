@@ -81,62 +81,39 @@ class SupplyController extends Controller
     /**供求信息维护首页
      * @return mixed
      */
-    public  function serveIndex(Request $request){
-        $datas = DB::table('t_n_need')
+    public  function serveIndex(){
+
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('/',$_GET['job']):null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+
+        $sizeWhere=!empty($size)?array("needtype"=>$size):array();
+        $jobWhere=!empty($job)?array("t_n_need.domain1" => $job[0],'t_n_need.domain2' => $job[1]):array();
+        $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
+        $data=DB::table('t_n_need')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->select('t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone');
-
-        if($request->isMethod('post')){
-            $wheres = $request->input();
-            $arrwhere = unserialize($wheres['where']);
-            $sql = [];
-            switch($wheres['key']){
-                case 'publishing':
-                    $arrwhere['needtype'] = "'".$wheres['value']."'";
-                    break;
-                case 'unpublishing':
-                    unset($arrwhere['needtype']);
-                    break;
-                case 'domain':
-                    $arrwhere['t_n_need.domain1'] = "'".$wheres['value']."'";
-                    break;
-                case 'undomain':
-                    unset($arrwhere['t_n_need.domain1']);
-                    break;
-                case 'address':
-                    $arrwhere['t_u_enterprise.address'] = "'".$wheres['value']."'";
-                    break;
-                case 'unaddress':
-                    unset($arrwhere['t_u_enterprise.address']);
-                    break;
-                case 'ordertime':
-                    $order = $wheres['value'];
-                    break;
-                case 'search':
-                    $arrwhere['t_n_need.brief'] = '"%'. $wheres['value'] .'%"';
-                    break;
-                case 'unsearch':
-                    unset($arrwhere['t_n_need.brief']);
-                    break;
-            }
-            foreach($arrwhere as $k => $v){
-                $sql[] = $k != 't_n_need.brief' ? $k . '=' . $v : $k . ' like ' . $v;
-            }
-            $where = implode(' and ',$sql);
-            if(!empty($order)){
-                $datas->orderBy('t_n_need.needtime',$order);
-            } else {
-                $datas->orderBy('t_n_need.needtime','desc');
-            }
-
-            $datas = $datas->whereRaw($where)->paginate(5)->toJson();
-            return ['where' => serialize($arrwhere) ,'data' => $datas];
+        $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
+        $copy_obj = clone $obj;
+        if(!empty($serveName)){
+            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(1);
+            $counts= $copy_obj->where("t_n_need.brief","like","%".$serveName."%")->count();
+        }else{
+            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(1);
+            $counts= $copy_obj->count();
         }
-        $datas = $datas->orderBy('t_n_need.needtime','desc')->paginate(5);
-        return view("supply.serve",compact('datas'));
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:"null";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
+        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+        return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job"));
+
     }
 
     /**

@@ -84,8 +84,17 @@ class WorkController extends Controller
     /**办事信息维护首页
      * @return mixed
      */
-    public  function serveIndex(Request $request){
-        $datas = DB::table('t_e_event')
+    public  function serveIndex(){
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('/',$_GET['job']):null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $orderwhere = ['正在办事' => [4,5,6],'已完成' => [7,8],'全部' => range(1,9)];
+        $sizeWhere=!empty($size)?$orderwhere[$size]:range(1,9);
+        $jobWhere=!empty($job)?array("t_e_event.domain1" => $job[0],'t_e_event.domain2' => $job[1]):array();
+        $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
+        $data=DB::table('t_e_event')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_e_event.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
@@ -95,61 +104,21 @@ class WorkController extends Controller
             ->leftJoin('t_u_user','t_e_event.userid' ,'=' ,'t_u_user.userid')
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
             ->select('t_e_eventresponse.state','t_e_eventresponse.expertid','t_e_event.*','t_u_enterprise.address','view_userrole.role','t_e_eventverifyconfig.name','t_e_eventverifyconfig.configid','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventverify.verifytime','t_e_eventverify.configid');
-        if($request->isMethod('post')){
-            $wheres = $request->input();
-            $arrwhere = unserialize($wheres['where']);
-            $orderwhere = ['正在办事' => '(4,5,6)','已完成' => '(7,8)'];
-            $sql = [];
-            switch($wheres['key']){
-                case 'publishing':
-                    $arrwhere['t_e_eventverify.configid'] = $orderwhere[$wheres['value']];
-                    break;
-                case 'unpublishing':
-                    unset($arrwhere['t_e_eventverify.configid']);
-                    break;
-                case 'domain':
-                    $arrwhere['t_e_event.domain1'] = "'".$wheres['value']."'";
-                    break;
-                case 'undomain':
-                    unset($arrwhere['t_e_event.domain1']);
-                    break;
-                case 'address':
-                    $arrwhere['t_u_enterprise.address'] = "'".$wheres['value']."'";
-                    break;
-                case 'unaddress':
-                    unset($arrwhere['t_u_enterprise.address']);
-                    break;
-                case 'ordertime':
-                    $order = $wheres['value'];
-                    break;
-                case 'search':
-                    $arrwhere['t_e_event.brief'] = '"%'. $wheres['value'] .'%"';
-                    break;
-                case 'unsearch':
-                    unset($arrwhere['t_e_event.brief']);
-                    break;
-            }
-            foreach($arrwhere as $k => $v){
-                if($k == 't_e_eventverify.configid'){
-                    $sql[] = $k . ' in ' . $v;
-                } elseif($k == 't_e_event.brief') {
-                    $sql[] = $k . ' like ' . $v;
-                } else{
-                    $sql[] = $k . '=' . $v;
-                }
-            }
-            $where = implode(' and ',$sql);
-            if(!empty($order)){
-                $datas->orderBy('t_e_event.eventtime',$order);
-            } else {
-                $datas->orderBy('t_e_event.eventtime','desc');
-            }
-
-            $datas = $datas->whereRaw($where)->paginate(5)->toJson();
-            return ['where' => serialize($arrwhere) ,'data' => $datas];
+        $obj = $data->whereIn('t_e_eventverify.configid',$sizeWhere)->where($jobWhere)->where($locationWhere);
+        $copy_obj = clone $obj;
+        if(!empty($serveName)){
+            $datas= $obj->where("t_e_event.brief","like","%".$serveName."%")->orderBy("t_e_event.eventtime",$regTime)->paginate(4);
+            $counts= $copy_obj->where("t_e_event.brief","like","%".$serveName."%")->count();
+        }else{
+            $datas= $obj->orderBy("t_e_event.eventtime",$regTime)->paginate(4);
+            $counts=  $copy_obj->count();
         }
-        $datas = $datas->orderBy('t_e_event.eventtime','desc')->paginate(8);
-        return view("work.serve",compact('datas'));
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:"null";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
+        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+        return view("work.serve",compact("datas","counts","serveName","size","regTime","location","job"));
     }
 
     static public function getExpertName ($expertid)
