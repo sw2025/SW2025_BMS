@@ -9,24 +9,23 @@
             </ol>
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
-                    <input class="search-bar-inp" type="text" placeholder="请输入专家名称" value="" />
+                    <input class="search-bar-inp" type="text" placeholder="请输入专家名称" @if($serveName!="null") value="{{$serveName}}" @endif />
                     <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn">
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
                         <span class="tip-caption">全部结果 -> </span>
                         <div class="results-unit">
-                            <a href="javascript:;" class="results-unit-del results-unit-industry"><span> × </span></a>
-                            <a href="javascript:;" class="results-unit-del results-unit-zone"><span> × </span></a>
+                            <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display: inline-block" @endif>{{$job}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="全国") style="display: inline-block" @endif>{{$location}}</a>
                         </div>
                     </div>
                     <div class="choice-condition clearfix">
                         <div class="btn-group serve-mr">
-                            <span style="float:left">擅长领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                            <span style="float:left">擅长领域：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($job!="null"){{$job}}@else  不限 @endif
                             </button>
                             <ul class="dropdown-menu animation-slide sub-industry" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
                                 <li><a href="javascript:;">不限</a></li>
                                 <li>
                                     <a href="javascript:;">IT|通信|电子|互联网</a>
@@ -56,8 +55,8 @@
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">
-                            <span style="float:left">所在地区：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                全国
+                            <span style="float:left">所在地区：</span><button type="button" id="location" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($location!="全国"){{$location}}@else 全国 @endif
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">全国</a></li>
@@ -99,8 +98,8 @@
                         </div>
                     </div>
                     <div class="result-order">
-                        <a href="javascript:;" class="order-time">认证时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:{{$count}}</span>
+                        <a href="javascript:;" class="order-time">认证时间 <i @if($regTime=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
+                        <span class="counts">数量:{{$counts}}</span>
                     </div>
                 </div>
 
@@ -110,26 +109,25 @@
                         <div class="col-md-12 cert-border">
                             <div class="container-fluid">
                                 <div class="col-md-6">
-                                    <h2 class="cert-company"><a href="{{asset('/serve_expertDet')}}" class="look-link">{{$data->expertname}}专家</a></h2>
-                                    <span class="cert-time">{{$data->created_at}}</span>
+                                    <h2 class="cert-company"><a href="{{url('/serve_expertDet',$data->expertid)}}" class="look-link">{{$data->expertname}}专家</a></h2>
+                                    <span class="cert-time">时间</span>
                                     <span class="cert-telephone">联系电话：{{$data->phone}}</span>
                                     <p class="cert-industry">擅长问题：{{$data->domain1}}</p>
                                     <p class="cert-scale">专家分类：{{$data->category}}</p>
                                     <p class="cert-zone">地区：{{$data->address}}</p>
                                 </div>
-                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
-                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
+                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
+                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
                             </div>
                         </div>
                     </div>
                     @endforeach
                     <div class="pages">
-                        {!! $datas->render() !!}
+                        {!! $datas->appends(["serveName"=>$serveName,"location"=>$location,"job"=>$job,"regTime"=>$regTime])->render() !!}
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    <input type="hidden" name="where" value="a:1:{i:1;i:1;}" id="where">
 <script src="{{asset('js/expert.js')}}" type="text/javascript"></script>
 @endsection
