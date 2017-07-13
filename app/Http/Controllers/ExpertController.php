@@ -75,78 +75,68 @@ class ExpertController extends Controller
     /**专家信息维护首页
      * @return mixed
      */
-    public  function serveIndex(Request $request){
+    public  function serveIndex(){
 
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
 
-        $datas=DB::table("T_U_USER")
+        $jobWhere=!empty($job)?array("industry"=>$job):array();
+        $locationWhere=!empty($location)?array("address"=>$location):array();
+
+        $data=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","T_U_EXPERTVERIFY.configid","T_U_EXPERTVERIFY.VERIFYTIME","T_U_EXPERT.expertid")
-            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)');
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
+            ->where("t_u_expertverify.configid",2);
 
-        if($request->isMethod('post')){
-            $wheres = $request->input();
-            $arrwhere = unserialize($wheres['where']);
+        //dd($datas);
+       $count=clone $data;
 
-            $pagenum = !empty($request->input('page')) ? $request->input('page') : 1;
-            $sql = [];
-            switch($wheres['key']){
-                case 'domain':
-                    $arrwhere['T_U_EXPERT.domain1'] = "'".$wheres['value']."'";
-                    break;
-                case 'undomain':
-                    unset($arrwhere['T_U_EXPERT.domain1']);
-                    break;
-                case 'address':
-                    $arrwhere['T_U_EXPERT.address'] = "'".$wheres['value']."'";
-                    break;
-                case 'unaddress':
-                    unset($arrwhere['T_U_EXPERT.address']);
-                    break;
-                case 'ordertime':
-                    $order = $wheres['value'];
-                    break;
-                case 'search':
-                    $arrwhere['T_U_EXPERT.brief'] = '"%'. $wheres['value'] .'%"';
-                    break;
-                case 'unsearch':
-                    unset($arrwhere['T_U_EXPERT.brief']);
-                    break;
-            }
-            foreach($arrwhere as $k => $v){
-                $sql[] = $k != 'T_U_EXPERT.brief' ? $k . '=' . $v : $k . ' like ' . $v;
-            }
+     if(!empty($serveName)){
+           if(!empty($location)){
+               $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->orderBy("T_U_ENTERPRISE.created_at",$regTime)->paginate(1);
+               $counts=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
+           }else{
+               $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(1);
+               $counts=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
+           }
+       }else{
+           if(!empty($location)){
+               $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_Expert.created_at",$regTime)->paginate(1);
+               $counts=$data->where($jobWhere)->where($locationWhere)->count();
+           }else{
+               $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(1);
+               $counts= $count->where($jobWhere)->where($locationWhere)->count();
 
-            $where = implode(' and ',$sql);
-            if(!empty($order)){
-                $data->orderBy('T_U_EXPERTVERIFY.VERIFYTIME',$order);
+           }
+       }
 
-            } else {
-                $datas->orderBy('T_U_EXPERTVERIFY.VERIFYTIME','desc');
-            }
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
 
-            $count=$datas->count();
 
-            $datas = $datas->whereRaw($where)
-                ->paginate(2)->toJson();
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
+        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
 
-            return ['where' => serialize($arrwhere) ,'data' => $datas];
-        }
-
-        $count=$datas->count();
-
-        $datas = $datas->orderBy('T_U_EXPERTVERIFY.VERIFYTIME','desc')
-            ->paginate(2);
-
-        return view("expert.serve",compact('datas','count'));
+        return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job"));
 
     }
 
     /**专家信息维护详情
      * @return mixed
      */
-    public  function serveDetail(){
-        return view("expert.detail");
+    public  function serveDetail($expertid){
+        $data=DB::table("T_U_USER")
+            ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
+            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","T_U_EXPERTVERIFY.configid","T_U_EXPERTVERIFY.VERIFYTIME","T_U_EXPERT.expertid")
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
+            ->where("t_u_expert.expertid",$expertid)
+            ->first();
+        return view("expert.detail",compact('data'));
     }
    
 }
