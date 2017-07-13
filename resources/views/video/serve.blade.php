@@ -9,7 +9,7 @@
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
                     <input class="search-bar-inp" type="text" placeholder="请输入视频关键字" value="" />
-                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn">
+                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" id="searchsub">
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
@@ -111,14 +111,14 @@
                     </div>
                     <div class="result-order">
                         <a href="javascript:;" class="order-time">发布时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:{{$datas->count()}}</span>
+                        <span class="counts">数量:{{$count}}</span>
                     </div>
                 </div>
-                <div class="cert-list">
+                <div class="cert-list" id="content2">
                     @foreach($datas as $data)
                     <div class="container-fluid cert-item">
                         <div class="col-md-4">
-                            <h2 class="cert-company"><a href="{{asset('/serve_videoDet')}}" class="look-link">{{$data->enterprisename or $data->expertname}}</a></h2>
+                            <h2 class="cert-company"><a href="{{url('/serve_videoDet', $data->consultid)}}" class="look-link">{{$data->enterprisename or $data->expertname}}</a></h2>
                             <span class="cert-telephone">联系电话：{{$data->phone}}</span>
                             <span class="cert-time start-time">开始时间：2017-07-02  10:30:00</span>
                             <span class="cert-time end-ti

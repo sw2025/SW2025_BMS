@@ -17,38 +17,27 @@ class RechargeController extends Controller
      */
     public function index($status='all'){
 
-        $ids=array();
-        $userids=array();
-        $results=DB::table("T_U_BILL")->select("id","userid")->orderBy("billtime","desc")->distinct()->get();
-        foreach ($results as $result){
-            if(!in_array($result->userid,$userids)){
-                $userids[]=$result->userid;
-                $ids[]=$result->id;
-            }
-        }
-
-        //$status=empty($_GET['status'])?'all' : $_GET['status'];
-
         $datas=DB::table("T_U_BILL")
             ->leftJoin('view_userrole','view_userrole.userid', '=','T_U_BILL.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_u_user','T_U_BILL.userid' ,'=' ,'t_u_user.userid')
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","t_u_enterprise.enterpriseid","t_u_enterprise.enterprisename","T_U_BILL.*")
-            ->orderBy("T_U_BILL.billtime","desc");
+            ->orderBy("T_U_BILL.billtime","desc")
+            ->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)');
         //dd($datas);
 
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("type",['在途','收入'])->whereIn("T_U_BILL.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->whereIn("type",['在途','收入'])->paginate(2);
                 return view("recharge.index",compact("datas"));
                 break;
             case 'wait':
-                $datas = $datas->where("type",'在途')->whereIn("T_U_BILL.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->where("type",'在途')->paginate(2);
                 return view("recharge.index",compact("datas"));
                 break;
             case 'fail':
-                $datas = $datas->where("type",'收入')->whereIn("T_U_BILL.id",$ids)->distinct()->paginate(2);
+                $datas = $datas->where("type",'收入')->paginate(2);
                 return view("recharge.index",compact("datas"));
                 break;
         }

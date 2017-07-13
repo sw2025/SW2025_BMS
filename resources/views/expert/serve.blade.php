@@ -16,7 +16,6 @@
                     <div class="all-results clearfix">
                         <span class="tip-caption">全部结果 -> </span>
                         <div class="results-unit">
-                            <a href="javascript:;" class="results-unit-del results-unit-scale"><span> × </span></a>
                             <a href="javascript:;" class="results-unit-del results-unit-industry"><span> × </span></a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone"><span> × </span></a>
                         </div>
@@ -58,10 +57,9 @@
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">所在地区：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                请选择
+                                全国
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" role="menu" style="text-align: left;">
-                                <li><a href="javascript:;">请选择</a></li>
+                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">全国</a></li>
                                 <li><a href="javascript:;">北京市</a></li>
                                 <li><a href="javascript:;">上海市</a></li>
@@ -102,46 +100,36 @@
                     </div>
                     <div class="result-order">
                         <a href="javascript:;" class="order-time">认证时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:5</span>
+                        <span class="counts">数量:{{$count}}</span>
                     </div>
                 </div>
-                <div class="cert-list">
+
+                <div class="cert-list" id="content2">
+                    @foreach($datas as $data)
                     <div class="container-fluid cert-item">
                         <div class="col-md-12 cert-border">
                             <div class="container-fluid">
                                 <div class="col-md-6">
-                                    <h2 class="cert-company"><a href="{{asset('/serve_expertDet')}}" class="look-link">****专家</a></h2>
-                                    <span class="cert-time">2017-07-02  12:10:35</span>
-                                    <span class="cert-telephone">联系电话：12345678901</span>
-                                    <p class="cert-industry">擅长问题：******</p>
-                                    <p class="cert-scale">专家分类：个人</p>
-                                    <p class="cert-zone">地区：北京</p>
+                                    <h2 class="cert-company"><a href="{{asset('/serve_expertDet')}}" class="look-link">{{$data->expertname}}专家</a></h2>
+                                    <span class="cert-time">{{$data->created_at}}</span>
+                                    <span class="cert-telephone">联系电话：{{$data->phone}}</span>
+                                    <p class="cert-industry">擅长问题：{{$data->domain1}}</p>
+                                    <p class="cert-scale">专家分类：{{$data->category}}</p>
+                                    <p class="cert-zone">地区：{{$data->address}}</p>
                                 </div>
                                 <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
                                 <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
                             </div>
                         </div>
                     </div>
-                    <div class="container-fluid cert-item">
-                        <div class="col-md-12 cert-border">
-                            <div class="container-fluid">
-                                <div class="col-md-6">
-                                    <h2 class="cert-company"><a href="javascript:;" class="look-link">****专家</a></h2>
-                                    <span class="cert-time">2017-07-02  12:10:35</span>
-                                    <span class="cert-telephone">联系电话：12345678901</span>
-                                    <p class="cert-industry">擅长问题：******</p>
-                                    <p class="cert-scale">专家分类：个人</p>
-                                    <p class="cert-zone">地区：北京</p>
-                                </div>
-                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
-                                <div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>
-                            </div>
-                        </div>
-
+                    @endforeach
+                    <div class="pages">
+                        {!! $datas->render() !!}
                     </div>
                 </div>
             </div>
         </section>
     </div>
+    <input type="hidden" name="where" value="a:1:{i:1;i:1;}" id="where">
 <script src="{{asset('js/expert.js')}}" type="text/javascript"></script>
 @endsection
