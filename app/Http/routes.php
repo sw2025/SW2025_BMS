@@ -29,7 +29,7 @@ Route::post('/save_pwd','LoginController@savePwd');
 //操作人员
 Route::get('/operate_people','LoginController@operatePeople');
 //添加操作人员
-Route::get('/add_operator','LoginController@add0perator');
+Route::get('/add_operator','LoginController@addOperator');
 //保存添加操作人员
 Route::post('/add_operatorSave','LoginController@addOperatorSave');
 //编辑操作人员

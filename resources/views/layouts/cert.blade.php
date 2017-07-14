@@ -9,7 +9,7 @@
     <meta name="description" content="Short explanation about this website">
     <!-- END META -->
     <!-- BEGIN STYLESHEETS -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css'/>
+   {{-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css'/>--}}
     <link type="text/css" rel="stylesheet" href="{{asset('assets/css/modules/boostbox/css/theme-5/bootstrap-1401441891.css')}}" />
     <link type="text/css" rel="stylesheet" href="{{asset('assets/css/modules/boostbox/css/theme-5/boostbox-1401441889.css')}}" />
     <link type="text/css" rel="stylesheet" href="{{asset('assets/css/modules/boostbox/css/theme-5/boostbox_responsive-1401441889.css')}}" />
