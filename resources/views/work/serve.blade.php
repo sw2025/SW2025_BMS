@@ -124,7 +124,7 @@
                             <h2 class="cert-company"><a href="{{url('serve_workDet',$v->eventid)}}" class="look-link">【{{$v->role}}】 {{$v->enterprisename or $v->expertname}}</a></h2>
                             <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                             <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
-                            <p class="cert-zone">指定专家：@if($v->state === "0") {{  App\Http\Controllers\WorkController::getExpertName($v->expertid) }} @else 无 @endif</p>
+                            <p class="cert-zone">指定专家：@if($v->state === "0") {{  App\Http\Controllers\WorkController::getExpertName($v->expertid) }} @else 系统匹配 @endif</p>
                         </div>
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->eventtime}}</span>

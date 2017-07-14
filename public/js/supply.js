@@ -33,6 +33,13 @@ $(document).ready(function(){
         getCondition(condition);
     });
 
+    $('.sub-industry li a').on('click',function () {
+        var valHtml = $(this).html();
+        $('.results-unit-industry').html(valHtml).show();
+        condition[0]="job";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
     // 二级行业
     $('.sub-industry>li').on('hover', function(event) {
         event.preventDefault();
