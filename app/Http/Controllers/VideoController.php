@@ -93,77 +93,70 @@ class VideoController extends Controller
      */
     public  function serveIndex(Request $request){
 
-        $datas=DB::table('t_c_consult')
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
+
+        if(!empty($idCard)){
+            $number=['全部'=>range(1,9),'已完成'=>[7,8],'正在办事'=>[2,4,5,6]];
+            $idCard=!empty($idCard)? $number[$idCard]:null;
+            //dd($idCard);
+        }else{
+            $idCard=range(1,9);
+        }
+
+        //dd($idCard);
+
+        $sizeWhere=!empty($size)?array("size"=>$size):array();
+        $jobWhere=!empty($job)?array("industry"=>$job):array();
+        $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
+        $data=DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
             ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
             ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
-            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)');
-        if($request->isMethod('post')){
-            $wheres = $request->input();
-            $arrwhere = unserialize($wheres['where']);
+            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
+            ->whereIn("t_c_consultverify.configid",$idCard);
 
-            $pagenum = !empty($request->input('page')) ? $request->input('page') : 1;
-            $sql = [];
-            switch($wheres['key']){
-                case 'publishing':
-                    $arrwhere['t_c_consultverify.configid'] = "'".$wheres['value']."'";
-                    break;
-                case 'unpublishing':
-                    unset($arrwhere['t_c_consultverify.configid']);
-                    break;
-                case 'domain':
-                    $arrwhere['t_c_consult.domain1'] = "'".$wheres['value']."'";
-                    break;
-                case 'undomain':
-                    unset($arrwhere['t_c_consult.domain1']);
-                    break;
-                case 'address':
-                    $arrwhere['t_u_enterprise.address'] = "'".$wheres['value']."'";
-                    break;
-                case 'unaddress':
-                    unset($arrwhere['t_u_enterprise.address']);
-                    break;
-                case 'ordertime':
-                    $order = $wheres['value'];
-                    break;
-                case 'search':
-                    $arrwhere['t_c_consult.brief'] = '"%'. $wheres['value'] .'%"';
-                    break;
-                case 'unsearch':
-                    unset($arrwhere['t_c_consult.brief']);
-                    break;
+        $count=clone $data;
+
+        if(!empty($serveName)){
+            if(!empty($idCard)){
+                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
+                $counts=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+            }else{
+                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$sizeType)->paginate(1);
+                $counts=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
             }
-            foreach($arrwhere as $k => $v){
-                if($v== "5,2,4"){
-                    $sql[] = $k != 't_c_consult.brief' ? whereIn($k,$v)  : $k . ' like ' . $v;
-                }else{
-                    $sql[] = $k != 't_c_consult.brief' ? $k . '=' . $v : $k . ' like ' . $v;
-                }
+        }else{
+            if(!empty($idCard)){
+                //dd($idCard);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
+                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+            }else{
+               // dd($locationWhere);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime) ->paginate(1);
+                $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+
             }
-            $where = implode(' and ',$sql);
-            if(!empty($order)){
-                $datas->orderBy('t_c_consult.consulttime',$order);
-
-            } else {
-                $datas->orderBy('t_c_consult.consulttime','desc');
-            }
-
-            $count=$datas->count();
-
-            $datas = $datas->whereRaw($where)
-                ->paginate(1)->toJson();
-
-            return ['where' => serialize($arrwhere) ,'data' => $datas];
         }
-        $count=$datas->count();
-        $datas = $datas->orderBy('t_c_consult.consulttime','desc')
-            ->paginate(1);
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
+        $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?$_GET['sizeType']:"down";
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:"null";
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:"null";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
+        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
 
-        //dd($count);
-        return view("video.serve",compact('datas','count'));
+
+        return view("video.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
     }
     /**
      * 视频咨询信息维护详情

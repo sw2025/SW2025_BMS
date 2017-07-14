@@ -107,7 +107,7 @@ Route::get('/serve_enterpriseDet','EnterpriseController@serveDetail');
 //专家维护
 Route::any('/serve_expert','ExpertController@serveIndex');
 //专家维护详情
-Route::get('/serve_expertDet','ExpertController@serveDetail');
+Route::get('/serve_expertDet/{expertid}','ExpertController@serveDetail');
 
 //供求信息维护
 Route::any('/serve_supply','SupplyController@serveIndex');

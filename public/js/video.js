@@ -1,180 +1,164 @@
 $(document).ready(function(){
+    var condition=new Array();
     $('.cert-state-btns a').on('click', function(event) {
         event.preventDefault();
         $(this).addClass('current').siblings().removeClass('current');
     });
 
-    $('#searchsub').on('click',function () {
-        var name = $('.search-bar .search-bar-inp').val();
-        if(name != ''){
-            sendAjax('search',name);
-        } else {
-            sendAjax('unsearch',name);
-        }
-
-    });
-
     $('.demo-list').on('click', 'li', function(event) {
         event.preventDefault();
         $(this).parent().prev('.result-select').html($(this).children().html());
-        var html = $(this).children().html();
-        var name = $(this).parent().attr('index');
-
-        if(html == '不限'){
-            sendAjax('un'+name,html);
-        } else {
-            if(name == 'publishing' ){
-                if(html=="已完成"){
-                   var html = 7;
-                }else{
-                   var html = '5,2,4';
-                }
-            }
-            sendAjax(name,html);
-        }
     });
-
+    $(".search-bar-btn").on("click",function(){
+        var valHtml = $(".search-bar-inp").val();
+        /*  var condition=new Array();*/
+        condition[0]="serveName";
+        condition[1]=valHtml;
+        getCondition(condition);
+    })
     $('.serve-scale-sel').on('click','li', function(event) {
         event.preventDefault();
         var valHtml = $(this).children().html();
         if(valHtml != '不限'){
-            $('.results-unit-scale').attr('index','unpublishing');
-            $('.results-unit-scale').html(valHtml).show(200);
-        } else {
-            $('.results-unit-scale').html(valHtml).hide(200);
+            $('.results-unit-scale').html(valHtml).show();
         }
+        condition[0]="size";
+        condition[1]=valHtml;
+        getCondition(condition);
     });
-
     $('.serve-industry-sel').on('click','li', function(event) {
-        //alert(222);
         event.preventDefault();
         var valHtml = $(this).children().html();
         if(valHtml != '不限'){
-            $('.results-unit-industry').attr('index','undomain');
-            $('.results-unit-industry').html(valHtml).show(200);
-        } else {
-            $('.results-unit-industry').html(valHtml).hide(200);
+            $('.results-unit-industry').html(valHtml).show();
         }
+        condition[0]="job";
+        condition[1]=valHtml;
+        getCondition(condition);
     });
-
     $('.serve-zone-sel').on('click','li', function(event) {
-        //alert(333);
         event.preventDefault();
         var valHtml = $(this).children().html();
         if(valHtml != '全国'){
-            $('.results-unit-zone').attr('index','unaddress');
-            $('.results-unit-zone').html(valHtml).show(200);
-        } else {
-            $('.results-unit-zone').html(valHtml).hide(200);
+            $('.results-unit-zone').html(valHtml).show();
         }
+        condition[0]="location";
+        condition[1]=valHtml;
+        getCondition(condition);
     });
 
-    /**
-     * 删除的js代码
-     */
+    $('.serve-member-sel').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).children().html();
+        if(valHtml != '不限'){
+            $('.results-unit-member').html(valHtml).show();
+        }
+        condition[0]="idCard";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
+
     $('.results-unit').on('click','a', function(event) {
-        var name = $(this).attr('index');
-        sendAjax(name,'');
         event.preventDefault();
         $(this).empty().hide();
+        if($(this).hasClass('results-unit-scale')){
+            condition[0]="size";
+            condition[1]=null;
+        }
+        if($(this).hasClass('results-unit-industry')){
+            condition[0]="job";
+            condition[1]=null;
+        }
+        if($(this).hasClass('results-unit-zone')){
+            condition[0]="location";
+            condition[1]="全国";
+        }
+        if($(this).hasClass('results-unit-member')){
+            condition[0]="idCard";
+            condition[1]=null;
+        }
+
+        getCondition(condition);
+
     });
 
-
-    $('.result-order a').click(function(event) {
+    $('.order-scale').click(function(event) {
         if($(this).children('i').hasClass('fa-arrow-circle-o-up')){
-            sendAjax('ordertime','desc');
             $(this).children('i').removeClass('fa-arrow-circle-o-up').addClass('fa-arrow-circle-o-down');
+            condition[0]="sizeType";
+            condition[1]="down";
+            getCondition(condition);
         }else{
-            sendAjax('ordertime','asc');
             $(this).children('i').removeClass('fa-arrow-circle-o-down').addClass('fa-arrow-circle-o-up');
+            condition[0]="sizeType";
+            condition[1]="up";
+            getCondition(condition);
         }
     });
 
-    // 二级行业
-    $('.sub-industry>li').on('hover', function(event) {
-        event.preventDefault();
-        $(this).children('.sub-industry-menu').toggle();
-    });
-    $('.sub-industry-menu').on('click','li', function(event) {
-        event.preventDefault();
-        var valHtml = $(this).html();
-        $(this).children('.sub-industry-menu').toggle();
-        $(this).closest('.sub-industry').prev('.result-select').html(valHtml);
-        $('.results-unit-industry').html(valHtml).show();
-    });
+    $('.order-time').click(function(event) {
+        if($(this).children('i').hasClass('fa-arrow-circle-o-up')){
+            $(this).children('i').removeClass('fa-arrow-circle-o-up').addClass('fa-arrow-circle-o-down');
 
-    //ajax发送请求
-    function sendAjax (name,html) {
-        var where = $("#where").val();
+            condition[0]="regTime";
+            condition[1]="down";
+            getCondition(condition);
+        }else{
+            $(this).children('i').removeClass('fa-arrow-circle-o-down').addClass('fa-arrow-circle-o-up');
 
-        $.post("serve_video",{'key':name,'value':html,'where':where},success,'json');
+            condition[0]="regTime";
+            condition[1]="up";
+            getCondition(condition);
+        }
+    });
+    var getCondition= function(condition){
+        var Condition=condition;
+        var serveName=$(".search-bar-inp").val();
+        var size=$.trim($("#size").html());
+        var job=$.trim($("#job").html());
+        var location=$.trim($("#location").html());
+        var idCard=$.trim($("#idCard").html());
+        serveName=(serveName)?serveName:null;
+        size=(size!="不限")?size:null;
+        job=(job!="不限")?job:null;
+        location=(location!="全国")?location:"全国";
+        idCard=(idCard!="不限")?idCard:null;
+        if( $(".order-scale").children('i').hasClass('fa-arrow-circle-o-up')){
+            var sizeType="up";
+        }else{
+            var sizeType="down";
+        }
+        if( $(".order-time").children('i').hasClass('fa-arrow-circle-o-up')){
+            var regTime="up";
+        }else{
+            var regTime="down";
+        }
+        if(Condition.length!=0){
+            switch(Condition[0]){
+                case "serveName":
+                    serveName=Condition[1];
+                    break;
+                case "size":
+                    size=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
+                case "job":
+                    job=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
+                case "location":
+                    location=(Condition[1]!="全国")?Condition[1]:"全国";
+                    break;
+                case "idCard":
+                    idCard=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
+                case "sizeType":
+                    sizeType=Condition[1];
+                    break;
+                case "regTime":
+                    regTime=Condition[1];
+
+            }
+        }
+        window.location.href="http://www.sw2025.com/serve_video?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&idCard="+idCard+"&sizeType="+sizeType+"&regTime="+regTime;
     }
-
 
 });
-/**
- * 分页post请求获取数据
- * @param url
- * @returns {boolean}
- */
-function pagenext (url) {
-    var where = $('#where').val();
-    $.post(url,{'key':'','value':'','where':where},success,'json');
-    return false;
-}
-
-/**
- * ajax执行成功的方法
- * @param data
- */
-function success (data) {
-    var info=JSON.parse(data.data);
-    var datas=info.data;console.log(info);
-    //alert(datas.length);
-    var str='';
-    var str_pag='';
-    for ($i=0;$i<datas.length;$i++){
-        str += '<div class="container-fluid cert-item">';
-        str += ' <div class="col-md-4"> ';
-        str += '<h2 class="cert-company"><a href="serve_videoDet" class="look-link">';
-        str += datas[$i].expertname;
-        str += '</a></h2>';
-        str += '<div>';
-        str += '<span class="cert-telephone">联系电话：'+datas[$i].phone+'</span>';
-        str += '<span class="cert-time start-time">2017-07-02  10:30:00</span>';
-        str += '<p class="cert-scale">需求分类：销售</p>';
-        str += '<p class="cert-scale">专家分类：'+$datas[$i].category+'</p>';
-        str += '<p class="cert-zone">地区：'+datas[$i].address+'</p>';
-        str += '</div>';
-        str += '<div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>';
-        str += '<div class="col-md-3 cert-img"><img onclick="javascript:showimage('img/zhanwei.jpg');" src="img/zhanwei.jpg" /></div>';
-        str += '</div><div class="col-md-8 cert-cap"><span class="cert-work-time">'+datas[$i].verifytime+'</span><span>'+datas[$i].brief+'</span> </div> </div>';
-    }
-
-    str += '<div class="pages"></div>';
-    str_pag += '<ul class="pager pagination-lg"><li ';
-    if (info.prev_page_url == null){
-        str_pag += 'class="disabled" ><a href="javascript:;"  rel="prev"> « </a></li> <li ';
-    } else {
-        str_pag += '><a href="javascript:;" onclick=pagenext("'+ info.prev_page_url +'") rel="prev"> « </a></li> <li ';
-    }
-    if (info.next_page_url == null){
-        str_pag += 'class="disabled" ><a href="javascript:;"  rel="next"> » </a></li>';
-    } else {
-        str_pag += '><a href="javascript:;" onclick=pagenext("'+ info.next_page_url +'") rel="next"> » </a></li>';
-    }
-    str_pag += '<li> <span style="font-size: 17px;">总页数:'+ info.last_page +'</span></li>';
-    str_pag += '<li> <span style="font-size: 17px;">当前页:'+ info.current_page +'</span></li>';
-    if(info.total > 1) {
-        str_pag += ' <li><input type="number" max="'+info.to+'" id="pagenumber"  style="width: 70px;height: 36px;display: inline-block;padding: 5px 14px;background-color: #ffffff;border: 1px solid #dddddd;border-radius: 0px;">';
-        str_pag += '<button class="btn btn-success" type="button" onclick=pagenext("serve_supply?page="+$("#pagenumber").val()) style="height: 36px; margin-bottom: 4px;">跳转</button></li>';
-    }
-    str_pag += '</ul>';
-    //添加内容
-    $('#content2').html(str);
-    $('#content2 .pages').html(str_pag);
-    //修改数量
-    $('.result-order .counts').html('数量:'+info.total);
-    //修改隐藏where条件
-    $('#where').val(data.where);
-}

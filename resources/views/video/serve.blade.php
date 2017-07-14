@@ -8,35 +8,50 @@
             </ol>
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
-                    <input class="search-bar-inp" type="text" placeholder="请输入视频关键字" value="" />
+                    <input class="search-bar-inp" type="text" placeholder="请输入视频关键字" value="" @if($serveName!="null") value="{{$serveName}}" @endif />
                     <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" id="searchsub">
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
                         <span class="tip-caption">全部结果 -> </span>
                         <div class="results-unit">
-                            <a href="javascript:;" class="results-unit-del results-unit-scale"><span> × </span></a>
-                            <a href="javascript:;" class="results-unit-del results-unit-industry"><span> × </span></a>
-                            <a href="javascript:;" class="results-unit-del results-unit-zone"><span> × </span></a>
+                            <a href="javascript:;" class="results-unit-del results-unit-scale" @if($size!="null") style="display:inline-block" @endif>{{$size}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!="null") style="display:inline-block" @endif>{{$idCard}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display: inline-block" @endif>{{$job}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="全国") style="display: inline-block" @endif>{{$location}}</a>
                         </div>
                     </div>
                     <div class="choice-condition clearfix">
                         <div class="btn-group serve-mr">
-                            <span style="float:left">状态：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle"  data-toggle="dropdown">
-                                不限
+                            <span style="float:left">规模：</span><button type="button" id="size" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($size!="null"){{$size}}@else不限@endif
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" index="publishing" role="menu" style="text-align: left;">
+                            <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
-                                <li><a href="javascript:;">正在办事</a></li>
+                                <li><a href="javascript:;">20人以下</a></li>
+                                <li><a href="javascript:;">20-99人</a></li>
+                                <li><a href="javascript:;">100-499人</a></li>
+                                <li><a href="javascript:;">500-999人</a></li>
+                                <li><a href="javascript:;">1000-9999人</a></li>
+                                <li><a href="javascript:;">10000人以上</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">状态：</span><button type="button" id="idCard" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($idCard!="null"){{$idCard}}@else  不限 @endif
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-member-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
                                 <li><a href="javascript:;">已完成</a></li>
+                                <li><a href="javascript:;">正在办事</a></li>
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">
-                            <span style="float:left">需求领域：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                            <span style="float:left">需求领域：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
                                 不限
                             </button>
-
-                            <ul class="dropdown-menu animation-slide sub-industry" index="domain" role="menu" style="text-align: left;">
+                            <ul class="dropdown-menu animation-slide sub-industry"  role="menu" style="text-align: left;">
 
                                 <li><a href="javascript:;">不限</a></li>
                                 <li>
@@ -67,10 +82,10 @@
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">
-                            <span style="float:left">所在地区：</span><button type="button" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                全国
+                            <span style="float:left">所在地区：</span><button type="button" id="location" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($location!="全国"){{$location}}@else  全国 @endif
                             </button>
-                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
+                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel"  role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">全国</a></li>
                                 <li><a href="javascript:;">北京市</a></li>
                                 <li><a href="javascript:;">上海市</a></li>
@@ -110,8 +125,9 @@
                         </div>
                     </div>
                     <div class="result-order">
-                        <a href="javascript:;" class="order-time">发布时间 <i class="fa fa-arrow-circle-o-up"></i></a>
-                        <span class="counts">数量:{{$count}}</span>
+                        <a href="javascript:;" class="order-scale">规模 <i @if($sizeType=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
+                        <a href="javascript:;" class="order-time">认证时间 <i @if($regTime=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
+                        <span class="counts">数量:{{$counts}}</span>
                     </div>
                 </div>
                 <div class="cert-list" id="content2">
@@ -133,13 +149,12 @@
                     </div>
                     @endforeach
                         <div class="pages">
-                            {!! $datas->render() !!}
+                            {!! $datas->appends(["size"=>$size,"serveName"=>$serveName,"location"=>$location,"idCard"=>$idCard,"job"=>$job,"regTime"=>$regTime,"sizeType"=>$sizeType])->render() !!}
                         </div>
 
                 </div>
             </div>
         </section>
     </div>
-    <input type="hidden" name="where" value="a:1:{i:1;i:1;}" id="where">
     <script src="{{asset('js/video.js')}}" type="text/javascript"></script>
 @endsection
