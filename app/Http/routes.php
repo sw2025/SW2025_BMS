@@ -124,4 +124,4 @@ Route::get('/serve_videoDet/{videoId}','VideoController@serveDetail');
 //提现信息维护
 Route::get('/serve_recharge','RechargeController@serveIndex');
 //提现信息维护详情
-Route::get('/serve_rechargeDet','RechargeController@serveDetail');
+Route::get('/serve_rechargeDet/{rechargeid}','RechargeController@serveDetail');

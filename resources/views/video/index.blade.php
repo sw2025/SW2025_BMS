@@ -1,5 +1,11 @@
 @extends("layouts.extend")
 @section("content")
+    <style>
+        #hoverstyle{
+            color: #e3643d;
+            border-color: #e3643d;
+        }
+    </style>
     <div id="content">
         <section>
             <ol class="breadcrumb">
@@ -8,10 +14,10 @@
             </ol>
             <div class="section-body change-pwd">
                 <div class="cert-state-btns">
-                    <a href="javascript:;" class="ver_all" @if(empty($_GET['status']) || $_GET['status']  == 'all') id="hoverstyle" @endif>全部</a>
-                    <a href="javascript:;" class="ver_wait" @if(!empty($_GET['status']) && $_GET['status'] == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_faild" @if(!empty($_GET['status']) && $_GET['status'] == 'fail') id="hoverstyle" @endif>认证失败</a>
-                    <a href="javascript:;" class="ver_pendingPush" @if(!empty($_GET['status']) && $_GET['status'] == 'pendingPush') id="hoverstyle" @endif>待推送</a>
+                    <a href="javascript:;" class="ver_all" @if(empty($status) || $status  == 'all') id="hoverstyle" @endif>全部</a>
+                    <a href="javascript:;" class="ver_wait" @if(!empty($status) && $status == 'wait') id="hoverstyle" @endif>待认证</a>
+                    <a href="javascript:;" class="ver_faild" @if(!empty($status) && $status == 'fail') id="hoverstyle" @endif>认证失败</a>
+                    <a href="javascript:;" class="ver_pendingPush" @if(!empty($status) && $status == 'pendingPush') id="hoverstyle" @endif>待推送</a>
                 </div>
                 <div class="cert-list">
                 @foreach($datas as $data)
