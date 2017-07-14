@@ -122,7 +122,7 @@ $(document).ready(function(){
 
             }
         }
-        window.location.href="http://www.sw2025.com/serve_expert?serveName="+serveName+"&job="+job+"&location="+location+"&regTime="+regTime;
+        window.location.href="?serveName="+serveName+"&job="+job+"&location="+location+"&regTime="+regTime;
     }
 
 });

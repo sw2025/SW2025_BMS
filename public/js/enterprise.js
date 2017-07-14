@@ -155,7 +155,7 @@ $(document).ready(function(){
                     
             }
         }
-        window.location.href="{{asset('/serve_enterprise')}}"+"?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&idCard="+idCard+"&sizeType="+sizeType+"&regTime="+regTime;
+        window.location.href="?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&idCard="+idCard+"&sizeType="+sizeType+"&regTime="+regTime;
     }
 
 });
