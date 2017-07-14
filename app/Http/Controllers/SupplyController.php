@@ -90,7 +90,11 @@ class SupplyController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
 
         $sizeWhere=!empty($size)?array("needtype"=>$size):array();
-        $jobWhere=!empty($job)?array("t_n_need.domain1" => $job[0],'t_n_need.domain2' => $job[1]):array();
+        if(!empty($job) && count($job) == 1 ){
+            $jobWhere= array("t_n_need.domain1" => $job[0]);
+        } else {
+            $jobWhere=!empty($job)?array("t_n_need.domain1" => $job[0],'t_n_need.domain2' => $job[1]):array();
+        }
         $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
         $data=DB::table('t_n_need')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
@@ -101,10 +105,10 @@ class SupplyController extends Controller
         $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(1);
+            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(3);
             $counts= $copy_obj->where("t_n_need.brief","like","%".$serveName."%")->count();
         }else{
-            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(1);
+            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(3);
             $counts= $copy_obj->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";

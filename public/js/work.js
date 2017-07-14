@@ -50,6 +50,14 @@ $(document).ready(function(){
         $('.results-unit-industry').html(valHtml).show();
     });
 
+    $('.sub-industry li a').on('click',function () {
+        var valHtml = $(this).html();
+        $('.results-unit-industry').html(valHtml).show();
+        condition[0]="job";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
+
     /**
      * 所在地区
      */
