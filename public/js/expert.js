@@ -9,6 +9,11 @@ $(document).ready(function(){
         event.preventDefault();
         $(this).parent().prev('.result-select').html($(this).children().html());
     });
+
+
+    /**
+     * 搜索
+     */
     $(".search-bar-btn").on("click",function(){
         var valHtml = $(".search-bar-inp").val();
         /*  var condition=new Array();*/
@@ -64,6 +69,35 @@ $(document).ready(function(){
         getCondition(condition);
 
     });
+
+    $('.sub-industry li a').on('click',function () {
+        var valHtml = $(this).html();
+        $('.results-unit-industry').html(valHtml).show();
+        condition[0]="job";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
+
+    // 二级行业
+
+    $('.sub-industry>li').on('hover', function(event) {
+        event.preventDefault();
+        $(this).children('.sub-industry-menu').toggle();
+    });
+    $('.sub-industry-menu').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).html();
+        var parentHtml = $(this).parent().siblings().html();
+        condition[0]="job";
+        condition[1]=parentHtml+'/'+valHtml;
+        getCondition(condition);
+        $(this).children('.sub-industry-menu').toggle();
+        $(this).closest('.sub-industry').prev('.result-select').html(valHtml);
+        $('.results-unit-industry').html(valHtml).show();
+    });
+
+
+
     $('.order-scale').click(function(event) {
         if($(this).children('i').hasClass('fa-arrow-circle-o-up')){
             $(this).children('i').removeClass('fa-arrow-circle-o-up').addClass('fa-arrow-circle-o-down');

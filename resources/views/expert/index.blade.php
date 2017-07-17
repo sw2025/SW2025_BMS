@@ -9,14 +9,14 @@
     <div id="content">
         <section>
             <ol class="breadcrumb">
-                <li>审核操作<>
-                <li class="active">企业认证审核<>
+                <li>审核操作</li>
+                <li class="active">专家认证审核</li>
             </ol>
             <div class="section-body change-pwd">
                 <div class="cert-state-btns">
-                    <a href="javascript:;" class="ver_all" @if(empty($_GET['status']) || $_GET['status']  == 'all') id="hoverstyle" @endif>全部</a>
-                    <a href="javascript:;" class="ver_wait" @if(!empty($_GET['status']) && $_GET['status'] == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_faild" @if(!empty($_GET['status']) && $_GET['status'] == 'fail') id="hoverstyle" @endif>认证失败</a>
+                    <a href="javascript:;" class="ver_all" @if(empty($status) || $status  == 'all') id="hoverstyle" @endif>全部</a>
+                    <a href="javascript:;" class="ver_wait" @if(!empty($status) && $status == 'wait') id="hoverstyle" @endif>待认证</a>
+                    <a href="javascript:;" class="ver_faild" @if(!empty($status) && $status == 'fail') id="hoverstyle" @endif>认证失败</a>
                 </div>
 
 
