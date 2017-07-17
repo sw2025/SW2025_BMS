@@ -68,7 +68,6 @@ class VideoController extends Controller
     public  function changeVideo(){
         $array=array();
         $result=DB::table("T_C_CONSULTVERIFY")
-            ->where("consultid",$_POST['consultid'])
             ->insert([
                 "consultid"=>$_POST['consultid'],
                 "configid"=>$_POST['configid'],
@@ -137,9 +136,8 @@ class VideoController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
-
-
-        return view("video.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
+        $label = DB::table('t_common_domaintype')->get();
+        return view("video.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job","label"));
     }
     /**
      * 视频咨询信息维护详情

@@ -44,16 +44,16 @@ class ExpertController extends Controller
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","T_U_EXPERTVERIFY.configid","T_U_EXPERT.expertid")
             ->where("T_U_EXPERT.expertid",$expertid)
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
             ->first();
         //dd($datas);
-
         return view("expert.update",compact("datas"));
     }
+
     //
     public  function changeExpert(){
         $array=array();
         $result=DB::table("T_U_EXPERTVERIFY")
-            ->where("expertid",$_POST['expertid'])
             ->insert([
                 "expertid"=>$_POST['expertid'],
                 "configid"=>$_POST['configid'],
@@ -107,8 +107,8 @@ class ExpertController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
-
-        return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job"));
+        $label = DB::table('t_common_domaintype')->get();
+        return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job","label"));
 
     }
 
@@ -125,5 +125,24 @@ class ExpertController extends Controller
             ->first();
         return view("expert.detail",compact('data'));
     }
-   
+
+    /**专家信息维护设置首页
+     * @return mixed
+     */
+    public  function changeHomePage(){
+        $array=array();
+        $result=DB::table("T_U_EXPERT")
+            ->where("expertid",$_POST['expertid'])
+            ->update([
+                "isfirst"=> $_POST['isfirst']
+            ]);
+        if($result){
+            $array['code']="success";
+            return $array;
+        }else{
+            $array['code']="error";
+            return $array;
+        }
+
+    }
 }

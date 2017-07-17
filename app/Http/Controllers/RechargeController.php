@@ -58,7 +58,6 @@ class RechargeController extends Controller
 
         if($res){
             $result=DB::table("T_U_BILL")
-                ->where("id",$_POST['id'])
                 ->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)')
                 ->insert([
                     "userid"=>$data->userid,
@@ -134,16 +133,13 @@ class RechargeController extends Controller
 
         $sizeWhere=!empty($size)?array("T_U_BILL.type"=>$size):array();
 
-
        //$jobWhere=!empty($job)?array("domain1"=>$job):array();
-
 
         if(!empty($job) && count($job) == 1 ){
             $jobWhere= array("t_u_expert.domain1" => $job[0]);
             //dd($jobWhere);
         } else {
             $jobWhere=!empty($job)?array("t_u_expert.domain1" => $job[0],'t_u_expert.domain2' => $job[1]):array();
-            //$jobWhere=!empty($job)?array("domain1"=>$job):array();
         }
 
         $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
@@ -176,7 +172,8 @@ class RechargeController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
-        return view("recharge.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
+        $label = DB::table('t_common_domaintype')->get();
+        return view("recharge.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job","label"));
 
     }
     /**

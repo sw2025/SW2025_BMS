@@ -108,7 +108,8 @@ Route::get('/serve_enterpriseDet','EnterpriseController@serveDetail');
 Route::any('/serve_expert','ExpertController@serveIndex');
 //专家维护详情
 Route::get('/serve_expertDet/{expertid}','ExpertController@serveDetail');
-
+//专家首页设置
+Route::post('/changeHomePage','ExpertController@changeHomePage');
 //供求信息维护
 Route::any('/serve_supply','SupplyController@serveIndex');
 //供求信息维护详情

@@ -67,6 +67,7 @@
         })
 
         $(".btn-support1").on("click",function(){
+            $(".btn-support1").attr('disabled','disabled');
             var expertid=$(this).attr("id");
             $.ajax({
                 url:"{{asset('/changeExpert')}}",
@@ -86,6 +87,7 @@
 
         $(function(){
             $(".btn-primary").on("click",function (){
+                $(".btn-primary").attr('disabled','disabled');
                 var remark=$("#textarea").val();
                 var expertid=$(this).attr("id");
                 $.ajax({
