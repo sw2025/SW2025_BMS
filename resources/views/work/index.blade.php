@@ -61,6 +61,7 @@
                     </div>
 
                 </div>
+                <input type="hidden" id="flag" index="0">
             </div>
 
             <script>
@@ -82,12 +83,14 @@
                  *审核通过
                  */
                 $('.eve_allow').on('click',function () {
+                    var flag = $('#flag').attr('index');
+                    $('#flag').attr("index",1);
                     var eve_id=$(this).attr("index");
-                    $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':2},function (data) {
+                    $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':2,'flag':flag},function (data) {
                         if (data.errorMsg == 'success') {
                             window.location.href = "{{url('cert_work')}}";
                         } else {
-                            alert("审核失败");
+                            alert("审核失败或反应超时");
                             window.location.href = "{{url('cert_work')}}";
                         }
                     },'json');
@@ -97,12 +100,14 @@
                  * 办事推送
                  */
                 $('.eve_put').on('click',function () {
+                    var flag = $('#flag').attr('index');
+                    $('#flag').attr("index",1);
                     var eve_id=$(this).attr("index");
-                    $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':4},function (data) {
+                    $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':4,'flag':flag},function (data) {
                         if (data.errorMsg == 'success') {
                             window.location.href = "{{url('cert_work')}}";
                         } else {
-                            alert("推送失败");
+                            alert("推送失败或反应超时");
                             window.location.href = "{{url('cert_work')}}";
                         }
                     },'json');
@@ -113,13 +118,15 @@
                  */
                 $(function () {
                     $('.reject-reasons button').on('click',function () {
+                        var flag = $('#flag').attr('index');
+                        $('#flag').attr("index",1);
                         var remark=$(".reject-reasons textarea").val();
                         var eve_id=$(this).attr("id");
-                        $.post('{{url('changeEvent')}}',{'event_id':eve_id,'remark':remark,'config_id':3},function (data) {
+                        $.post('{{url('changeEvent')}}',{'event_id':eve_id,'remark':remark,'config_id':3,'flag':flag},function (data) {
                             if (data.errorMsg == 'success') {
                                 window.location.href = "{{url('/cert_work')}}";
                             } else {
-                                alert("审核失败");
+                                alert("审核失败或反应超时");
                                 window.location.href = "{{url('/cert_work')}}";
                             }
                         },'json');
