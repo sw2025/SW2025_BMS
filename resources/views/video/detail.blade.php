@@ -4,7 +4,7 @@
         <section>
             <ol class="breadcrumb">
                 <li>审核操作</li>
-                <li class="active">企业认证审核</li>
+                <li class="active">视频信息维护</li>
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">

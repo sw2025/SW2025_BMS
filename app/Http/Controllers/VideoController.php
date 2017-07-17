@@ -28,22 +28,18 @@ class VideoController extends Controller
         switch ($status) {
             case 'all':
                 $datas = $datas->whereIn("configid",[1,2,3])->paginate(2);
-                return view("video.index",compact("datas"));
                 break;
             case 'wait':
                 $datas = $datas->whereIn("configid",[1])->paginate(2);
-                return view("video.index",compact("datas"));
                 break;
             case 'fail':
                 $datas = $datas->whereIn("configid",[3])->paginate(2);
-                return view("video.index",compact("datas"));
                 break;
             case 'pendingPush':
                 $datas = $datas->whereIn("configid",[2])->paginate(2);
-                return view("video.index",compact("datas"));
                 break;
         }
-       //return view("video.index");
+        return view("video.index",compact("datas",'status'));
     }
     /**
      * 视频审核详情
@@ -128,24 +124,11 @@ class VideoController extends Controller
         $count=clone $data;
 
         if(!empty($serveName)){
-            if(!empty($idCard)){
-                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
-                $counts=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
-            }else{
                 $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$sizeType)->paginate(1);
-                $counts=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
-            }
+                $counts=$count->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }else{
-            if(!empty($idCard)){
-                //dd($idCard);
                 $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
-                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
-            }else{
-               // dd($locationWhere);
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime) ->paginate(1);
-                $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
-
-            }
+                $counts=$count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
         $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?$_GET['sizeType']:"down";

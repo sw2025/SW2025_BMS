@@ -25,17 +25,16 @@ class ExpertController extends Controller
         switch ($status) {
             case 'all':
                 $datas = $datas->whereIn("configid",[1,3])->paginate(2);
-                return view("expert.index",compact("datas"));
                 break;
             case 'wait':
                 $datas = $datas->whereIn("configid",[1])->paginate(2);
-                return view("expert.index",compact("datas"));
                 break;
             case 'fail':
                 $datas = $datas->whereIn("configid",[3])->paginate(2);
-                return view("expert.index",compact("datas"));
                 break;
         }
+        return view("expert.index",compact("datas",'status'));
+
     }
 
     public  function  update(){
@@ -81,42 +80,30 @@ class ExpertController extends Controller
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
-
-        $jobWhere=!empty($job)?array("industry"=>$job):array();
+        if(!empty($job) && count($job) == 1 ){
+            $jobWhere= array("t_u_expert.domain1" => $job[0]);
+        } else {
+            $jobWhere=!empty($job)?array("t_u_expert.domain1" => $job[0],'t_u_expert.domain2' => $job[1]):array();
+        }
         $locationWhere=!empty($location)?array("address"=>$location):array();
-
         $data=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","T_U_EXPERTVERIFY.configid","T_U_EXPERTVERIFY.VERIFYTIME","T_U_EXPERT.expertid")
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
             ->where("t_u_expertverify.configid",2);
-
-        //dd($datas);
        $count=clone $data;
 
      if(!empty($serveName)){
-           if(!empty($location)){
-               $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->orderBy("T_U_ENTERPRISE.created_at",$regTime)->paginate(1);
-               $counts=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
-           }else{
-               $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(1);
-               $counts=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
-           }
-       }else{
-           if(!empty($location)){
-               $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_Expert.created_at",$regTime)->paginate(1);
-               $counts=$data->where($jobWhere)->where($locationWhere)->count();
-           }else{
-               $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(1);
-               $counts= $count->where($jobWhere)->where($locationWhere)->count();
+         $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(1);
+         $counts=$count->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
 
-           }
+       }else{
+         $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(1);
+         $counts= $count->where($jobWhere)->where($locationWhere)->count();
        }
 
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
-
-
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";

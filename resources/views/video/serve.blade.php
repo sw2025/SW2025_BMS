@@ -4,7 +4,7 @@
         <section>
             <ol class="breadcrumb">
                 <li>信息维护</li>
-                <li class="active">视频咨询信息</li>
+                <li class="active">视频信息维护</li>
             </ol>
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
