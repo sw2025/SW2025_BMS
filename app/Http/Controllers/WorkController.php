@@ -92,7 +92,11 @@ class WorkController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
         $orderwhere = ['正在办事' => [4,5,6],'已完成' => [7,8],'全部' => range(1,9)];
         $sizeWhere=!empty($size)?$orderwhere[$size]:range(1,9);
-        $jobWhere=!empty($job)?array("t_e_event.domain1" => $job[0],'t_e_event.domain2' => $job[1]):array();
+        if(!empty($job) && count($job) == 1 ){
+            $jobWhere= array("t_e_event.domain1" => $job[0]);
+        } else {
+            $jobWhere=!empty($job)?array("t_e_event.domain1" => $job[0],'t_e_event.domain2' => $job[1]):array();
+        }
         $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
         $data=DB::table('t_e_event')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_e_event.userid')
