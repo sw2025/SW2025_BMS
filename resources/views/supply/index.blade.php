@@ -56,7 +56,7 @@
                         {!! $datas->render() !!}
                         {{-- <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>--}}
                     </div>
-
+                        <input type="hidden" id="flag" index="0">
                 </div>
 
                 <script>
@@ -71,12 +71,14 @@
                     });
 
                     $('.sup_allow').on('click',function () {
+                        var flag = $('#flag').attr('index');
+                        $('#flag').attr("index",1);
                         var supply_id=$(this).attr("index");
-                        $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'config_id':2},function (data) {
+                        $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'config_id':2,'flag':flag},function (data) {
                             if (data.errorMsg == 'success') {
                                 window.location.href = "{{url('/cert_supply')}}";
                             } else {
-                                alert("审核失败");
+                                alert("审核失败或反应超时");
                                 window.location.href = "{{url('/cert_supply')}}";
                             }
                         },'json');
@@ -85,13 +87,15 @@
 
                     $(function () {
                         $('.reject-reasons button').on('click',function () {
+                            var flag = $('#flag').attr('index');
+                            $('#flag').attr("index",1);
                             var remark=$(".reject-reasons textarea").val();
                             var supply_id=$(this).attr("id");
-                            $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'remark':remark,'config_id':3},function (data) {
+                            $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'remark':remark,'config_id':3,'flag':flag},function (data) {
                                 if (data.errorMsg == 'success') {
                                     window.location.href = "{{url('/cert_supply')}}";
                                 } else {
-                                    alert("审核失败");
+                                    alert("审核失败或反应超时");
                                     window.location.href = "{{url('/cert_supply')}}";
                                 }
                             },'json');

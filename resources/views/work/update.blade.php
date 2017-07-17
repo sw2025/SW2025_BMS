@@ -23,12 +23,12 @@
                 </div>
                 @if($datas->configid == 1)
                     <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1">通过审核</button></a>
-                        <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
+                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1 sup_allow">通过审核</button></a>
+                        <a href="javascript:;" onclick="showReason();$('.reject-reasons button').attr('id',{{$datas->eventid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
                     </div>
                 @elseif($datas->configid == 2)
                     <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success">通过审核</button></a>
+                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success sup_allow">通过审核</button></a>
                     </div>
                 @elseif($datas->configid == 3)
                     <div class="col-md-2 set-certificate">
@@ -36,6 +36,44 @@
                     </div>
                 @endif
             </div>
+            <input type="hidden" id="flag" index="0">
         </section>
     </div>
+
+
+    <script>
+
+        $('.sup_allow').on('click',function () {
+            var flag = $('#flag').attr('index');
+            $('#flag').attr("index",1);
+            var eve_id=$(this).attr("index");
+            $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':2,'flag':flag},function (data) {
+                if (data.errorMsg == 'success') {
+                    window.location.href = "{{url('cert_work')}}";
+                } else {
+                    alert("审核失败或反应超时");
+                    window.location.href = "{{url('cert_work')}}";
+                }
+            },'json');
+        });
+
+
+        $(function () {
+            $('.reject-reasons button').on('click',function () {
+                var flag = $('#flag').attr('index');
+                $('#flag').attr("index",1);
+                var remark=$(".reject-reasons textarea").val();
+                var eve_id=$(this).attr("id");
+                $.post('{{url('changeEvent')}}',{'event_id':eve_id,'remark':remark,'config_id':3,'flag':flag},function (data) {
+                    if (data.errorMsg == 'success') {
+                        window.location.href = "{{url('/cert_work')}}";
+                    } else {
+                        alert("审核失败或反应超时");
+                        window.location.href = "{{url('/cert_work')}}";
+                    }
+                },'json');
+            });
+        })
+
+    </script>
 @endsection

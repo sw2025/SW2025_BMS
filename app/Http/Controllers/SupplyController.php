@@ -20,17 +20,16 @@ class SupplyController extends Controller
             ->leftJoin("t_u_user", "t_u_user.userid", "=", "t_n_need.userid")
             ->leftJoin("t_n_needverify", "t_n_needverify.needid", "=", "t_n_need.needid")
             ->select("t_n_needverify.configid", "t_n_needverify.verifytime", "t_n_needverify.remark", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
-            ->orderBy("t_n_needverify.verifytime", "desc")
-            ->where('is_deal','0');
+            ->orderBy("t_n_needverify.verifytime", "desc");
         switch($action){
             case 'all':
-                $datas = $datas->whereIn("configid", [1, 3])->paginate(1);
+                $datas = $datas->whereIn("configid", [1, 3])->paginate(10);
                 break;
             case 'wait':
-                $datas = $datas->where('configid',1)->paginate(1);
+                $datas = $datas->where('configid',1)->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->where("configid", 3)->paginate(1);
+                $datas = $datas->where("configid", 3)->paginate(10);
                 break;
         }
         return view("supply.index", compact('datas','action'));
@@ -59,20 +58,16 @@ class SupplyController extends Controller
     public function changeSupply(Request $request)
     {
         $datas = $request->input();
-        $update = DB::table('t_n_needverify')->where('needid' , $datas['supply_id'])
-            ->update(
-                ['is_deal' => 1]
-            );
-        $result=DB::table("t_n_needverify")
-            ->insert([
-                'needid' => $datas['supply_id'],
-                "configid"=>$datas['config_id'],
-                'verifytime' => date('Y-m-d H:i:s',time()),
-                "remark"=>!empty($datas['remark'])?$datas['remark']:"",
-                "updated_at"=>date("Y-m-d H:i:s",time()),
-                "created_at"=>date("Y-m-d H:i:s",time())
-            ]);
-        if ($result && $update) {
+        if(!$datas['flag']){
+           DB::table("t_n_needverify")
+                ->insert([
+                    'needid'     =>  $datas['supply_id'],
+                    "configid"   =>  $datas['config_id'],
+                    'verifytime' =>  date('Y-m-d H:i:s',time()),
+                    "remark"     =>  !empty($datas['remark'])?$datas['remark']:"",
+                    "updated_at" =>  date("Y-m-d H:i:s",time()),
+                    "created_at" =>  date("Y-m-d H:i:s",time())
+                ]);
             return json_encode(['errorMsg' => 'success']);
         } else {
             return json_encode(['errorMsg' => 'error']);
@@ -116,7 +111,9 @@ class SupplyController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
-        return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job"));
+        //查询2级分类
+        $cate = DB::table('t_common_domaintype')->get();
+        return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job",'cate'));
 
     }
 

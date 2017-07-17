@@ -65,16 +65,15 @@ class WorkController extends Controller
     public function changeEvent(Request $request)
     {
         $datas = $request->input();
-
-        $result=DB::table("t_e_eventverify")
-            ->insert([
-                'eventid'    => $datas['event_id'],
-                "configid"   => $datas['config_id'],
-                'verifytime' => date('Y-m-d H:i:s',time()),
-                "remark"     => !empty($datas['remark']) ? $datas['remark'] : "",
-                "updated_at" => date("Y-m-d H:i:s",time()),
-            ]);
-        if ($result) {
+        if(!$datas['flag']) {
+            DB::table("t_e_eventverify")
+                ->insert([
+                    'eventid' => $datas['event_id'],
+                    "configid" => $datas['config_id'],
+                    'verifytime' => date('Y-m-d H:i:s', time()),
+                    "remark" => !empty($datas['remark']) ? $datas['remark'] : "",
+                    "updated_at" => date("Y-m-d H:i:s", time()),
+                ]);
             return json_encode(['errorMsg' => 'success']);
         } else {
             return json_encode(['errorMsg' => 'error']);
@@ -111,18 +110,19 @@ class WorkController extends Controller
         $obj = $data->whereIn('t_e_eventverify.configid',$sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where("t_e_event.brief","like","%".$serveName."%")->orderBy("t_e_event.eventtime",$regTime)->paginate(4);
-            $counts= $copy_obj->where("t_e_event.brief","like","%".$serveName."%")->count();
+            $datas= $obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->orderBy('t_e_event.eventtime',$regTime)->paginate(4);
+            $counts= $copy_obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->count();
         }else{
-            $datas= $obj->orderBy("t_e_event.eventtime",$regTime)->paginate(4);
+            $datas= $obj->orderBy('t_e_event.eventtime',$regTime)->paginate(4);
             $counts=  $copy_obj->count();
         }
-        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
-        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:"null";
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
-        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
-        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
-        return view("work.serve",compact("datas","counts","serveName","size","regTime","location","job"));
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!='null')?$_GET['serveName']:'null';
+        $size=(isset($_GET['size'])&&$_GET['size']!='null')?$_GET['size']:'null';
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!='down')?$_GET['regTime']:'down';
+        $location=(isset($_GET['location'])&&$_GET['location']!='null')?$_GET['location']:'全国';
+        $job=(isset($_GET['job'])&&$_GET['job']!='null')?$_GET['job']:'null';
+        $cate = DB::table('t_common_domaintype')->get();
+        return view('work.serve',compact('datas','counts','serveName','size','regTime','location','job','cate'));
     }
 
     static public function getExpertName ($expertid)
