@@ -50,39 +50,21 @@
                             </button>
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide sub-industry"  role="menu" style="text-align: left;">
-
                                 <li><a href="javascript:;">不限</a></li>
-                                <li>
-                                    <a href="javascript:;">融资投资</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>投资理财</li>
-                                        <li>融资</li>
-                                        <li>融资2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">战略合作</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>战略目标</li>
-                                        <li>战略资源</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">产品升级</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>企业转型</li>
-                                        <li>产品更新</li>
-                                        <li>产品迭代</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">市场运营</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>市场资源</li>
-                                        <li>运营相关</li>
-                                    </ul>
-                                </li>
-
+                                @foreach($label as $labels)
+                                    @if($labels->level==1)
+                                        <li>
+                                            <a href="javascript:;">{{$labels->domainname}}</a>
+                                            <ul class="sub-industry-menu">
+                                                @foreach($label as $labeled)
+                                                    @if($labeled->level == 2 && $labeled->parentid == $labels->domainid)
+                                                        <li>{{$labeled->domainname}}</li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">

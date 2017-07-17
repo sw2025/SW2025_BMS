@@ -51,34 +51,22 @@
                             <span style="float:left">需求领域：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
                                 不限
                             </button>
-                            <ul class="dropdown-menu animation-slide sub-industry"  role="menu" style="text-align: left;">
-
+                            <ul class="demo-list dropdown-menu animation-slide sub-industry"  role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
-                                <li>
-                                    <a href="javascript:;">IT|通信|电子|互联网</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>Item 2</li>
-                                        <li>Open level 3</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">金融业</a>
-                                    <ul class="sub-industry-menu">
-                                        <li>Item 2</li>
-                                        <li>Open level 3</li>
-                                    </ul>
-                                </li>
-                                <li><a href="javascript:;">房地产|建筑业</a></li>
-                                <li><a href="javascript:;">商业服务</a></li>
-                                <li><a href="javascript:;">贸易|批发|零售|租赁业</a></li>
-                                <li><a href="javascript:;">文体教育|工艺美术</a></li>
-                                <li><a href="javascript:;">生产|加工|制造</a></li>
-                                <li><a href="javascript:;">交通|运输|物流|仓储</a></li>
-                                <li><a href="javascript:;">服务业</a></li>
-                                <li><a href="javascript:;">文化|传媒|娱乐|体育</a></li>
-                                <li><a href="javascript:;">能源|矿产|环保</a></li>
-                                <li><a href="javascript:;">政府|非盈利机构</a></li>
-                                <li><a href="javascript:;">农|林|牧|渔|其他</a></li>
+                                @foreach($label as $labels)
+                                    @if($labels->level==1)
+                                        <li>
+                                            <a href="javascript:;">{{$labels->domainname}}</a>
+                                            <ul class="sub-industry-menu">
+                                                @foreach($label as $labeled)
+                                                    @if($labeled->level == 2 && $labeled->parentid == $labels->domainid)
+                                                        <li>{{$labeled->domainname}}</li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </div>
                         <div class="btn-group serve-mr">

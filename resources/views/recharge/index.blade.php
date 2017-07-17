@@ -59,6 +59,7 @@
 
         $(".btn-support1").on("click",function(){
             var id=$(this).attr("id");
+            $(".btn-support1").attr('disabled','disabled');
             $.ajax({
                 url:"{{asset('/changeRecharge')}}",
                 data:{"type":'支出',"id":id,"channel":"提现成功"},
@@ -78,6 +79,7 @@
         $(function(){
             $(".btn-primary").on("click",function (){
                 var remark=$("#textarea").val();
+                $(".btn-primary").attr('disabled','disabled');
                 var id=$(this).attr("id");
                 $.ajax({
                     url:"{{asset('/changeRecharge')}}",

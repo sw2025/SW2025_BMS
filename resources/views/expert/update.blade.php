@@ -5,7 +5,7 @@
 
             <ol class="breadcrumb">
                 <li>审核操作</li>
-                <li class="active">企业认证审核</li>
+                <li class="active">认证审核</li>
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
@@ -27,8 +27,8 @@
                 </div>
                 @if($datas->configid==1)
                 <div class="details-tit details-btns">
-                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1">通过审核</button></a>
-                    <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
+                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$datas->expertid}}">通过审核</button></a>
+                    <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$datas->expertid}}">拒绝审核</button></a>
                 </div>
                 @else
                 <div class="details-tit details-btns">
@@ -39,4 +39,46 @@
 
         </section>
     </div>
+    <script>
+        $(".btn-support1").on("click",function(){
+            $(".btn-support1").attr('disabled','disabled');
+            var expertid=$(this).attr("id");
+            $.ajax({
+                url:"{{asset('/changeExpert')}}",
+                data:{"configid":2,"expertid":expertid},
+                dataType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href="{{asset('/cert_expert')}}";
+                    }else{
+                        alert("审核失败");
+                        window.location.href="{{asset('/cert_expert')}}";
+                    }
+                }
+            })
+        })
+
+        $(function(){
+            $(".btn-primary").on("click",function (){
+                $(".btn-primary").attr('disabled','disabled');
+                var remark=$("#textarea").val();
+                var expertid=$('.btn-support5').attr("id");
+                $.ajax({
+                    url:"{{asset('/changeExpert')}}",
+                    data:{"remark":remark,"expertid":expertid,"configid":3},
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=="success"){
+                            window.location.href=window.location;
+                        }else{
+                            alert("审核失败");
+                            window.location.href=window.location;
+                        }
+                    }
+                })
+            });
+        })
+    </script>
 @endsection

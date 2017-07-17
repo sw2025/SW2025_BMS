@@ -74,6 +74,7 @@
 
         $(".btn-support1").on("click",function(){
             var consultid=$(this).attr("id");
+            $(".btn-support1").attr('disabled','disabled');
             $.ajax({
                 url:"{{asset('/changeVideo')}}",
                 data:{"configid":2,"consultid":consultid},
@@ -93,6 +94,7 @@
         $(function(){
             $(".btn-primary").on("click",function (){
                 var remark=$("#textarea").val();
+                $(".btn-primary").attr('disabled','disabled');
                 var consultid=$(this).attr("id");
                 $.ajax({
                     url:"{{asset('/changeVideo')}}",
