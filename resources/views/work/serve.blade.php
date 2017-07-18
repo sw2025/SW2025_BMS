@@ -114,16 +114,7 @@
                             <span class="cert-work-time">{{$v->eventtime}}</span>
                            {{$v->brief}}
                         </div>
-                        <div style="font-size: 18px;float: right;"><span class="label
-                            @if($v->configid == 1)  label-primary
-                            @elseif($v->configid == 2) label-success
-                            @elseif($v->configid == 3) label-default
-                            @elseif($v->configid == 4) label-info
-                            @elseif($v->configid == 9) label-danger
-                            @else  label-Warning
-                            @endif
-                            ">{{$v->name}}</span>
-                        </div>
+
                     </div>
                    @endforeach
                     <div class="pages">
