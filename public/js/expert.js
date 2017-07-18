@@ -45,6 +45,19 @@ $(document).ready(function(){
         getCondition(condition);
     });
 
+    /**
+     * 首页筛选
+     */
+    $('.serve-member-sel').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).children().html();
+        if(valHtml != '不限'){
+            $('.results-unit-member').html(valHtml).show();
+        }
+         condition[0]="idCard";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
 
     $('.results-unit').on('click','a', function(event) {
         event.preventDefault();
@@ -131,10 +144,11 @@ $(document).ready(function(){
         var serveName=$(".search-bar-inp").val();
         var job=$.trim($("#job").html());
         var location=$.trim($("#location").html());
+        var idCard=$.trim($("#idCard").html());
         serveName=(serveName)?serveName:null;
         job=(job!="不限")?job:null;
         location=(location!="全国")?location:"全国";
-
+        idCard=(idCard!="不限")?idCard:null;
         if( $(".order-time").children('i').hasClass('fa-arrow-circle-o-up')){
             var regTime="up";
         }else{
@@ -151,12 +165,15 @@ $(document).ready(function(){
                 case "location":
                     location=(Condition[1]!="全国")?Condition[1]:"全国";
                     break;
+                case "idCard":
+                    idCard=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
                 case "regTime":
                     regTime=Condition[1];
 
             }
         }
-        window.location.href="?serveName="+serveName+"&job="+job+"&location="+location+"&regTime="+regTime;
+        window.location.href="?serveName="+serveName+"&idCard="+idCard+"&job="+job+"&location="+location+"&regTime="+regTime;
     }
 
 });
