@@ -4,7 +4,7 @@
         <section>
             <ol class="breadcrumb">
                 <li>审核操作</li>
-                <li class="active">提现信息维护</li>
+                <li class="active">提现审核维护</li>
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
@@ -33,6 +33,7 @@
     <script>
         $(".btn-support1").on("click",function(){
             var id=$(this).attr("id");
+            $(".btn-support1").attr('disabled','disabled');
             $.ajax({
                 url:"{{asset('/changeRecharge')}}",
                 data:{"type":'支出',"id":id,"channel":"提现成功"},
@@ -52,6 +53,7 @@
         $(function(){
             $(".btn-primary").on("click",function (){
                 var remark=$("#textarea").val();
+                $(".btn-primary").attr('disabled','disabled');
                 var id=$(this).attr("id");
 
                 $.ajax({
@@ -61,10 +63,10 @@
                     type:"POST",
                     success:function(res){
                         if(res['code']=="success"){
-                            window.location.href="{{asset('/cert_recharge')}}";
+                            window.location.href=window.location;
                         }else{
                             alert("审核失败");
-                            window.location.href="{{asset('/cert_recharge')}}";
+                            window.location.href=window.location;
                         }
                     }
                 })

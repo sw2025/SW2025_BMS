@@ -25,7 +25,55 @@
                         <div class="col-md-4 cert-img"><img onclick="javascript:showimage('../img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
                     </div>
                 </div>
+                @if($data->isfirst==0)
+                    <div class="details-tit details-btns">
+                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设置首页</button></a>
+                    </div>
+                @else
+                    <div class="details-tit details-btns">
+                        <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
+                    </div>
+                @endif
             </div>
         </section>
     </div>
+    <script>
+        /**
+         * 设置首页
+         */
+        $(".btn-support1").on("click",function(){
+            var expertid=$(this).attr("id");
+            $.ajax({
+                url:"{{asset('/changeHomePage')}}",
+                data:{"isfirst":1,"expertid":expertid},
+                dataType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href=window.location;
+                    }else{
+                        alert("审核失败");
+                        window.location.href=window.location;
+                    }
+                }
+            })
+        })
+        $(".btn-support2").on("click",function(){
+            var expertid=$(this).attr("id");
+            $.ajax({
+                url:"{{asset('/changeHomePage')}}",
+                data:{"isfirst":0,"expertid":expertid},
+                dataType:"json",
+                type:"POST",
+                success:function(res){
+                    if(res['code']=="success"){
+                        window.location.href=window.location;
+                    }else{
+                        alert("审核失败");
+                        window.location.href=window.location;
+                    }
+                }
+            })
+        })
+    </script>
 @endsection

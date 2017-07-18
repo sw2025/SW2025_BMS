@@ -39,6 +39,7 @@
     <script>
         $(".btn-support1").on("click",function(){
             var consultid=$(this).attr("id");
+            $(".btn-support1").attr('disabled','disabled');
             $.ajax({
                 url:"{{asset('/changeVideo')}}",
                 data:{"configid":2,"consultid":consultid},
@@ -46,10 +47,10 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success"){
-                        window.location.href="{{asset('/cert_video')}}";
+                        window.location.href=window.location;
                     }else{
                         alert("审核失败");
-                        window.location.href="{{asset('/cert_video')}}";
+                        window.location.href=window.location;
                     }
                 }
             })
@@ -57,6 +58,7 @@
 
         $(function(){
             $(".btn-primary").on("click",function (){
+                $(".btn-primary").attr('disabled','disabled');
                 var remark=$("#textarea").val();
                 var consultid=$(this).attr("id");
                 $.ajax({
@@ -66,10 +68,10 @@
                     type:"POST",
                     success:function(res){
                         if(res['code']=="success"){
-                            window.location.href="{{asset('/cert_video')}}";
+                            window.location.href=window.location;
                         }else{
                             alert("审核失败");
-                            window.location.href="{{asset('/cert_video')}}";
+                            window.location.href=window.location;
                         }
                     }
                 })
