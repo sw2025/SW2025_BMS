@@ -100,12 +100,9 @@ class VideoController extends Controller
         if(!empty($idCard)){
             $number=['全部'=>range(1,9),'已完成'=>[7,8],'正在办事'=>[2,4,5,6]];
             $idCard=!empty($idCard)? $number[$idCard]:null;
-            //dd($idCard);
         }else{
             $idCard=range(1,9);
         }
-
-        //dd($idCard);
 
         $sizeWhere=!empty($size)?array("size"=>$size):array();
         $jobWhere=!empty($job)?array("industry"=>$job):array();
@@ -116,17 +113,18 @@ class VideoController extends Controller
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
             ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
+            ->leftJoin('t_c_consultresponse','t_c_consultresponse.consultid' ,'=' ,'t_c_consult.consultid')
+            ->select('t_c_consultresponse.state','t_c_consultresponse.expertid','t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_expert.expertname','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid')
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
             ->whereIn("t_c_consultverify.configid",$idCard);
 
         $count=clone $data;
 
         if(!empty($serveName)){
-                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$sizeType)->paginate(1);
+                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
                 $counts=$count->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }else{
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consult.created_at",$regTime)->paginate(1);
                 $counts=$count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
@@ -138,6 +136,12 @@ class VideoController extends Controller
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
         $label = DB::table('t_common_domaintype')->get();
         return view("video.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job","label"));
+    }
+
+    static public function getExpertName ($expertid)
+    {
+        $datas = DB::table('t_u_expert')->where('expertid',$expertid)->first();
+        return $datas->expertname;
     }
     /**
      * 视频咨询信息维护详情
