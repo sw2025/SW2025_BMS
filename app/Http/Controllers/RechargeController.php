@@ -47,7 +47,7 @@ class RechargeController extends Controller
     public function changeRecharge(){
 
         $id = $_POST['id'];
-        $data = DB::table("T_U_BILL")->select("money","userid","id")->where("id","$id")->first();
+        $data = DB::table("T_U_BILL")->select("money","userid","id")->where("id",$id)->first();
         $array=array();
 
         $res = DB::table("T_U_BILL")
