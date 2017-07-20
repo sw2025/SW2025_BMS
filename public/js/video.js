@@ -9,6 +9,7 @@ $(document).ready(function(){
         event.preventDefault();
         $(this).parent().prev('.result-select').html($(this).children().html());
     });
+
     $(".search-bar-btn").on("click",function(){
         var valHtml = $(".search-bar-inp").val();
         /*  var condition=new Array();*/

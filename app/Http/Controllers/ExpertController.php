@@ -79,6 +79,15 @@ class ExpertController extends Controller
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
+
+        if(!empty($idCard)){
+            $number=['首页'=>[1],'非首页'=>[0]];
+            $idCard=!empty($idCard)? $number[$idCard]:null;
+        }else{
+            $idCard=range(0,1);
+        }
+
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
         if(!empty($job) && count($job) == 1 ){
             $jobWhere= array("t_u_expert.domain1" => $job[0]);
@@ -91,7 +100,8 @@ class ExpertController extends Controller
             ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.EXPERTID","=","T_U_EXPERTVERIFY.expertid")
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","T_U_EXPERTVERIFY.configid","T_U_EXPERTVERIFY.VERIFYTIME","T_U_EXPERT.expertid")
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
-            ->where("t_u_expertverify.configid",2);
+            ->where("t_u_expertverify.configid",2)
+            ->whereIn("T_U_EXPERT.isfirst",$idCard);
        $count=clone $data;
 
      if(!empty($serveName)){
@@ -107,8 +117,9 @@ class ExpertController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:"null";
         $label = DB::table('t_common_domaintype')->get();
-        return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job","label"));
+        return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job","label","idCard"));
 
     }
 

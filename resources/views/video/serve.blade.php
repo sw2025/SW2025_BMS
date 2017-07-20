@@ -8,14 +8,14 @@
             </ol>
             <div class="section-body change-pwd">
                 <div class="search-bar clearfix">
-                    <input class="search-bar-inp" type="text" placeholder="请输入视频关键字" value="" @if($serveName!="null") value="{{$serveName}}" @endif />
-                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" id="searchsub">
+                    <input class="search-bar-inp" type="text" placeholder="请输入办事关键字" @if($serveName!="null") value="{{$serveName}}" @endif />
+                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn" >
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
                         <span class="tip-caption">全部结果 -> </span>
                         <div class="results-unit">
-                            <a href="javascript:;" class="results-unit-del results-unit-scale" @if($size!="null") style="display:inline-block" @endif>{{$size}}</a>
+                            <a href="javascript:;" class="results-unit-del re sults-unit-scale" @if($size!="null") style="display:inline-block" @endif>{{$size}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!="null") style="display:inline-block" @endif>{{$idCard}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display: inline-block" @endif>{{$job}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="全国") style="display: inline-block" @endif>{{$location}}</a>
@@ -124,11 +124,11 @@
                         <div class="col-md-4">
                             <h2 class="cert-company"><a href="{{url('/serve_videoDet', $data->consultid)}}" class="look-link">{{$data->enterprisename or $data->expertname}}</a></h2>
                             <span class="cert-telephone">联系电话：{{$data->phone}}</span>
-                            <span class="cert-time start-time">开始时间：2017-07-02  10:30:00</span>
+                            <span class="cert-time start-time">开始时间：{{$data->consulttime}}</span>
                             <span class="cert-time end-ti
                             me">结束时间：2017-07-02  12:00:00</span>
                             <p class="cert-scale">需求分类：销售</p>
-                            <p class="cert-zone">指定专家：系统分配</p>
+                            <p class="cert-zone">指定专家：@if($data->state === "0") {{  App\Http\Controllers\VideoController::getExpertName($data->expertid) }} @else 系统匹配 @endif</p>
                         </div>
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">2017-07-02  12:10:35</span>

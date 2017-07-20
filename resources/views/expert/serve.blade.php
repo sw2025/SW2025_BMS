@@ -18,6 +18,7 @@
                         <div class="results-unit">
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display: inline-block" @endif>{{$job}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="全国") style="display: inline-block" @endif>{{$location}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!="null") style="display:inline-block" @endif>{{$idCard}}</a>
                         </div>
                     </div>
                     <div class="choice-condition clearfix">
@@ -83,6 +84,16 @@
                                 <li><a href="javascript:;">台湾省</a></li>
                                 <li><a href="javascript:;">香港</a></li>
                                 <li><a href="javascript:;">澳门</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">是否首页：</span><button type="button" id="idCard" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($idCard!="null"){{$idCard}}@else  不限 @endif
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-member-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                <li><a href="javascript:;">首页</a></li>
+                                <li><a href="javascript:;">非首页</a></li>
                             </ul>
                         </div>
                     </div>
