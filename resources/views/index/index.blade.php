@@ -78,7 +78,30 @@
                                     }
                                 }
                             },
-                            data: [150,200,100,350]
+                            data:
+
+                                $.ajax({
+                                url: '{{url('registerData')}}',
+                                type: 'post',
+                                data: {},
+                                dataType: 'json',
+                                async: true,
+                                success: function (result) {
+                                    if (result)
+                                    {
+                                        register.setOption({
+                                            series: [{
+                                                data: [1,2,3,4]
+                                            }]
+                                        });
+                                    }
+                                },
+
+                                error: function (errorMsg)
+                                {
+                                    alert("不好意思请求失败了");
+                                }
+                            })
                         }]
                 };
                 option2 = {
@@ -285,7 +308,7 @@
                             radius : '55%',
                             center: ['50%', '60%'],
                             data:[
-                                {value:1350, name:'咨询阶段：1'},
+                                {value:11350, name:'咨询阶段：1'},
                                 {value:2100, name:'咨询阶段：2'},
                                 {value:900, name:'咨询阶段：3'},
                                 {value:1200, name:'咨询阶段：4'}
@@ -309,7 +332,7 @@
                 supply.setOption(option4);
                 work.setOption(option5);
                 video.setOption(option6);
-                setTimeout(function (){
+              setTimeout(function (){
                     window.onresize = function () {
                         register.resize();
                         recharge.resize();
@@ -340,4 +363,30 @@
             </div>
         </section>
     </div>
+   {{-- <script>
+
+            $.ajax({
+                url: '{{url('registerData')}}',
+                type: 'post',
+                data: {},
+                dataType: 'json',
+                async: true,
+                success: function (result) {
+                    if (result)
+                    {
+                        register.setOption({
+                            series: [{
+                                data: [1,2,3,4]
+                            }]
+                        });
+                    }
+                },
+
+                error: function (errorMsg)
+                {
+                    alert("不好意思请求失败了");
+                }
+            })
+
+    </script>--}}
 @endsection
