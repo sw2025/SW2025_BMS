@@ -21,6 +21,9 @@ Route::post('/login','LoginController@login');
 Route::post('/quit','LoginController@login');
 //首页
 Route::get('/index','IndexController@index');
+//注册数据
+Route::post('/registerData','IndexController@registerData');
+
 /***************************基础设置*****************************/
 // 修改密码
 Route::get('/change_pwd','LoginController@changePwd');
