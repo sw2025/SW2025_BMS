@@ -127,6 +127,9 @@
                     </div>
                     @endforeach
                 </div>
+                <div class="pages">
+                    {!! $datas->appends(["size"=>$size,"serveName"=>$serveName,"location"=>$location,"idCard"=>$idCard,"job"=>$job,"regTime"=>$regTime,"sizeType"=>$sizeType])->render() !!}
+                </div>
             </div>
         </section>
     </div>

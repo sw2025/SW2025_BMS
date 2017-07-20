@@ -20,6 +20,8 @@
                 var supply = ec.init(document.getElementById('supply'));
                 var work = ec.init(document.getElementById('work'));
                 var video = ec.init(document.getElementById('video'));
+
+
                 option1 = {
                     title: {
                         x: 'center',
@@ -78,30 +80,28 @@
                                     }
                                 }
                             },
-                            data:
-
+                            data: (function () {
+                                var data1;
                                 $.ajax({
-                                url: '{{url('registerData')}}',
-                                type: 'post',
-                                data: {},
-                                dataType: 'json',
-                                async: true,
-                                success: function (result) {
-                                    if (result)
+                                    url: '{{url('registerData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (result) {
+                                        if (result)
+                                        {
+                                            data1 = result.data
+                                        }
+                                    },
+                                    error: function (errorMsg)
                                     {
-                                        register.setOption({
-                                            series: [{
-                                                data: [1,2,3,4]
-                                            }]
-                                        });
+                                        alert("注册信息请求失败");
                                     }
-                                },
+                                })
+                                return data1;
+                            })(),
 
-                                error: function (errorMsg)
-                                {
-                                    alert("不好意思请求失败了");
-                                }
-                            })
                         }]
                 };
                 option2 = {
@@ -162,7 +162,27 @@
                                     }
                                 }
                             },
-                            data: [1500,2000]
+                            data: (function () {
+                                var data3;
+                                $.ajax({
+                                    url: '{{url('rechargeData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (result) {
+                                        if (result)
+                                        {
+                                            data3= result.data
+                                        }
+                                    },
+                                    error: function (errorMsg)
+                                    {
+                                        alert("充值提现信息请求失败");
+                                    }
+                                })
+                                return data3;
+                            })(),
                         }
                     ]
                 };
@@ -227,10 +247,31 @@
                             type:'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
-                            data:[
-                                {value:3350, name:'企业发布'},
-                                {value:3100, name:'专家发布'}
-                            ],
+                            data: (function () {
+                                var data4;
+                                $.ajax({
+                                    url: '{{url('supplyData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (data) {
+                                        if (data)
+                                        {
+                                            data4 = [
+                                                {value:data.expert, name:'企业发布'},
+                                                {value:data.enterprise, name:'专家发布'}
+                                            ]
+                                        }
+                                    },
+                                    error: function (errorMsg)
+                                    {
+                                        alert("供求信息请求失败");
+                                    }
+                                })
+                                return data4;
+                            })(),
+
                             itemStyle:{
                                 normal:
                                 {
@@ -258,7 +299,7 @@
                         orient : 'vertical',
                         x : 'right',
                         y : 'top',
-                        data:['办事阶段：1','办事阶段：2','办事阶段：3','办事阶段：4']
+                        data:['办事阶段：1','办事阶段：2','办事阶段：3','办事阶段：4','办事阶段：5','办事阶段：6','办事阶段：7','办事阶段：8','办事阶段：9']
                     },
                     series : [
                         {
@@ -266,12 +307,32 @@
                             type:'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
-                            data:[
-                                {value:3350, name:'办事阶段：1'},
-                                {value:3100, name:'办事阶段：2'},
-                                {value:2100, name:'办事阶段：3'},
-                                {value:1200, name:'办事阶段：4'}
-                            ],
+                            data: (function () {
+                                var data6;
+                                $.ajax({
+                                    url: '{{url('workData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (data) {
+                                        if (data)
+                                        {
+                                            data6 = [
+                                                {value:data.work1, name:'咨询阶段：1'},
+                                                {value:data.work2, name:'咨询阶段：2'},
+                                                {value:data.work3, name:'咨询阶段：3'},
+                                                {value:data.work4, name:'咨询阶段：4'}
+                                            ]
+                                        }
+                                    },
+                                    error: function (errorMsg)
+                                    {
+                                        alert("视频信息请求失败");
+                                    }
+                                })
+                                return data6;
+                            })(),
                             itemStyle:{
                                 normal:
                                 {
@@ -307,12 +368,32 @@
                             type:'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
-                            data:[
-                                {value:11350, name:'咨询阶段：1'},
-                                {value:2100, name:'咨询阶段：2'},
-                                {value:900, name:'咨询阶段：3'},
-                                {value:1200, name:'咨询阶段：4'}
-                            ],
+                            data: (function () {
+                                var data6;
+                                $.ajax({
+                                    url: '{{url('videoData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (data) {
+                                        if (data)
+                                        {
+                                            data6 = [
+                                                {value:data.video1, name:'咨询阶段：1'},
+                                                {value:data.video2, name:'咨询阶段：2'},
+                                                {value:data.video3, name:'咨询阶段：3'},
+                                                {value:data.video4, name:'咨询阶段：4'}
+                                            ]
+                                        }
+                                    },
+                                    error: function (errorMsg)
+                                    {
+                                        alert("视频信息请求失败");
+                                    }
+                                })
+                                return data6;
+                            })(),
                             itemStyle:{
                                 normal:
                                 {
@@ -363,30 +444,4 @@
             </div>
         </section>
     </div>
-   {{-- <script>
-
-            $.ajax({
-                url: '{{url('registerData')}}',
-                type: 'post',
-                data: {},
-                dataType: 'json',
-                async: true,
-                success: function (result) {
-                    if (result)
-                    {
-                        register.setOption({
-                            series: [{
-                                data: [1,2,3,4]
-                            }]
-                        });
-                    }
-                },
-
-                error: function (errorMsg)
-                {
-                    alert("不好意思请求失败了");
-                }
-            })
-
-    </script>--}}
 @endsection

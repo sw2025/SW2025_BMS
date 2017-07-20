@@ -23,6 +23,14 @@ Route::post('/quit','LoginController@login');
 Route::get('/index','IndexController@index');
 //注册数据
 Route::post('/registerData','IndexController@registerData');
+//供求数据
+Route::post('/supplyData','IndexController@supplyData');
+//视频数据
+Route::post('/videoData','IndexController@videoData');
+//办事数据
+Route::post('/workData','IndexController@workData');
+//充值提现数据
+Route::post('/rechargeData','IndexController@rechargeData');
 
 /***************************基础设置*****************************/
 // 修改密码
