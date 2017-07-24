@@ -294,12 +294,12 @@
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
-                    color:['#FB6E52','#48CFAE','#EC87BF','#FFCE55'],
+                    color:['#FB6E52','#48CFAE','#EC87BF','#FFCE55','#5AB1EF','#333333','#6495ED','#00FF7F','#FF7F24'],
                     legend: {
                         orient : 'vertical',
                         x : 'right',
                         y : 'top',
-                        data:['办事阶段：1','办事阶段：2','办事阶段：3','办事阶段：4','办事阶段：5','办事阶段：6','办事阶段：7','办事阶段：8','办事阶段：9']
+                        data:['待审核','通过审核','未通过审核','已推送','已响应','待咨询','已完成','已评价','异常终止']
                     },
                     series : [
                         {
@@ -319,10 +319,15 @@
                                         if (data)
                                         {
                                             data6 = [
-                                                {value:data.work1, name:'咨询阶段：1'},
-                                                {value:data.work2, name:'咨询阶段：2'},
-                                                {value:data.work3, name:'咨询阶段：3'},
-                                                {value:data.work4, name:'咨询阶段：4'}
+                                                {value:data.work[1], name:'待审核'},
+                                                {value:data.work[2], name:'通过审核'},
+                                                {value:data.work[3], name:'未通过审核'},
+                                                {value:data.work[4], name:'已推送'},
+                                                {value:data.work[5], name:'已响应'},
+                                                {value:data.work[6], name:'待咨询'},
+                                                {value:data.work[7], name:'已完成'},
+                                                {value:data.work[8], name:'已评价'},
+                                                {value:data.work[9], name:'异常终止'}
                                             ]
                                         }
                                     },
@@ -355,12 +360,12 @@
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
-                    color:['#FB6E52','#48CFAE','#EC87BF','#FFCE55'],
+                    color:['#FB6E52','#48CFAE','#EC87BF','#FFCE55','#5AB1EF','#333333','#6495ED','#00FF7F','#FF7F24'],
                     legend: {
                         orient : 'vertical',
                         x : 'right',
                         y : 'top',
-                        data:['咨询阶段：1','咨询阶段：2','咨询阶段：3','咨询阶段：4']
+                        data:['待审核','通过审核','未通过审核','已推送','已响应','待咨询','已完成','已评价','异常终止']
                     },
                     series : [
                         {
@@ -380,10 +385,15 @@
                                         if (data)
                                         {
                                             data6 = [
-                                                {value:data.video1, name:'咨询阶段：1'},
-                                                {value:data.video2, name:'咨询阶段：2'},
-                                                {value:data.video3, name:'咨询阶段：3'},
-                                                {value:data.video4, name:'咨询阶段：4'}
+                                                {value:data.video[1], name:'待审核'},
+                                                {value:data.video[2], name:'通过审核'},
+                                                {value:data.video[3], name:'未通过审核'},
+                                                {value:data.video[4], name:'已推送'},
+                                                {value:data.video[5], name:'已响应'},
+                                                {value:data.video[6], name:'待咨询'},
+                                                {value:data.video[7], name:'已完成'},
+                                                {value:data.video[8], name:'已评价'},
+                                                {value:data.video[9], name:'异常终止'}
                                             ]
                                         }
                                     },
