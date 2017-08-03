@@ -82,6 +82,14 @@
                 </li>
                 <li>
                     <a href="javascript:void(0);">
+                        <i class="fa fa-gear fa-fw"></i><span class="title">参数设置</span> <span class="expand-sign">+</span>
+                    </a>
+                    <ul>
+                        <li><a href="{{asset('/member')}}">会员权益</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">
                         <i class="fa fa-edit fa-fw"></i><span class="title">审核操作</span> <span class="expand-sign">+</span>
                     </a>
                     <ul>

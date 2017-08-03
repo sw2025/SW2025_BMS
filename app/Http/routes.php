@@ -65,6 +65,10 @@ Route::get('/edit_role','RoleController@editRole');
 Route::post('/edit_roleSave','RoleController@editRoleSave');
 //删除角色
 Route::get('/delete_role','RoleController@deleteRole');
+/*********************************参数设置***********************************************/
+Route::get('/member','MemberController@member');
+Route::get('/add_member','MemberController@addMember');
+Route::get('/edit_member','MemberController@editMember');
 /******************************审核操作*************************************************/
 //企业审核
 Route::get('/cert_enterprise/','EnterpriseController@index');
