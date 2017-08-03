@@ -15,14 +15,6 @@ class IndexController extends Controller
      * @return mixed
      */
     public function index(){
-
-        $a=DB::table('t_e_eventverifyconfig')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.configid' ,'=' ,'t_e_eventverifyconfig.configid')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->select('t_e_eventverifyconfig.configid',DB::raw('COUNT(t_e_eventverify.configid) as num'))
-            ->groupBy('t_e_eventverifyconfig.configid')
-            ->get();
-        /*dd($a);*/
         return view("index.index");
     }
 
@@ -77,7 +69,7 @@ class IndexController extends Controller
         {
             $datas=0;
         }
-        return json_encode(['data' => [$data,$datas],'errorMsg' => 'success']);
+        return json_encode(['data' => [$data,$datas]]);
 
     }
 
@@ -101,59 +93,55 @@ class IndexController extends Controller
 
     public function memberData()
     {
-
     }
 
     public function workData()
     {
-        $work1 = DB::table('t_e_event')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->where("configid", 1)
-            ->count();
-        $work2 = DB::table('t_e_event')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->count();
-        $work3 = DB::table('t_e_event')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->count();
-        $work4 = DB::table('t_e_event')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->count();
 
-
-            return json_encode(['work1'=>$work1,'work2'=>$work2,'work3'=>$work3,'work4'=>$work4]);
+        $result=DB::table('t_e_eventverify')
+            ->leftJoin('t_e_eventverifyconfig','t_e_eventverify.configid' ,'=' ,'t_e_eventverifyconfig.configid')
+            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+            ->select('t_e_eventverify.configid',DB::raw('COUNT(t_e_eventverify.configid) as num'))
+            ->groupBy('t_e_eventverify.configid')
+            ->get();
+        $work=[];
+        foreach ($result as $v){
+            for($i=1;$i<=9;$i++)
+            {
+                if($v->configid == $i){
+                    $work[$i] = $v->num;
+                }
+                if (!key_exists($i,$work)){
+                    $work[$i] = 0;
+                }
+            }
+        }
+        return json_encode(['work'=>$work]);
 
     }
 
     public function videoData()
     {
-        $video1 = DB::table('t_c_consult')
-            ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
-            ->whereIn("configid",[1])
+        $result=DB::table('t_c_consultverify')
+            ->leftJoin('t_c_consultverifyconfig','t_c_consultverify.configid' ,'=' ,'t_c_consultverifyconfig.configid')
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
-            ->count();
-        $video2 = DB::table('t_c_consult')
-            ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
-            ->whereIn("configid",[1])
-            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
-            ->count();
-        $video3 = DB::table('t_c_consult')
-            ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
-            ->whereIn("configid",[1])
-            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
-            ->count();
-        $video4 = DB::table('t_c_consult')
-            ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
-            ->whereIn("configid",[1])
-            ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
-            ->count();
+            ->select('t_c_consultverify.configid',DB::raw('COUNT(t_c_consultverify.configid) as num'))
+            ->groupBy('t_c_consultverify.configid')
+            ->get();
 
-           return json_encode(['video1'=>$video1,'video2'=>$video2,'video3'=>$video3,'video4'=>$video4]);
-
+        $video=[];
+        foreach ($result as $v){
+            for($i=1;$i<=9;$i++)
+            {
+                if($v->configid == $i){
+                    $video[$i] = $v->num;
+                }
+                if (!key_exists($i,$video)){
+                    $video[$i] = 0;
+                }
+            }
+        }
+        return json_encode(['video'=>$video]);
     }
 
 
