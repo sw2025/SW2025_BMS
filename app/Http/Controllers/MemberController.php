@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class MemberController extends Controller
 {
@@ -13,7 +14,8 @@ class MemberController extends Controller
      * @return mixed
      */
  public function  member(){
-     return view("member.member");
+     $datas = DB::table('t_u_memberright')->paginate(5);
+     return view("member.member",compact('datas'));
  }
 
     /**添加
@@ -23,11 +25,41 @@ class MemberController extends Controller
         return view("member.addMember");
     }
 
+    public function dealAddMember(Request $request)
+    {
+        $data = $request->input();
+        $data['updated_at'] = date('Y-m-d H:i:s',time());
+        DB::table('t_u_memberright')->insert($data);
+        return redirect('/member');
+    }
+
+    public function deleteMember(Request $request)
+    {
+        $memberid = $request->input('memberid');
+        $res = DB::table('t_u_memberright')->where('memberid',$memberid)->delete();
+        if($res){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     /*编辑
      * @return mixed
      */
-    public function editMember(){
-        return view("member.editMember");
+    public function editMember($memberid){
+        $datas = DB::table('t_u_memberright')->where('memberid',$memberid)->first();
+        return view("member.editMember",compact('datas'));
+    }
+
+    public function dealEditMember(Request $request)
+    {
+        $data = $request->input();
+        $memberid = $data['memberid'];
+        unset($data['memberid']);
+        $data['updated_at'] = date('Y-m-d H:i:s',time());
+        DB::table('t_u_memberright')->where('memberid',$memberid)->update($data);
+        return redirect('/member');
     }
     
 

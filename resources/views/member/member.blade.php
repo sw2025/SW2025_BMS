@@ -27,57 +27,27 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        @foreach($datas as $v)
                                         <tr>
-                                            <td>普通会员</td>
-                                            <td>1年</td>
-                                            <td>3000</td>
-                                            <td>10</td>
-                                            <td>5</td>
+                                            <td>{{$v->typename}}</td>
+                                            <td>{{$v->termtime}}月</td>
+                                            <td>{{$v->cost}}</td>
+                                            <td>{{$v->consultcount}}</td>
+                                            <td>{{$v->eventcount}}</td>
                                             <td class="operate-btns">
-                                                <a href="{{asset('edit_member')}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
+                                                <a href="{{url('edit_member',$v->memberid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
+                                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger" onclick="delmember({{$v->memberid}},this)">删除</button></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>普通会员</td>
-                                            <td>2年</td>
-                                            <td>5000</td>
-                                            <td>10</td>
-                                            <td>5</td>
-                                            <td class="operate-btns">
-                                                <a href="{{asset('edit_member')}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>VIP会员</td>
-                                            <td>1年</td>
-                                            <td>3000</td>
-                                            <td>10</td>
-                                            <td>5</td>
-                                            <td class="operate-btns">
-                                                <a href="{{asset('edit_member')}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>VIP会员</td>
-                                            <td>2年</td>
-                                            <td>8000</td>
-                                            <td>10</td>
-                                            <td>5</td>
-                                            <td class="operate-btns">
-                                                <a href="{{asset('edit_member')}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
-                                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger">删除</button></a>
-                                            </td>
-                                        </tr>
+                                       @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                         <div class="pages">
-                            <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>
+                            <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span></div>
                         </div>
                     </div>
                 </div>
@@ -88,5 +58,11 @@
     $(document).ready(function() {
         $("#Pagination").pagination("2");
     });
+
+    function delmember(id,obj) {
+        $.post('{{url('deletemember')}}',{'memberid':id},function (data){
+            window.location = window.location.href;
+        });
+    }
 </script>
 @endsection

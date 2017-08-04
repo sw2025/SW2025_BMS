@@ -17,19 +17,22 @@ class SupplyController extends Controller
      */
     public function index($action = 'all'){
         $datas = DB::table("t_n_need")
-            ->leftJoin("t_u_user", "t_u_user.userid", "=", "t_n_need.userid")
-            ->leftJoin("t_n_needverify", "t_n_needverify.needid", "=", "t_n_need.needid")
-            ->select("t_n_needverify.configid", "t_n_needverify.verifytime", "t_n_needverify.remark", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
-            ->orderBy("t_n_needverify.verifytime", "desc");
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->leftJoin('view_needstatus as status','status.needid','=','t_n_need.needid')
+            ->select('view_userrole.role','t_u_enterprise.enterprisename as entname','t_u_expert.expertname as extname',"status.configid", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
+            ->orderBy("t_n_need.needid", "desc");
         switch($action){
             case 'all':
-                $datas = $datas->whereIn("configid", [1, 3])->paginate(10);
+                $datas = $datas->whereIn("configid", [1, 2])->paginate(10);
                 break;
             case 'wait':
                 $datas = $datas->where('configid',1)->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->where("configid", 3)->paginate(10);
+                $datas = $datas->where("configid", 2)->paginate(10);
                 break;
         }
         return view("supply.index", compact('datas','action'));
@@ -42,9 +45,12 @@ class SupplyController extends Controller
     public  function update($supply_id){
 
         $datas = DB::table("t_n_need")
-            ->leftJoin("t_u_user", "t_u_user.userid", "=", "t_n_need.userid")
-            ->leftJoin("t_n_needverify", "t_n_needverify.needid", "=", "t_n_need.needid")
-            ->select("t_n_needverify.configid", "t_n_needverify.verifytime", "t_n_needverify.remark", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->leftJoin('view_needstatus as status','status.needid','=','t_n_need.needid')
+            ->select('view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname',"status.configid", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
             ->where('t_n_need.needid',$supply_id)
             ->orderBy("created_at", "desc")
             ->first();
@@ -100,10 +106,10 @@ class SupplyController extends Controller
         $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(3);
+            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(15);
             $counts= $copy_obj->where("t_n_need.brief","like","%".$serveName."%")->count();
         }else{
-            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(3);
+            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(15);
             $counts= $copy_obj->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
