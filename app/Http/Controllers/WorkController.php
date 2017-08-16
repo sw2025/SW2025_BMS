@@ -18,23 +18,22 @@ class WorkController extends Controller
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_e_event.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
+            ->leftJoin('view_eventstatus as status','status.eventid' ,'=' ,'t_e_event.eventid')
             ->leftJoin('t_u_user','t_e_event.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_e_event.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventverify.verifytime','t_e_eventverify.configid')
-            ->orderBy('t_e_eventverify.verifytime','desc')
-            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)');
+            ->select('t_e_event.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','status.configid')
+            ->orderBy('t_e_event.eventid','desc');
         switch ($action) {
             case 'all':
-                $datas = $datas->whereIn("configid", [1,2,3])->paginate(1);
+                $datas = $datas->whereIn("configid", [1,2,3])->paginate(5);
                 break;
             case 'wait':
-                $datas = $datas->where("configid", 1)->paginate(1);
+                $datas = $datas->where("configid", 1)->paginate(5);
                 break;
             case 'fail':
-                $datas = $datas->where("configid", 3)->paginate(1);
+                $datas = $datas->where("configid", 3)->paginate(5);
                 break;
             case 'wput':
-                $datas = $datas->where("configid", 2)->paginate(1);
+                $datas = $datas->where("configid", 2)->paginate(5);
                 break;
         }
         return view("work.index",compact('datas','action'));
@@ -49,10 +48,10 @@ class WorkController extends Controller
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_e_event.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
-            ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
+            ->leftJoin('view_eventstatus as status','status.eventid' ,'=' ,'t_e_event.eventid')
             ->leftJoin('t_u_user','t_e_event.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_e_event.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventverify.verifytime','t_e_eventverify.configid')
-            ->orderBy('t_e_eventverify.verifytime','desc')
+            ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_e_event.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','status.configid')
+            ->orderBy('t_e_event.eventid','desc')
             ->where("t_e_event.eventid", $event_id)
             ->first();
         return view("work.update",compact('datas'));
@@ -110,10 +109,10 @@ class WorkController extends Controller
         $obj = $data->whereIn('t_e_eventverify.configid',$sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->orderBy('t_e_event.eventtime',$regTime)->paginate(4);
+            $datas= $obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->orderBy('t_e_event.eventtime',$regTime)->paginate(15);
             $counts= $copy_obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->count();
         }else{
-            $datas= $obj->orderBy('t_e_event.eventtime',$regTime)->paginate(4);
+            $datas= $obj->orderBy('t_e_event.eventtime',$regTime)->paginate(15);
             $counts=  $copy_obj->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!='null')?$_GET['serveName']:'null';

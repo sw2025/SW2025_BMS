@@ -9,8 +9,8 @@
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
-                    <div class="col-md-12 details-tit"><h2 class="cert-company">【{{$datas->role}}】 {{$datas->enterprisename or $datas->expertname}}</h2></div>
-                    <div class="col-md-6 details-tit"><span class="cert-industry">{{$datas->verifytime}}</span></div>
+                    <div class="col-md-12 details-tit"><h2 class="cert-company">【{{$datas->role}}】@if(!empty($datas->expertname) && !empty($datas->enterprisename)){{$datas->enterprisename}}/{{$datas->expertname}} @else {{$datas->expertname or $datas->enterprisename}} @endif</h2></div>
+                    <div class="col-md-6 details-tit"><span class="cert-industry">{{$datas->eventtime}}</span></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$datas->phone}}</span></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">需求分类：{{$datas->domain1}}</p></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">指定专家：{{$datas->domain2}}</p></div>
@@ -19,7 +19,7 @@
                     <p class="details-tit details-desc">简介：{{$datas->brief}}</p>
                 </div>
                 <div class="container-fluid details-bg">
-                    <p class="details-tit details-desc">公司/专家简介：{{$datas->desc1 or $datas->desc2}}</p>
+                    <p class="details-tit details-desc">公司/专家简介：@if(!empty($datas->expertname) && !empty($datas->enterprisename)) <br />企业：{{$datas->desc2}} <br /> 专家：{{$datas->desc1}} @else {{$datas->desc1 or $datas->desc2}}@endif</p>
                 </div>
                 @if($datas->configid == 1)
                     <div class="col-md-2 set-certificate">

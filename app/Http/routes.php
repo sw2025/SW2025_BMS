@@ -67,8 +67,11 @@ Route::post('/edit_roleSave','RoleController@editRoleSave');
 Route::get('/delete_role','RoleController@deleteRole');
 /*********************************参数设置***********************************************/
 Route::get('/member','MemberController@member');
+Route::post('/dealaddmember','MemberController@dealAddMember');
+Route::post('/dealeditmember','MemberController@dealEditMember');
+Route::post('/deletemember','MemberController@deleteMember');
 Route::get('/add_member','MemberController@addMember');
-Route::get('/edit_member','MemberController@editMember');
+Route::get('/edit_member/{memberid}','MemberController@editMember');
 /******************************审核操作*************************************************/
 //企业审核
 Route::get('/cert_enterprise/','EnterpriseController@index');
