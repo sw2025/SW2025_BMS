@@ -10,9 +10,13 @@
             $array=array();
             $nameCount=DB::table("T_RBAC_USER")->where("phone",$phone)->count();
             if($nameCount){
-                $counts=DB::table("T_RBAC_USER")->where("phone",$phone)->where("password",md5($passWord))->count();
+                $counts=DB::table("T_RBAC_USER")->where("phone",$phone)->where("password",md5($passWord))->get();
                 if($counts){
                     $array['code']="success";
+                    session(["userId"=>$counts[0]->userid]);
+                    session(["name"=>$counts[0]->name]);
+                    $array['userId']=$counts[0]->userid;
+                    $array['name']=$counts[0]->name;
                 }else{
                     $array['code']="passWord";
                     $array['msg']="密码错误!";
