@@ -25,6 +25,7 @@ class LoginController extends Controller{
         $phone=$_POST['phone'];
         $passWord=$_POST['passWord'];
         $datas= \UserClass::LoginVerify($phone,$passWord);
+
         return $datas;
     }
 

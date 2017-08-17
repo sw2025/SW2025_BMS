@@ -18,6 +18,10 @@ class IndexController extends Controller
         return view("index.index");
     }
 
+    /**
+     * 注册信息
+     * @return mixed
+     */
     public function registerData()
     {
 
@@ -51,6 +55,10 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * 充值体现信息
+     * @return mixed
+     */
     public function rechargeData()
     {
         $data=DB::table("T_U_BILL")
@@ -73,6 +81,10 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * 供求信息
+     * @return mixed
+     */
     public function supplyData()
     {
         $data=DB::table('t_n_need')
@@ -91,10 +103,19 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * 会员费
+     * @return mixed
+     */
     public function memberData()
     {
+
     }
 
+    /**
+     * 办事信息
+     * @return mixed
+     */
     public function workData()
     {
 
@@ -120,6 +141,10 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * 视频信息
+     * @return mixed
+     */
     public function videoData()
     {
         $result=DB::table('t_c_consultverify')
