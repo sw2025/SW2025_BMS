@@ -15,7 +15,6 @@
                     ->where("phone",$phone)->where("password",md5($passWord))
                     ->get();
 
-
                 if($counts){
                     $str = DB::table('T_RBAC_ROLEPERMISSION')
                         ->leftjoin("T_RBAC_PERMISSION",'T_RBAC_ROLEPERMISSION.PERMISSIONID','=','T_RBAC_PERMISSION.PERMISSIONID')
@@ -23,10 +22,14 @@
                         ->where('roleid',$counts[0]->roleid)
                         ->whereIn('level',[2,3])
                         ->get();
+
+
                     $arr = [];
                     foreach($str as $v){
-                        $arr[] = $v->url;
+                        $a = explode(',',$v->url);
+                        $arr = array_merge($arr,$a);
                     }
+                    //dd($arr);
                     //$str = serialize($str);
                     $str = \Illuminate\Support\Facades\Crypt::encrypt($arr);
 
