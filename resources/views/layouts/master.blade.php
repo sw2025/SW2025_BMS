@@ -66,6 +66,7 @@
                     <h3 class="text-light text-white"><span>升维网后台管理系统</span></h3>
                 </a>
             </div>
+
             <ul class="main-menu">
                 <li>
                     <a href="{{asset('/index')}}" class="active"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
@@ -115,6 +116,7 @@
                     </ul>
                 </li>
             </ul>
+
         </div>
     </div>
     @yield("content")

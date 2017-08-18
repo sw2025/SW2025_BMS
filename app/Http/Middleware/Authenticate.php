@@ -49,13 +49,16 @@ class Authenticate
 
         $str = session('str');
         $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
-        $b = explode('/', $_SERVER['REQUEST_URI']);
+        $b = explode('/', $_SERVER['REDIRECT_URL']);
         $b = '/'.$b[1];
+
+        /* var_dump($request);
+         dd($str);*/
         $result = in_array($b,$str);
         $result2 = in_array($b,self::$publicarr);
-
+        //dd($result);
         if(!$result && !$result2){
-            return redirect('/');
+            return "<script> alert('你没有权限访问');window.history.back(-1);   </script>";
         }
 
         return $next($request);
