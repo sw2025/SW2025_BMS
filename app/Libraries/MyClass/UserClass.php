@@ -10,9 +10,33 @@
             $array=array();
             $nameCount=DB::table("T_RBAC_USER")->where("phone",$phone)->count();
             if($nameCount){
-                $counts=DB::table("T_RBAC_USER")->where("phone",$phone)->where("password",md5($passWord))->count();
+                $counts=DB::table("T_RBAC_USER")
+                    ->leftjoin("T_RBAC_USERROLE",'T_RBAC_USER.USERID','=','T_RBAC_USERROLE.USERID')
+                    ->where("phone",$phone)->where("password",md5($passWord))
+                    ->get();
+
+
                 if($counts){
+                    $str = DB::table('T_RBAC_ROLEPERMISSION')
+                        ->leftjoin("T_RBAC_PERMISSION",'T_RBAC_ROLEPERMISSION.PERMISSIONID','=','T_RBAC_PERMISSION.PERMISSIONID')
+                        ->select("url")
+                        ->where('roleid',$counts[0]->roleid)
+                        ->whereIn('level',[2,3])
+                        ->get();
+                    $arr = [];
+                    foreach($str as $v){
+                        $arr[] = $v->url;
+                    }
+                    //$str = serialize($str);
+                    $str = \Illuminate\Support\Facades\Crypt::encrypt($arr);
+
+                    session(["str"=>$str]);
+
                     $array['code']="success";
+                    session(["userId"=>$counts[0]->userid]);
+                    session(["name"=>$counts[0]->name]);
+                    $array['userId']=$counts[0]->userid;
+                    $array['name']=$counts[0]->name;
                 }else{
                     $array['code']="passWord";
                     $array['msg']="密码错误!";

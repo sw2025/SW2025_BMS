@@ -27,13 +27,13 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/details_work/'.$v->eventid)}}" class="look-link">【{{$v->role}}】 {{$v->enterprisename or $v->expertname}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/details_work/'.$v->eventid)}}" class="look-link">【{{$v->role}}】@if(!empty($v->enterprisename) && !empty($v->expertname)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->enterprisename or $v->expertname}} @endif</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">需求分类：{{$v->domain1}}</p>
                                         <p class="cert-zone">指定专家：{{$v->domain2}}</p>
                                     </div>
                                     <div class="col-md-8 cert-cap">
-                                        <span class="cert-work-time">{{$v->verifytime}}</span>
+                                        <span class="cert-work-time">{{$v->eventtime}}</span>
                                         <span>{{$v->brief}}</span>
                                     </div>
                                 </div>

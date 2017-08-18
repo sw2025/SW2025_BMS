@@ -9,8 +9,8 @@
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
-                    <div class="col-md-12 details-tit"><h2 class="cert-company">{{$datas->name}}</h2></div>
-                    <div class="col-md-6 details-tit"><span class="cert-industry">{{$datas->verifytime}}</span></div>
+                    <div class="col-md-12 details-tit"><h2 class="cert-company">【{{$datas->role}}】@if(!empty($datas->expertname) && !empty($datas->enterprisename)){{$datas->enterprisename}} / {{$datas->expertname}} @else {{$datas->expertname or $datas->enterprisename}} @endif</h2></div>
+                    <div class="col-md-6 details-tit"><span class="cert-industry">{{$datas->needtime}}</span></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$datas->phone}}</span></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">需求分类：{{$datas->domain1}}/{{$datas->domain2}}</p></div>
                 </div>
@@ -27,7 +27,7 @@
                         <a href="javascript:;" onclick="showReason(); $('.reject-reasons button').attr('id',{{$datas->needid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
                     </div>
 
-                @elseif($datas->configid == 3)
+                @elseif($datas->configid == 2)
 
                     <div class="details-tit details-btns">
                         <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>

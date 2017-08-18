@@ -51,7 +51,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle myname">胖大海</a></li>
                 <li class="dropdown">
-                    <a href="{{asset('/quit')}}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-power-off text-danger"></i>退出</a>
+                    <a href="javascript:;" id="quit" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-power-off text-danger"></i>退出</a>
                 </li>
             </ul>
         </div>
@@ -121,3 +121,19 @@
 </div>
 </body>
 </html>
+<script>
+    $("#quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("/quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
+</script>

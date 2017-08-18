@@ -25,9 +25,25 @@ class LoginController extends Controller{
         $phone=$_POST['phone'];
         $passWord=$_POST['passWord'];
         $datas= \UserClass::LoginVerify($phone,$passWord);
+
         return $datas;
     }
 
+    /**
+     * 退出
+     * @return mixed
+     */
+    public function quit(Request $request){
+
+        $request->session()->flush();
+        $result=array();
+        if(session("userId")){
+            $result['code']="error";
+        }else{
+            $result['code']="success";
+        }
+        return $result;
+    }
     /**
      * 修改密码
      * @return mixed

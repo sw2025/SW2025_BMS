@@ -48,7 +48,7 @@
             var enterpriseId=$(this).attr("id");
             $.ajax({
                 url:"{{asset('/changeEnterprise')}}",
-                data:{"configid":2,"enterpriseId":enterpriseId},
+                data:{"configid":3,"enterpriseId":enterpriseId},
                 dataType:"json",
                 type:"POST",
                 success:function(res){
@@ -68,7 +68,7 @@
                 var enterpriseId=$(this).attr("id");
                 $.ajax({
                     url:"{{asset('/changeEnterprise')}}",
-                    data:{"remark":remark,"enterpriseId":enterpriseId,"configid":3},
+                    data:{"remark":remark,"enterpriseId":enterpriseId,"configid":2},
                     dataType:"json",
                     type:"POST",
                     success:function(res){

@@ -25,12 +25,12 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{url('/details_supply', $v->needid)}}" class="look-link">{{$v->name}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{url('/details_supply', $v->needid)}}" class="look-link">【{{$v->role}}】@if(!empty($v->entname) && !empty($v->extname)) {{$v->entname.' / '.$v->extname}} @else {{$v->entname or $v->extname}} @endif </a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
                                     </div>
                                     <div class="col-md-8 cert-cap">
-                                        <span class="cert-work-time">{{$v->verifytime}}</span>
+                                        <span class="cert-work-time">{{$v->needtime}}</span>
                                         <span>{{$v->brief}}</span>
                                     </div>
                                 </div>
@@ -42,7 +42,7 @@
                                     <a href="javascript:;" onclick="showReason(); $('.reject-reasons button').attr('id',{{$v->needid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
                                 </div>
 
-                            @elseif($v->configid == 3)
+                            @elseif($v->configid == 2)
 
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
@@ -74,7 +74,7 @@
                         var flag = $('#flag').attr('index');
                         $('#flag').attr("index",1);
                         var supply_id=$(this).attr("index");
-                        $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'config_id':2,'flag':flag},function (data) {
+                        $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'config_id':3,'flag':flag},function (data) {
                             if (data.errorMsg == 'success') {
                                 window.location.href = "{{url('/cert_supply')}}";
                             } else {
@@ -91,7 +91,7 @@
                             $('#flag').attr("index",1);
                             var remark=$(".reject-reasons textarea").val();
                             var supply_id=$(this).attr("id");
-                            $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'remark':remark,'config_id':3,'flag':flag},function (data) {
+                            $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'remark':remark,'config_id':2,'flag':flag},function (data) {
                                 if (data.errorMsg == 'success') {
                                     window.location.href = "{{url('/cert_supply')}}";
                                 } else {

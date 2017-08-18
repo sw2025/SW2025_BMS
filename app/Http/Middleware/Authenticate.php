@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\DB;
 
 class Authenticate
 {
@@ -13,7 +14,7 @@ class Authenticate
      * @var Guard
      */
     protected $auth;
-
+    static private $publicarr = ['/index','/workData','/supplyData','/registerData','/rechargeData','/videoData','/memberData'];
     /**
      * Create a new middleware instance.
      *
@@ -34,14 +35,31 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest()) {
+        /*if ($this->auth->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return redirect()->guest('/');
             }
+        }
+        return $next($request);*/
+        if(empty(session('userId'))){
+            return redirect('/');
+        }
+
+        $str = session('str');
+        $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
+        $b = explode('/', $_SERVER['REQUEST_URI']);
+        $b = '/'.$b[1];
+        $result = in_array($b,$str);
+        $result2 = in_array($b,self::$publicarr);
+
+        if(!$result && !$result2){
+            return redirect('/');
         }
 
         return $next($request);
+
     }
+
 }
