@@ -26,15 +26,15 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/details_expert')}}?expertid={{$data->expertid}}" class="look-link">{{$data->expertname}}专家</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/details_expert')}}?expertid={{$data->expertid}}" class="look-link">{{$data->expertname}}</a></h2>
                                         <span class="cert-time">{{$data->created_at}}</span>
                                         <span class="cert-telephone">联系电话：{{$data->phone}}</span>
                                         <p class="cert-industry">擅长问题：{{$data->domain1}}/{{$data->domain2}}</p>
                                         <p class="cert-scale">专家分类：{{$data->category}}</p>
-                                        <p class="cert-zone">{{$data->address}}</p>
+                                        <p class="cert-zone">地区：{{$data->address}}</p>
                                     </div>
-                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('../img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
-                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('../img/zhanwei.jpg');" src="../img/zhanwei.jpg" /></div>
+                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{$data->licenceimage}}');" src="{{$data->licenceimage}}" /></div>
+                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{$data->showimage}}');" src="{{$data->showimage}}" /></div>
                                 </div>
                             </div>
                             <div class="col-md-2 set-certificate">
@@ -76,9 +76,10 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success"){
+                        alert("操作成功");
                         window.location.href="{{asset('/cert_expert')}}";
                     }else{
-                        alert("审核失败");
+                        alert("操作失败");
                         window.location.href="{{asset('/cert_expert')}}";
                     }
                 }
@@ -97,9 +98,10 @@
                     type:"POST",
                     success:function(res){
                         if(res['code']=="success"){
+                            alert("操作成功");
                             window.location.href="{{asset('/cert_expert')}}";
                         }else{
-                            alert("审核失败");
+                            alert("操作失败");
                             window.location.href="{{asset('/cert_expert')}}";
                         }
                     }

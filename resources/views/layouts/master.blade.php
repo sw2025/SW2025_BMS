@@ -69,7 +69,7 @@
 
             <ul class="main-menu">
                 <li>
-                    <a href="{{asset('/index')}}" class="active"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
+                    <a href="{{asset('/index')}}"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
                 </li>
                 <li>
                     <a href="javascript:void(0);">
@@ -107,7 +107,7 @@
                         <i class="fa fa-puzzle-piece fa-fw"></i><span class="title">信息维护</span> <span class="expand-sign">+</span>
                     </a>
                     <ul>
-                        <li><a href="{{asset('/serve_enterprise')}}" >企业信息维护</a></li>
+                        <li ><a href="{{asset('/serve_enterprise')}}" >企业信息维护</a></li>
                         <li><a href="{{asset('/serve_expert')}}">专家信息维护</a></li>
                         <li><a href="{{asset('/serve_supply')}}">需求信息维护</a></li>
                         <li><a href="{{asset('/serve_work')}}">办事服务信息</a></li>
@@ -138,4 +138,17 @@
             }
         })
     })
+    $('.main-menu li ul li a').each(function () {
+        console.log($(this).attr('href') == window.location.href);
+        if($(this).attr('href') == window.location.href){
+            $(this).addClass('active');
+        }
+    });
+
+    $('.main-menu li a').each(function () {
+        console.log($(this).attr('href') == window.location.href);
+        if($(this).attr('href') == window.location.href){
+            $(this).addClass('active');
+        }
+    });
 </script>
