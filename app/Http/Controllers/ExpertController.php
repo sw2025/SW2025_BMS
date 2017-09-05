@@ -24,13 +24,13 @@ class ExpertController extends Controller
 
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("configid",[1,3])->paginate(2);
+                $datas = $datas->whereIn("configid",[1,3])->paginate(10);
                 break;
             case 'wait':
-                $datas = $datas->whereIn("configid",[1])->paginate(2);
+                $datas = $datas->whereIn("configid",[1])->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->whereIn("configid",[3])->paginate(2);
+                $datas = $datas->whereIn("configid",[3])->paginate(10);
                 break;
         }
         return view("expert.index",compact("datas",'status'));
@@ -105,11 +105,11 @@ class ExpertController extends Controller
        $count=clone $data;
 
      if(!empty($serveName)){
-         $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(1);
+         $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(10);
          $counts=$count->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
 
        }else{
-         $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(1);
+         $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(10);
          $counts= $count->where($jobWhere)->where($locationWhere)->count();
        }
 
