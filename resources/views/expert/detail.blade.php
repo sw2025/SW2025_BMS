@@ -12,6 +12,7 @@
                     <div class="col-md-12 details-tit"><h2 class="cert-company">{{$data->expertname}}</h2></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">{{$data->created_at}}</span></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$data->phone}}</span></div>
+                    <div class="col-md-6 details-tit"><p class="cert-industry">擅长行业：{{$data->industry}}</p></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">擅长问题：{{$data->domain1}}/{{$data->domain2}}</p></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">专家分类：{{$data->category}}</p></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">地区：{{$data->address}}</p></div>

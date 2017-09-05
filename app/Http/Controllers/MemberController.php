@@ -14,7 +14,7 @@ class MemberController extends Controller
      * @return mixed
      */
  public function  member(){
-     $datas = DB::table('t_u_memberright')->paginate(5);
+     $datas = DB::table('t_u_memberright')->paginate(10);
      return view("member.member",compact('datas'));
  }
 
