@@ -112,6 +112,7 @@
                                     <h2 class="cert-company"><a href="{{url('/serve_expertDet',$data->expertid)}}" class="look-link">{{$data->expertname}}</a></h2>
                                     <span class="cert-time">{{$data->created_at}}</span>
                                     <span class="cert-telephone">联系电话：{{$data->phone}}</span>
+                                    <p class="cert-industry">擅长行业：{{$data->industry}}</p>
                                     <p class="cert-industry">擅长问题：{{$data->domain1}}</p>
                                     <p class="cert-scale">专家分类：{{$data->category}}</p>
                                     <p class="cert-zone">地区：{{$data->address}}</p>

@@ -26,7 +26,7 @@ class EnterpriseController extends Controller{
             ->whereIn("configid",[1,2,3])
             ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
-            ->paginate(1);
+            ->paginate(10);
         }else{
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
@@ -35,7 +35,7 @@ class EnterpriseController extends Controller{
             ->where("configid",$status)
             ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->orderBy("T_U_ENTERPRISE.created_at","desc")
-            ->paginate(1);
+            ->paginate(10);
         }
         return view("enterprise.index",compact("datas","status"));
     }

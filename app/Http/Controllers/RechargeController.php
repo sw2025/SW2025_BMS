@@ -22,13 +22,13 @@ class RechargeController extends Controller
         //dd($datas);
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("type",['在途','收入'])->paginate(2);
+                $datas = $datas->whereIn("type",['在途','收入'])->paginate(10);
                 break;
             case 'wait':
-                $datas = $datas->where("type",'在途')->paginate(2);
+                $datas = $datas->where("type",'在途')->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->where("type",'收入')->paginate(2);
+                $datas = $datas->where("type",'收入')->paginate(10);
                 break;
         }
         return view("recharge.index",compact("datas","status"));
@@ -130,10 +130,10 @@ class RechargeController extends Controller
             ->whereIn("TYPE",['支出','充值']);
         $count=clone $data;
         if(!empty($serveName)){
-            $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType)->paginate(1);
+            $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType)->paginate(10);
             $counts=$count->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }else{
-            $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_BILL.BILLTIME",$regTime) ->paginate(1);
+            $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_BILL.BILLTIME",$regTime) ->paginate(10);
             $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";

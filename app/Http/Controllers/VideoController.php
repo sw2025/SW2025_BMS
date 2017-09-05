@@ -27,16 +27,16 @@ class VideoController extends Controller
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)');
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("configid",[1,2,3])->paginate(2);
+                $datas = $datas->whereIn("configid",[1,2,3])->paginate(10);
                 break;
             case 'wait':
-                $datas = $datas->whereIn("configid",[1])->paginate(2);
+                $datas = $datas->whereIn("configid",[1])->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->whereIn("configid",[3])->paginate(2);
+                $datas = $datas->whereIn("configid",[3])->paginate(10);
                 break;
             case 'pendingPush':
-                $datas = $datas->whereIn("configid",[2])->paginate(2);
+                $datas = $datas->whereIn("configid",[2])->paginate(10);
                 break;
         }
         return view("video.index",compact("datas",'status'));
@@ -121,10 +121,10 @@ class VideoController extends Controller
         $count=clone $data;
 
         if(!empty($serveName)){
-                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(1);
+                $datas=$data->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consultverify.created_at",$regTime)->paginate(10);
                 $counts=$count->where("t_c_consult.brief","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }else{
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consult.created_at",$regTime)->paginate(1);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("t_c_consult.created_at",$regTime)->paginate(10);
                 $counts=$count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
