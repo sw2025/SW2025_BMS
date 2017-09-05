@@ -106,10 +106,10 @@ class SupplyController extends Controller
         $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(15);
+            $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(10);
             $counts= $copy_obj->where("t_n_need.brief","like","%".$serveName."%")->count();
         }else{
-            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(15);
+            $datas= $obj->orderBy("t_n_need.needtime",$regTime)->paginate(10);
             $counts= $copy_obj->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";

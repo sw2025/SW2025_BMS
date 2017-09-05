@@ -88,6 +88,7 @@
                     var eve_id=$(this).attr("index");
                     $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':2,'flag':flag},function (data) {
                         if (data.errorMsg == 'success') {
+                            alert("操作成功");
                             window.location.href = "{{url('cert_work')}}";
                         } else {
                             alert("审核失败或反应超时");
@@ -105,6 +106,7 @@
                     var eve_id=$(this).attr("index");
                     $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':4,'flag':flag},function (data) {
                         if (data.errorMsg == 'success') {
+                            alert("操作成功");
                             window.location.href = "{{url('cert_work')}}";
                         } else {
                             alert("推送失败或反应超时");
@@ -124,6 +126,7 @@
                         var eve_id=$(this).attr("id");
                         $.post('{{url('changeEvent')}}',{'event_id':eve_id,'remark':remark,'config_id':3,'flag':flag},function (data) {
                             if (data.errorMsg == 'success') {
+                                alert("操作成功");
                                 window.location.href = "{{url('/cert_work')}}";
                             } else {
                                 alert("审核失败或反应超时");
