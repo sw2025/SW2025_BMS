@@ -24,16 +24,16 @@ class WorkController extends Controller
             ->orderBy('t_e_event.eventid','desc');
         switch ($action) {
             case 'all':
-                $datas = $datas->whereIn("configid", [1,2,3])->paginate(5);
+                $datas = $datas->whereIn("configid", [1,2,3])->paginate(10);
                 break;
             case 'wait':
-                $datas = $datas->where("configid", 1)->paginate(5);
+                $datas = $datas->where("configid", 1)->paginate(10);
                 break;
             case 'fail':
-                $datas = $datas->where("configid", 3)->paginate(5);
+                $datas = $datas->where("configid", 3)->paginate(10);
                 break;
             case 'wput':
-                $datas = $datas->where("configid", 2)->paginate(5);
+                $datas = $datas->where("configid", 2)->paginate(10);
                 break;
         }
         return view("work.index",compact('datas','action'));
@@ -109,10 +109,10 @@ class WorkController extends Controller
         $obj = $data->whereIn('t_e_eventverify.configid',$sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
-            $datas= $obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->orderBy('t_e_event.eventtime',$regTime)->paginate(15);
+            $datas= $obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->orderBy('t_e_event.eventtime',$regTime)->paginate(10);
             $counts= $copy_obj->where('t_e_event.brief','like','%"'.$serveName.'"%')->count();
         }else{
-            $datas= $obj->orderBy('t_e_event.eventtime',$regTime)->paginate(15);
+            $datas= $obj->orderBy('t_e_event.eventtime',$regTime)->paginate(10);
             $counts=  $copy_obj->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!='null')?$_GET['serveName']:'null';
