@@ -76,9 +76,10 @@
                         var supply_id=$(this).attr("index");
                         $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'config_id':3,'flag':flag},function (data) {
                             if (data.errorMsg == 'success') {
+                                alert("操作成功");
                                 window.location.href = "{{url('/cert_supply')}}";
                             } else {
-                                alert("审核失败或反应超时");
+                                alert("操作失败或反应超时");
                                 window.location.href = "{{url('/cert_supply')}}";
                             }
                         },'json');
@@ -93,9 +94,10 @@
                             var supply_id=$(this).attr("id");
                             $.post('{{url('changeSupply')}}',{'supply_id':supply_id,'remark':remark,'config_id':2,'flag':flag},function (data) {
                                 if (data.errorMsg == 'success') {
+                                    alert("操作成功");
                                     window.location.href = "{{url('/cert_supply')}}";
                                 } else {
-                                    alert("审核失败或反应超时");
+                                    alert("操作失败或反应超时");
                                     window.location.href = "{{url('/cert_supply')}}";
                                 }
                             },'json');
