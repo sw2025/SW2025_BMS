@@ -50,7 +50,7 @@ class Authenticate
         $str = session('str');
         $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
         $b = explode('/', $_SERVER['REDIRECT_URL']);
-        $b = '/'.$b[3];
+        $b = '/'.$b[1];
 
         /* var_dump($request);
          dd($str);*/
