@@ -145,13 +145,6 @@
 </html>
 <script>
     $('.main-menu li ul li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
-            $(this).addClass('active');
-        }
-    });
-    $('.main-menu li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
         if($(this).attr('href') == window.location.href){
             $(this).addClass('active');
         }
