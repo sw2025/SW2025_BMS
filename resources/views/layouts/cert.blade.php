@@ -151,15 +151,18 @@
 </body>
 </html>
 <script>
+
+    var protocol = window.location.protocol;
+    var host = window.location.host;
+    var pathname = window.document.location.pathname;
+    var bb = pathname.substring(0,pathname.substr(1).indexOf('/')+1);
+    if(bb==''){
+        var url = protocol+ '//' +host+pathname;
+    }else{
+        var url = protocol+ '//'+host+bb;
+    }
     $('.main-menu li ul li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
-            $(this).addClass('active');
-        }
-    });
-    $('.main-menu li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
+        if($(this).attr('href') == url){
             $(this).addClass('active');
         }
     });
