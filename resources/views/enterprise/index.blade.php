@@ -27,7 +27,7 @@
                                         <p class="cert-zone">地区：{{$data->address}}</p>
                                     </div>
                                     <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->licenceimage}}');" src="{{env('ImagePath').$data->licenceimage}}" /></div>
-                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{('ImagePath').$data->showimage}}');" src="{{env('ImagePath').$data->showimage}}" /></div>
+                                    <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->showimage}}');" src="{{env('ImagePath').$data->showimage}}" /></div>
                                 </div>
                             </div>
                             <div class="col-md-2 set-certificate">
