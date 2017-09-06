@@ -46,7 +46,6 @@ class ExpertController extends Controller
             ->where("T_U_EXPERT.expertid",$expertid)
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
             ->first();
-        //dd($datas);
         return view("expert.update",compact("datas"));
     }
 
@@ -70,7 +69,7 @@ class ExpertController extends Controller
         }
 
     }
-  
+
     /**专家信息维护首页
      * @return mixed
      */

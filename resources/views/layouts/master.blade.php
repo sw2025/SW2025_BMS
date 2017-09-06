@@ -69,7 +69,7 @@
 
             <ul class="main-menu">
                 <li>
-                    <a href="{{asset('/index')}}"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
+                    <a href="{{asset('/index')}}" id="shouye"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
                 </li>
                 <li>
                     <a href="javascript:void(0);">
@@ -138,17 +138,17 @@
             }
         })
     })
-    $('.main-menu li ul li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
-            $(this).addClass('active');
-        }
-    });
 
-    $('.main-menu li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
-            $(this).addClass('active');
-        }
-    });
+    if(window.location.href  == 'http://www.sw2025.cn/index'){
+        $('#shouye').attr('class','active');
+    }else{
+        $('.main-menu li ul li a').each(function () {
+            console.log($(this).attr('href') == window.location.href);
+            if($(this).attr('href') == window.location.href){
+                $(this).addClass('active');
+            }
+        });
+    }
+
+
 </script>
