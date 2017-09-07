@@ -51,7 +51,7 @@
 .cert-company{font-size: 16px;margin: 10px 0 ;}
 .cert-time,.cert-telephone{display: block;color:#666;margin-bottom: 6px;}
 .cert-industry,.cert-scale,.cert-zone{font-size: 14px;text-align: justify;}
-.cert-img img{width:75%;display: block;margin:10px auto;}
+.cert-img img{width:75%;display: block;margin:10px auto;height:188px;}
 .set-certificate{padding-top: 40px;}
 .set-certificate a{text-decoration: none;display: block;}
 .set-certificate button{margin:10px 0 0;}
