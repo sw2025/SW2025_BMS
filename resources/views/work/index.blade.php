@@ -49,7 +49,7 @@
                                 </div>
                             @elseif($v->configid == 3)
                                 <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->eventid}}">已拒绝</button></a>
                                 </div>
                             @endif
 
@@ -135,7 +135,18 @@
                         },'json');
                     });
                 })
-
+                $(".refuse").on("click",function(){
+                    var id=$(this).attr('id');
+                    $.ajax({
+                        url:"{{url('getRemark')}}",
+                        data:{"type":"work","id":id},
+                        dateType:"json",
+                        type:"POST",
+                        success:function(res){
+                            layer.alert(res);
+                        }
+                    })
+                })
             </script>
         </section>
     </div>
