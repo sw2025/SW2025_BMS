@@ -44,7 +44,7 @@
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->consultid}}">通过审核</button></a>
                                 <a href="javascript:;" onclick="showReason({{$data->consultid}});"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->consultid}}">拒绝审核</button></a>
                             @elseif($data->configid==2)
-                                <a href="javascript:;" onclick="showReason();"><button type="button" class="btn btn-block ink-reaction btn-support5">推送</button></a>
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction ">推送</button></a>
                             @else
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->consultid}}" >已拒绝</button></a>
                             @endif
