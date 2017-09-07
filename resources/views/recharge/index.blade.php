@@ -33,7 +33,7 @@
                                 </div>
                             @else
                                 <div class="cert-recharge-btns">
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->id}}" >已拒绝</button></a>
                                 </div>
                             @endif
                         </div>
@@ -97,6 +97,17 @@
                 })
             });
         })
-
+        $(".refuse").on("click",function(){
+            var id=$(this).attr('id');
+            $.ajax({
+                url:"{{url('getRemark')}}",
+                data:{"type":"recharge","id":id},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    layer.alert(res);
+                }
+            })
+        })
     </script>
 @endsection

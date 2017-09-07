@@ -154,3 +154,5 @@ Route::group(['middleware' => ['auth']], function () {
 //提现信息维护详情
     Route::get('/serve_rechargeDet/{rechargeid}','RechargeController@serveDetail');
 });
+//获取拒绝原因
+Route::post('/getRemark','PublicController@getRemark');

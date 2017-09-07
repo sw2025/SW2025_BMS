@@ -23,7 +23,7 @@
                 <div class="container-fluid details-bg">
                     <div class="details-tit clearfix">
                         <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->licenceimage}}');" src="{{env('ImagePath').$data->licenceimage}}" /></div>
-                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->showimage}}');" src=".{{env('ImagePath').$data->showimage}}" /></div>
+                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->showimage}}');" src="{{env('ImagePath').$data->showimage}}" /></div>
                     </div>
                 </div>
                 @if($data->isfirst==0)

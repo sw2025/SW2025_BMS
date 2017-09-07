@@ -43,7 +43,7 @@
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason({{$data->expertid}});"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">拒绝审核</button></a>
                                 @else
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->expertid}}" >已拒绝</button></a>
                                 @endif
                             </div>
                         </div>
@@ -109,6 +109,17 @@
                 })
             });
         })
-
+        $(".refuse").on("click",function(){
+            var id=$(this).attr('id');
+            $.ajax({
+                url:"{{url('getRemark')}}",
+                data:{"type":"expert","id":id},
+                dateType:"json",
+                type:"POST",
+                success:function(res){
+                    layer.alert(res);
+                }
+            })
+        })
     </script>
 @endsection
