@@ -15,7 +15,7 @@ class RoleController extends Controller
      * @return mixed
      */
     public function index(){
-        $datas=DB::table("T_RBAC_ROLE")->where("state",0)->paginate(1);
+        $datas=DB::table("T_RBAC_ROLE")->where("state",0)->paginate(10);
         return view("role.index",compact("datas"));
     }
 

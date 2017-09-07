@@ -138,7 +138,6 @@
             }
         })
     })
-
     if(window.location.href  == 'http://www.sw2025.cn/index'){
         $('#shouye').attr('class','active');
     }else{
