@@ -75,6 +75,9 @@
                     <a href="javascript:void(0);">
                         <i class="fa fa-gear fa-fw"></i><span class="title">基础设置</span> <span class="expand-sign">+</span>
                     </a>
+                   {{-- @foreach($data as $yiji)
+
+                    @endforeach--}}
                     <ul>
                         <li><a href="{{asset('/change_pwd')}}">修改密码</a></li>
                         <li><a href="{{asset('/operate_people')}}">操作人员</a></li>

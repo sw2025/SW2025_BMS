@@ -5,7 +5,7 @@
 
             <ol class="breadcrumb">
                 <li>审核操作</li>
-                <li class="active">认证审核</li>
+                <li class="active"><a href="{{asset('/cert_expert')}}">专家认证审核</a></li>
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
@@ -51,10 +51,11 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success"){
-                        window.location.href="{{asset('/cert_expert')}}";
+                        alert("操作成功");
+                        window.location.href=window.location;
                     }else{
-                        alert("审核失败");
-                        window.location.href="{{asset('/cert_expert')}}";
+                        alert("操作失败");
+                        window.location.href=window.location;
                     }
                 }
             })
@@ -72,9 +73,10 @@
                     type:"POST",
                     success:function(res){
                         if(res['code']=="success"){
+                            alert("操作成功");
                             window.location.href=window.location;
                         }else{
-                            alert("审核失败");
+                            alert("操作失败");
                             window.location.href=window.location;
                         }
                     }
