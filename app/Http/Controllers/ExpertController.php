@@ -52,6 +52,19 @@ class ExpertController extends Controller
     //
     public  function changeExpert(){
         $array=array();
+        $res=DB::table("T_U_EXPERT")
+            ->leftJoin("T_U_USER","T_U_USER.userid","=","T_U_EXPERT.userid")
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.enterpriseid")
+            ->where("T_U_EXPERTVERIFY.expertid",$_POST['expertid'])
+            ->orderBy("T_U_EXPERTVERIFY.id")
+            ->select("T_U_USER.phone","T_U_EXPERTVERIFY.created_at","T_U_USER.userid")
+            ->take(1)
+            ->get();
+        foreach ($res as $value){
+            $mobile=$value->phone;
+            $time=$value->created_at;
+            $receiveId=$value->userid;
+        }
         $result=DB::table("T_U_EXPERTVERIFY")
             ->insert([
                 "expertid"=>$_POST['expertid'],
@@ -60,6 +73,31 @@ class ExpertController extends Controller
                 "verifytime"=>date("Y-m-d H:i:s",time()),
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
+        if($_POST['configid']==2){
+            DB::table("T_M_SYSTEMMESSAGE")->insert([
+                "sendid"=>0,
+                "receiveid"=>$receiveId,
+                "title"=>"专家认证成功",
+                "content"=>"您提交的专家认证已经通过",
+                "state"=>0,
+                "sendtime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            $this->_sendSms($mobile,$time,"expertSuccess");
+        }else{
+            DB::table("T_M_SYSTEMMESSAGE")->insert([
+                "sendid"=>0,
+                "receiveid"=>$receiveId,
+                "title"=>"专家认证失败",
+                "content"=>"您提交的专家认证未通过,请重新提交",
+                "state"=>0,
+                "sendtime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            $this->_sendSms($mobile,$time,"expertFail");
+        }
         if($result){
             $array['code']="success";
             return $array;

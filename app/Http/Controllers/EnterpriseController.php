@@ -64,6 +64,19 @@ class EnterpriseController extends Controller{
      */
     public  function changeEnterprise(){
         $array=array();
+        $res=DB::table("T_U_ENTERPRISE")
+                ->leftJoin("T_U_USER","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+                ->where("T_U_ENTERPRISEVERIFY.enterpriseid",$_POST['enterpriseId'])
+                ->orderBy("T_U_ENTERPRISEVERIFY.id")
+                ->select("T_U_USER.phone","T_U_ENTERPRISEVERIFY.created_at","T_U_USER.userid")
+                ->take(1)
+               ->get();
+        foreach ($res as $value){
+            $mobile=$value->phone;
+            $time=$value->created_at;
+            $receiveId=$value->userid;
+        }
         $result=DB::table("T_U_ENTERPRISEVERIFY")->insert([
                         "configid"=>$_POST['configid'],
                         "enterpriseid"=>$_POST['enterpriseId'],
@@ -72,6 +85,31 @@ class EnterpriseController extends Controller{
                         "created_at"=>date("Y-m-d H:i:s",time()),
                         "updated_at"=>date("Y-m-d H:i:s",time())
                     ]);
+        if($_POST['configid']==3){
+            DB::table("T_M_SYSTEMMESSAGE")->insert([
+                "sendid"=>0,
+                "receiveid"=>$receiveId,
+                "title"=>"企业审核成功",
+                "content"=>"您提交的企业审核已经通过,马上开通会员享受更多优惠吧",
+                "state"=>0,
+                "sendtime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            $this->_sendSms($mobile,$time,"enterpriseSuccess");
+        }else{
+            DB::table("T_M_SYSTEMMESSAGE")->insert([
+                "sendid"=>0,
+                "receiveid"=>$receiveId,
+                "title"=>"企业审核失败",
+                "content"=>"您提交的企业审核未通过,请重新提交",
+                "state"=>0,
+                "sendtime"=>date("Y-m-d H:i:s",time()),
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            $this->_sendSms($mobile,$time,"enterpriseFail");
+        }
         if($result){
            $array['code']="success";
             return $array;
