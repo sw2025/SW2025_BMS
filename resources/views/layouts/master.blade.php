@@ -75,9 +75,6 @@
                     <a href="javascript:void(0);">
                         <i class="fa fa-gear fa-fw"></i><span class="title">基础设置</span> <span class="expand-sign">+</span>
                     </a>
-                   {{-- @foreach($data as $yiji)
-
-                    @endforeach--}}
                     <ul>
                         <li><a href="{{asset('/change_pwd')}}">修改密码</a></li>
                         <li><a href="{{asset('/operate_people')}}">操作人员</a></li>
@@ -145,6 +142,42 @@
     if(window.location.href  == 'http://www.sw2025.cn/index'){
         $('#shouye').attr('class','active');
     }else{
+
+        var protocol = window.location.protocol;
+        var host = window.location.host;
+        var pathname = window.document.location.pathname;
+        var bb = pathname.substring(0,pathname.substr(1).indexOf('/')+1);
+        alert(bb);
+        alert(pathname);
+        if(pathname=='/add_operator' || pathname=='/edit_operator'){
+            var pathname = '/operate_people';
+        }
+        if(pathname=='/edit_role' || pathname=='/add_role'){
+            var pathname='/role';
+        }
+
+        if(pathname=='/add_member'){
+            var pathname='/member';
+        }
+        if(bb == '/edit_member'){
+            var bb='/member';
+        }
+        if(pathname=='/details_enterprise'){
+            var pathname = '/cert_enterprise';
+        }
+        if(bb=='/serve_expertDet'){
+            var bb='/serve_expert';
+        }
+        if(bb==''){
+            var url = protocol+ '//' +host+pathname;
+        }else{
+            var url = protocol+ '//'+host+bb;
+        }
+        $('.main-menu li ul li a').each(function () {
+            if($(this).attr('href') == url){
+                $(this).addClass('active');
+            }
+        });
         $('.main-menu li ul li a').each(function () {
             console.log($(this).attr('href') == window.location.href);
             if($(this).attr('href') == window.location.href){

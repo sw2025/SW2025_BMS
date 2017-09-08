@@ -151,11 +151,62 @@
 </body>
 </html>
 <script>
-
     var protocol = window.location.protocol;
     var host = window.location.host;
     var pathname = window.document.location.pathname;
     var bb = pathname.substring(0,pathname.substr(1).indexOf('/')+1);
+
+    if(pathname=='/add_operator' || pathname=='/edit_operator'){
+        var pathname = '/operate_people';
+    }
+    if(pathname=='/edit_role' || pathname=='/add_role'){
+        var pathname='/role';
+    }
+    if(pathname=='/add_member'){
+        var pathname='/member';
+    }
+    if(bb == '/edit_member'){
+        var bb='/member';
+    }
+
+    if(pathname=='/details_enterprise'){
+        var pathname = '/cert_enterprise';
+    }
+    if(pathname=='/details_expert'){
+        var pathname='/cert_expert';
+    }
+    if(bb=='/details_supply'){
+        var bb='/cert_supply';
+    }
+    if(bb=='/details_supply'){
+        var bb='/cert_work';
+    }
+    if(pathname=='/details_video'){
+        var pathname='/cert_video';
+    }
+    if(pathname=='/details_video'){
+        var pathname='/cert_recharge';
+    }
+
+
+    if(pathname=='/serve_enterpriseDet'){
+        var pathname='/serve_enterprise';
+    }
+    if(bb=='/serve_expertDet'){
+        var bb='/serve_expert';
+    }
+    if(bb=='/serve_supplyDet'){
+        var bb ='/serve_supply';
+    }
+    if(bb=='/serve_workDet'){
+        var bb ='/serve_work';
+    }
+    if(bb=='/serve_videoDet'){
+        var bb ='/serve_video';
+    }
+    if(bb=='/serve_rechargeDet'){
+        var bb ='/serve_recharge';
+    }
     if(bb==''){
         var url = protocol+ '//' +host+pathname;
     }else{
@@ -163,6 +214,12 @@
     }
     $('.main-menu li ul li a').each(function () {
         if($(this).attr('href') == url){
+            $(this).addClass('active');
+        }
+    });
+    $('.main-menu li ul li a').each(function () {
+        console.log($(this).attr('href') == window.location.href);
+        if($(this).attr('href') == window.location.href){
             $(this).addClass('active');
         }
     });
