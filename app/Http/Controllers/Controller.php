@@ -17,7 +17,9 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct()
+   /* public $data;
+
+    public function __construct($data)
     {
 
         /*$roleid = DB::table('t_rbac_userrole')->where('userid',session('userId'))->first()->roleid;
@@ -63,6 +65,7 @@ abstract class Controller extends BaseController
             $request->setTemplateCode("SMS_94790038");//设置模板
         }
 
+
         //选填-假如模板中存在变量需要替换则为必填(JSON格式),友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
         $request->setTemplateParam("{\"name\":\"{$mobile}\",\"time\":\"{$time}\"}");
         //选填-发送短信流水号
@@ -70,5 +73,6 @@ abstract class Controller extends BaseController
         //发起访问请求
         $acsResponse = $acsClient->getAcsResponse($request);
     }
+
 
 }
