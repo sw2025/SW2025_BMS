@@ -12,7 +12,9 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct()
+   /* public $data;
+
+    public function __construct($data)
     {
 
         $roleid = DB::table('t_rbac_userrole')->where('userid',session('userId'))->first()->roleid;
@@ -23,6 +25,9 @@ abstract class Controller extends BaseController
             ->select('t_rbac_rolepermission.*','t_rbac_permission.*')
             ->get();
 
-    }
+          $this->data = $data;
+
+    }*/
+
 
 }
