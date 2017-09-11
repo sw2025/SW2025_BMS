@@ -66,55 +66,27 @@
                     <h3 class="text-light text-white"><span>升维网后台管理系统</span></h3>
                 </a>
             </div>
-
             <ul class="main-menu">
+              {{--  {{var_dump($rbacdata)}}--}}
                 <li>
                     <a href="{{asset('/index')}}" id="shouye"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
                 </li>
+                @foreach($rbacdata as $big)
+                    @if($big->level==1)
                 <li>
                     <a href="javascript:void(0);">
-                        <i class="fa fa-gear fa-fw"></i><span class="title">基础设置</span> <span class="expand-sign">+</span>
+                        <i class="{{$big->class}}"></i><span class="title">{{$big->permissionname}}</span><span class="expand-sign">+</span>
                     </a>
                     <ul>
-                        <li><a href="{{asset('/change_pwd')}}">修改密码</a></li>
-                        <li><a href="{{asset('/operate_people')}}">操作人员</a></li>
-                        <li><a href="{{asset('/role')}}" >角色权限</a></li>
+                        @foreach($rbacdata as $small)
+                            @if($small->level==2 && $small->pid == $big->permissionid)
+                        <li><a href="{{$small->url}}">{{$small->permissionname}}</a></li>
+                            @endif
+                        @endforeach
                     </ul>
                 </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-gear fa-fw"></i><span class="title">参数设置</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/member')}}">会员权益</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-edit fa-fw"></i><span class="title">审核操作</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/cert_enterprise')}}">企业认证审核</a></li>
-                        <li><a href="{{asset('/cert_expert')}}">专家认证审核</a></li>
-                        <li><a href="{{asset('/cert_supply')}}">供求信息审核</a></li>
-                        <li><a href="{{asset('/cert_work')}}">办事服务审核</a></li>
-                        <li><a href="{{asset('/cert_video')}}">视频咨询审核</a></li>
-                        <li><a href="{{asset('/cert_recharge')}}">提现申请审核</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-puzzle-piece fa-fw"></i><span class="title">信息维护</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li ><a href="{{asset('/serve_enterprise')}}" >企业信息维护</a></li>
-                        <li><a href="{{asset('/serve_expert')}}">专家信息维护</a></li>
-                        <li><a href="{{asset('/serve_supply')}}">需求信息维护</a></li>
-                        <li><a href="{{asset('/serve_work')}}">办事服务信息</a></li>
-                        <li><a href="{{asset('/serve_video')}}">视频咨询信息</a></li>
-                        <li><a href="{{asset('/serve_recharge')}}">充值提现信息</a></li>
-                    </ul>
-                </li>
+                    @endif
+                @endforeach
             </ul>
 
         </div>
@@ -142,49 +114,72 @@
     if(window.location.href  == 'http://www.sw2025.cn/index'){
         $('#shouye').attr('class','active');
     }else{
-
         var protocol = window.location.protocol;
         var host = window.location.host;
         var pathname = window.document.location.pathname;
         var bb = pathname.substring(0,pathname.substr(1).indexOf('/')+1);
-        alert(bb);
-        alert(pathname);
+
         if(pathname=='/add_operator' || pathname=='/edit_operator'){
             var pathname = '/operate_people';
         }
         if(pathname=='/edit_role' || pathname=='/add_role'){
             var pathname='/role';
         }
-
         if(pathname=='/add_member'){
             var pathname='/member';
         }
         if(bb == '/edit_member'){
             var bb='/member';
         }
+
         if(pathname=='/details_enterprise'){
             var pathname = '/cert_enterprise';
+        }
+        if(pathname=='/details_expert'){
+            var pathname='/cert_expert';
+        }
+        if(bb=='/details_supply'){
+            var bb='/cert_supply';
+        }
+        if(bb=='/details_work'){
+            var bb='/cert_work';
+        }
+        if(pathname=='/details_video'){
+            var pathname='/cert_video';
+        }
+        if(pathname=='/details_recharge'){
+            var pathname='/cert_recharge';
+        }
+
+
+        if(pathname=='/serve_enterpriseDet'){
+            var pathname='/serve_enterprise';
         }
         if(bb=='/serve_expertDet'){
             var bb='/serve_expert';
         }
+        if(bb=='/serve_supplyDet'){
+            var bb ='/serve_supply';
+        }
+        if(bb=='/serve_workDet'){
+            var bb ='/serve_work';
+        }
+        if(bb=='/serve_videoDet'){
+            var bb ='/serve_video';
+        }
+        if(bb=='/serve_rechargeDet'){
+            var bb ='/serve_recharge';
+        }
         if(bb==''){
-            var url = protocol+ '//' +host+pathname;
+            var url = pathname;
         }else{
-            var url = protocol+ '//'+host+bb;
+            var url = bb;
         }
         $('.main-menu li ul li a').each(function () {
             if($(this).attr('href') == url){
                 $(this).addClass('active');
             }
         });
-        $('.main-menu li ul li a').each(function () {
-            console.log($(this).attr('href') == window.location.href);
-            if($(this).attr('href') == window.location.href){
-                $(this).addClass('active');
-            }
-        });
     }
-
 
 </script>

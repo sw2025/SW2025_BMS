@@ -51,7 +51,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a class="dropdown-toggle myname">胖大海</a></li>
                 <li class="dropdown">
-                    <a href="{{asset('/quit')}}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-power-off text-danger"></i>退出</a>
+                    <a href="javascript:;" id="quit" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-power-off text-danger"></i>退出</a>
                 </li>
             </ul>
         </div>
@@ -68,52 +68,25 @@
             </div>
             <ul class="main-menu">
                 <li>
-                    <a href="{{asset('/index')}}"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
+                    <a href="{{asset('/index')}}" id="shouye"><i class="fa fa-home fa-fw"></i><span class="title">首页</span></a>
                 </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-gear fa-fw"></i><span class="title">基础设置</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/change_pwd')}}">修改密码</a></li>
-                        <li><a href="{{asset('/operate_people')}}">操作人员</a></li>
-                        <li><a href="{{asset('/role')}}" >角色权限</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-gear fa-fw"></i><span class="title">参数设置</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/member')}}">会员权益</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-edit fa-fw"></i><span class="title">审核操作</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/cert_enterprise')}}">企业认证审核</a></li>
-                        <li><a href="{{asset('/cert_expert')}}">专家认证审核</a></li>
-                        <li><a href="{{asset('/cert_supply')}}">供求信息审核</a></li>
-                        <li><a href="{{asset('/cert_work')}}">办事服务审核</a></li>
-                        <li><a href="{{asset('/cert_video')}}">视频咨询审核</a></li>
-                        <li><a href="{{asset('/cert_recharge')}}">提现申请审核</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="fa fa-puzzle-piece fa-fw"></i><span class="title">信息维护</span> <span class="expand-sign">+</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{asset('/serve_enterprise')}}" >企业信息维护</a></li>
-                        <li><a href="{{asset('/serve_expert')}}">专家信息维护</a></li>
-                        <li><a href="{{asset('/serve_supply')}}">需求信息维护</a></li>
-                        <li><a href="{{asset('/serve_work')}}">办事服务信息</a></li>
-                        <li><a href="{{asset('/serve_video')}}">视频咨询信息</a></li>
-                        <li><a href="{{asset('/serve_recharge')}}">充值提现信息</a></li>
-                    </ul>
-                </li>
+                @foreach($rbacdata as $big)
+                    @if($big->level==1)
+                        <li>
+                            <a href="javascript:void(0);">
+                                <i class="{{$big->class}}"></i><span class="title">{{$big->permissionname}}</span><span class="expand-sign">+</span>
+                            </a>
+                            <ul>
+                                @foreach($rbacdata as $small)
+                                    @if($small->level==2 && $small->pid == $big->permissionid)
+                                        <li><a href="{{$small->url}}">{{$small->permissionname}}</a></li>
+                                    @endif
+                                @endforeach
+                            </ul>
+
+                        </li>
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>
@@ -144,6 +117,21 @@
 </body>
 </html>
 <script>
+    $("#quit").on("click",function(){
+        $.ajax({
+            url:"{{asset("/quit")}}",
+            dateType:"json",
+            type:"POST",
+            success:function(res){
+                if(res['code']=="success"){
+                    window.location.href="{{asset('/')}}"
+                }else{
+                    window.location.href="{{asset('/')}}"
+                }
+            }
+        })
+    })
+
     var protocol = window.location.protocol;
     var host = window.location.host;
     var pathname = window.document.location.pathname;
@@ -171,13 +159,13 @@
     if(bb=='/details_supply'){
         var bb='/cert_supply';
     }
-    if(bb=='/details_supply'){
+    if(bb=='/details_work'){
         var bb='/cert_work';
     }
     if(pathname=='/details_video'){
         var pathname='/cert_video';
     }
-    if(pathname=='/details_video'){
+    if(pathname=='/details_recharge'){
         var pathname='/cert_recharge';
     }
 
@@ -201,18 +189,12 @@
         var bb ='/serve_recharge';
     }
     if(bb==''){
-        var url = protocol+ '//' +host+pathname;
+        var url = pathname;
     }else{
-        var url = protocol+ '//'+host+bb;
+        var url = bb;
     }
     $('.main-menu li ul li a').each(function () {
         if($(this).attr('href') == url){
-            $(this).addClass('active');
-        }
-    });
-    $('.main-menu li ul li a').each(function () {
-        console.log($(this).attr('href') == window.location.href);
-        if($(this).attr('href') == window.location.href){
             $(this).addClass('active');
         }
     });
