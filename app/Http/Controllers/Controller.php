@@ -18,7 +18,12 @@ abstract class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
+   public $data;
+
+
+
     public function __construct()
+
     {
 
         if(session('userId')){
@@ -38,9 +43,8 @@ abstract class Controller extends BaseController
             ->leftjoin('t_rbac_permission','t_rbac_rolepermission.permissionid','=','t_rbac_permission.permissionid')
             ->where('roleid',$roleid)
             ->select('t_rbac_rolepermission.*','t_rbac_permission.*')
-            ->get();*/
-
-    }
+            ->get();
+   }*/
 
     public  function  _sendSms($mobile,$time,$action){
         ini_set("display_errors", "on");

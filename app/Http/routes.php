@@ -156,3 +156,14 @@ Route::group(['middleware' => ['auth']], function () {
 });
 //获取拒绝原因
 Route::post('/getRemark','PublicController@getRemark');
+//选取专家
+Route::post('/selectExpert','PublicController@selectExpert');
+//获取推送专家的个数
+Route::post('/returnCountExpert','PublicController@returnCountExpert');
+//推送成功
+Route::post('/pushSelect','PublicController@pushSelect');
+//办事获取推送专家的个数
+Route::post('/eventCountExpert','PublicController@eventCountExpert');
+
+//办事推送成功
+Route::post('/eventPushSelect','PublicController@eventPushSelect');
