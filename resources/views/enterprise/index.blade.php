@@ -35,7 +35,7 @@
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->enterpriseid}}">通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason({{$data->enterpriseid}});" ><button type="button" class="btn btn-block ink-reaction btn-support5" >拒绝审核</button></a>
                                 @elseif($data->configid==2)
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->enterpriseid}}">已拒绝</button></a>
                                 @else
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">未缴费</button></a>
                                 @endif
@@ -80,8 +80,7 @@
                 }
             })
         })
-
-      $(function(){
+        $(function(){
           $(".btn-primary").on("click",function (){
               var remark=$("#textarea").val();
               var enterpriseId=$(this).attr("id");
@@ -101,5 +100,17 @@
               })
           });
       })
+        $(".refuse").on("click",function(){
+            var id=$(this).attr('id');
+           $.ajax({
+               url:"{{url('getRemark')}}",
+               data:{"type":"enterprise","id":id},
+               dateType:"json",
+               type:"POST",
+               success:function(res){
+                  layer.alert(res);
+               }
+           })
+        })
     </script>
 @endsection

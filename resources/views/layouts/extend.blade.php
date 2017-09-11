@@ -21,6 +21,7 @@
     <script src="{{asset('assets/js/modules/boostbox/libs/jquery/jquery-1.11.0.min.js')}}"></script>
     <script src="{{asset('assets/js/modules/boostbox/libs/jquery/jquery-migrate-1.2.1.min.js')}}"></script>
     <script src="{{asset('assets/js/modules/boostbox/core/BootstrapFixed.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/layer/layer.js')}}"></script>
     <script src="{{asset('assets/js/modules/boostbox/libs/bootstrap/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/js/modules/boostbox/core/App.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/dist/echarts.js')}}"></script>
