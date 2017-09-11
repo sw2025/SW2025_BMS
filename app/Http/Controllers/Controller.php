@@ -17,10 +17,26 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+
    public $data;
 
-   /* public function __construct($data)
+
+
+    public function __construct()
+
     {
+
+        if(session('userId')){
+            $roleid = DB::table('t_rbac_userrole')->where('userid',session('userId'))->first()->roleid;
+            $data = DB::table('t_rbac_rolepermission')
+                ->leftjoin('t_rbac_permission','t_rbac_rolepermission.permissionid','=','t_rbac_permission.permissionid')
+                ->where('roleid',$roleid)
+                ->select('t_rbac_rolepermission.*','t_rbac_permission.*')
+                ->get();
+            view()->share('rbacdata',$data);
+        }
+
+
 
         /*$roleid = DB::table('t_rbac_userrole')->where('userid',session('userId'))->first()->roleid;
         $data = DB::table('t_rbac_rolepermission')
@@ -71,6 +87,7 @@ abstract class Controller extends BaseController
         $request->setOutId("1234");
         //发起访问请求
         $acsResponse = $acsClient->getAcsResponse($request);
+
     }
 
 

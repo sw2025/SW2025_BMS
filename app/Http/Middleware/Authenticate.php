@@ -50,7 +50,9 @@ class Authenticate
         $str = session('str');
         $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
         $b = explode('/', $_SERVER['REDIRECT_URL']);
-        $b = '/'.$b[3];
+
+        $b = '/'.$b[1];
+
         $result = in_array($b,$str);
         $result2 = in_array($b,self::$publicarr);
         if(!$result && !$result2){

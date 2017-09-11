@@ -18,18 +18,64 @@
                 if($counts){
                     $str = DB::table('T_RBAC_ROLEPERMISSION')
                         ->leftjoin("T_RBAC_PERMISSION",'T_RBAC_ROLEPERMISSION.PERMISSIONID','=','T_RBAC_PERMISSION.PERMISSIONID')
-                        ->select("url")
+                        ->select("url",'T_RBAC_PERMISSION.permissionid')
                         ->where('roleid',$counts[0]->roleid)
                         ->whereIn('level',[2,3])
                         ->get();
-
-
                     $arr = [];
                     foreach($str as $v){
                         $a = explode(',',$v->url);
                         $arr = array_merge($arr,$a);
                     }
-                    //dd($arr);
+                    if(in_array('/change_pwd',$arr)){
+                        array_push($arr,"/save_pwd");
+                    }
+                    if(in_array('/operate_people',$arr)){
+                        array_push($arr,"/edit_operator",'/edit_operatorSave',"/add_operator",'/add_operatorSave','/delete_operator',"/reset_operator","/look_right");
+                    }
+                    if(in_array('/role',$arr)){
+                        array_push($arr,"/edit_roleSave","/edit_role","/look_right","/delete_role","/add_role",'/add_roleSave');
+                    }
+                    if(in_array('/cert_enterprise',$arr)){
+                        array_push($arr,'/details_enterprise','/changeEnterprise');
+                    }
+                    if(in_array('/cert_expert',$arr)){
+                        array_push($arr,'/details_expert','/changeExpert');
+                    }
+                    if(in_array('/cert_supply',$arr)){
+                        array_push($arr,'/details_supply','/changeSupply');
+                    }
+                    if(in_array('/cert_work',$arr)){
+                        array_push($arr,'/details_work','/changeEvent');
+                    }
+                    if(in_array('/cert_video',$arr)){
+                        array_push($arr,'/details_video','/changeVideo');
+                    }
+                    if(in_array('/cert_recharge',$arr)){
+                        array_push($arr,'/details_recharge','/changeRecharge');
+                    }
+                    if(in_array('/serve_enterprise',$arr)){
+                        array_push($arr,'/serve_enterpriseDet');
+                    }
+                    if(in_array('/serve_expert',$arr)){
+                        array_push($arr,'/serve_expertDet');
+                    }
+                    if(in_array('/serve_supply',$arr)){
+                        array_push($arr,'/serve_supplyDet');
+                    }
+                    if(in_array('/serve_work',$arr)){
+                        array_push($arr,'/serve_workDet');
+                    }
+                    if(in_array('/serve_video',$arr)){
+                        array_push($arr,'/serve_videoDet');
+                    }
+                    if(in_array('/serve_recharge',$arr)){
+                        array_push($arr,'/serve_rechargeDet');
+                    }
+                    if(in_array('/member',$arr)){
+                        array_push($arr,'/edit_member','/add_member','/dealeditmember','dealaddmember');
+                    }
+
                     //$str = serialize($str);
                     $str = \Illuminate\Support\Facades\Crypt::encrypt($arr);
 
