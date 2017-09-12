@@ -54,7 +54,7 @@ class ExpertController extends Controller
         $array=array();
         $res=DB::table("T_U_EXPERT")
             ->leftJoin("T_U_USER","T_U_USER.userid","=","T_U_EXPERT.userid")
-            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.enterpriseid")
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.expertid")
             ->where("T_U_EXPERTVERIFY.expertid",$_POST['expertid'])
             ->orderBy("T_U_EXPERTVERIFY.id")
             ->select("T_U_USER.phone","T_U_EXPERTVERIFY.created_at","T_U_USER.userid")
