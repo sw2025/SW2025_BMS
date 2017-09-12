@@ -52,10 +52,10 @@
                 success:function(res){
                     if(res['code']=="success"){
                         alert("操作成功");
-                        window.location.href=window.location;
+                        window.location.href="{{asset('/cert_expert')}}";
                     }else{
                         alert("操作失败");
-                        window.location.href=window.location;
+                        window.location.href="{{asset('/cert_expert')}}";
                     }
                 }
             })
