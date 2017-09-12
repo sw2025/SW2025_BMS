@@ -1,0 +1,45 @@
+.new-list{overflow: hidden;padding: 20px;background:#fff;}
+.new-list li{list-style: none;}
+.new-list a:hover{text-decoration: none;}
+.new-list ul{padding:0;}
+.xuanzhong{position: absolute;top: 0;right: 26px;}
+.xuanzhong i{color:#ccc;font-size: 30px;}
+.xzchecked i{color:#00a7ed;}
+/***********专家列表 start***********/
+.expert-list{margin-left: -12px;margin-right: -12px;}
+.expert-list li{position: relative;padding-left: 12px;padding-right: 12px;margin-bottom: 24px;}
+.expert-list-link{display: block;border: 1px solid #ccc;padding:15px;background:#fff;height: 185px;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;transition: all .3s;overflow: hidden;}
+.exp-list-top{position: relative;}
+.exp-list-img{padding:3px;border: 1px solid #bfe9fa;position: absolute;left:0;top: 0;}
+.exp-list-img img{width: 88px;height: 88px;}
+.exp-list-brief{margin-left: 105px;}
+.exp-list-name{display: block;color:#333;font-size: 16px;margin-bottom: 3px;font-weight: bold;}
+.exp-list-video,.exp-list-best{color:#666;display: block;margin-bottom: 3px;}
+.exp-list-video em,.exp-list-best em{color:#333;}
+.exp-list-video i,.exp-list-best i{font-size: 14px;margin-right: 5px;}
+.exp-list-lab{overflow: hidden;max-height: 44px;}
+.exp-list-lab span{float: left;display: block;border: 1px solid #ccc;color:#999;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
+.exp-list-lab span:first-child{margin-left: 105px;}
+.exp-list-desc{text-indent: 2em;color:#333;line-height:20px;height:60px;text-align: justify;overflow: hidden;}
+.exp-list-icon,.supp-list-icon{position: absolute;bottom:10px;}
+.exp-list-icon{right: 20px;}
+.supp-list-icon{right: 30px;}
+.exp-list-icon a,.supp-list-icon a{margin-right: 10px;color:#c4c4c4;}
+.exp-list-icon .red,.supp-list-icon .red{color:#e00909;}
+.review i{font-size: 15px;}
+/***********专家列表 end***********/
+/***********供求列表 start***********/
+.supply-list{margin-left: -25px;margin-right: -25px;}
+.supply-list li{position: relative;padding-left: 25px;padding-right: 25px;margin-bottom: 24px;}
+.supply-list-link{display: block;border: 1px solid #ccc;padding:15px;background:#fff;height: 185px;position: relative;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;transition: all .3s;}
+.supp-list-img{border: 1px dotted #00a7ed;width: 180px;height: 180px;position: absolute;left:15px;top: 15px;background:#fff;}
+.supp-list-time{position: absolute;right: 15px;top: 12px;color:#888;font-size: 12px;}
+.supp-list-brief{margin-left: 205px;}
+.supp-list-name{display: block;color:#333;font-size: 16px;margin-bottom: 3px;font-weight: bold;margin-top: 10px;text-align: justify;white-space: nowrap;overflow: hidden;}
+.supp-list-category{color:#888;margin-bottom: 10px;display: block;white-space: nowrap;overflow: hidden;}
+.supp-list-category em{color:#0093d0;}
+.supp-list-desc{text-indent: 2em;color:#333;line-height:18px;text-align: justify;overflow: hidden;font-size: 12px;height:90px;overflow: hidden;}
+.supply-list-link:hover,.expert-list-link:hover{border-color: #3c99e1;box-shadow: 0 0 10px #ccc;}
+/***********供求列表 end***********/
+.modal-new-list .modal-header{border-bottom:none;}
+.modal-new-list .close{color: #fff;opacity: 1;}

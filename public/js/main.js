@@ -7,3 +7,6 @@ function showReason(e){
     $(".modal-reason").modal();
     $(".btn-primary").attr("id",e);
 }
+function showList(e){
+   
+}

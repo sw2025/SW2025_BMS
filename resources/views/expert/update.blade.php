@@ -22,8 +22,8 @@
                 </div>
                 <div class="container-fluid details-bg">
                     <div class="details-tit clearfix">
-                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{$datas->licenceimage}}');" src="{{$datas->licenceimage}}" /></div>
-                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{$datas->showimage}}');" src="{{$datas->showimage}}" /></div>
+                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$datas->licenceimage}}');" src="{{env('ImagePath').$datas->licenceimage}}" /></div>
+                        <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$datas->showimage}}');" src="{{env('ImagePath').$datas->showimage}}" /></div>
                     </div>
                 </div>
                 @if($datas->configid==1)

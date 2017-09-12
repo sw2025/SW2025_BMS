@@ -50,14 +50,12 @@ class Authenticate
         $str = session('str');
         $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
         $b = explode('/', $_SERVER['REDIRECT_URL']);
+
         $b = '/'.$b[1];
-        /* var_dump($request);
-         dd($str);*/
-        //var_dump($str);
+
         $result = in_array($b,$str);
         $result2 = in_array($b,self::$publicarr);
 
-        //dd($result);
         if(!$result && !$result2){
             return "<script> alert('你没有权限访问');window.history.back(-1);   </script>";
         }

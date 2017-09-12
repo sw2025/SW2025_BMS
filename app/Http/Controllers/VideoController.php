@@ -15,7 +15,6 @@ class VideoController extends Controller
      * @return mixed
      */
     public function index($status='all'){
-
         $datas = DB::table('t_c_consult')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')

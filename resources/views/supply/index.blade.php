@@ -45,7 +45,7 @@
                             @elseif($v->configid == 2)
 
                                 <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->needid}}">已拒绝</button></a>
                                 </div>
 
                             @endif
@@ -84,8 +84,6 @@
                             }
                         },'json');
                     });
-
-
                     $(function () {
                         $('.reject-reasons button').on('click',function () {
                             var flag = $('#flag').attr('index');
@@ -103,8 +101,18 @@
                             },'json');
                         });
                     })
-
-
+                    $(".refuse").on("click",function(){
+                        var id=$(this).attr('id');
+                        $.ajax({
+                            url:"{{url('getRemark')}}",
+                            data:{"type":"supply","id":id},
+                            dateType:"json",
+                            type:"POST",
+                            success:function(res){
+                                layer.alert(res);
+                            }
+                        })
+                    })
                 </script>
             </div>
         </section>
