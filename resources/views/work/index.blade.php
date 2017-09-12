@@ -260,7 +260,7 @@
                         var strExpertId=String(ExpertId)
                         if(expertstring!=0){
                             if(expertstring.indexOf(strExpertId)>=0){
-                                str+="<a href='javascript:;' onclick='xuanzhong("+value.expertid+")' id='event_"+value.expertid+"' class='xuanzhong xzchecked'><i class='fa fa-check-square'></i></a>"
+                                str+="<a href='javascript:;'  id='event_"+value.expertid+"' class='xuanzhong xzchecked'><i class='fa fa-check-square'></i></a>"
                             }else{
                                 str+="<a href='javascript:;' onclick='xuanzhong("+value.expertid+")' id='event_"+value.expertid+"' class='xuanzhong'><i class='fa fa-check-square'></i></a>"
                             }

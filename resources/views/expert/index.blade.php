@@ -57,7 +57,6 @@
     </div>
     <script>
         $('.ver_faild').on('click',function(){
-
             window.location = '{{url('cert_expert','fail')}}';
         });
         $('.ver_all').on('click',function(){
