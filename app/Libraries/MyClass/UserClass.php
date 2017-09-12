@@ -58,7 +58,7 @@
                         array_push($arr,'/serve_enterpriseDet');
                     }
                     if(in_array('/serve_expert',$arr)){
-                        array_push($arr,'/serve_expertDet');
+                        array_push($arr,'/serve_expertDet','/changeHomePage');
                     }
                     if(in_array('/serve_supply',$arr)){
                         array_push($arr,'/serve_supplyDet');
@@ -73,9 +73,8 @@
                         array_push($arr,'/serve_rechargeDet');
                     }
                     if(in_array('/member',$arr)){
-                        array_push($arr,'/edit_member','/add_member','/dealeditmember','dealaddmember');
+                        array_push($arr,'/edit_member','/add_member','/dealeditmember','dealaddmember','/deletemember');
                     }
-
                     //$str = serialize($str);
                     $str = \Illuminate\Support\Facades\Crypt::encrypt($arr);
 
