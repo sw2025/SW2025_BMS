@@ -64,7 +64,10 @@
             }
         })
         $(".btn-support1").on("click",function(){
+            var _that=this;
             var enterpriseId=$(this).attr("id");
+            $(this).attr("disabled",true);
+            $(this).html("审核中");
             $.ajax({
                 url:"{{asset('/changeEnterprise')}}",
                 data:{"configid":3,"enterpriseId":enterpriseId},
@@ -75,6 +78,8 @@
                         window.location.href="{{asset('/cert_enterprise')}}";
                     }else{
                         alert("审核失败");
+                        $(_that).removeAttr("disabled");
+                        $(_that).html("通过审核");
                         window.location.href="{{asset('/cert_enterprise')}}";
                     }
                 }
@@ -84,6 +89,8 @@
           $(".btn-primary").on("click",function (){
               var remark=$("#textarea").val();
               var enterpriseId=$(this).attr("id");
+              $(this).attr("disabled",true);
+              $(this).html("拒审中");
               $.ajax({
                   url:"{{asset('/changeEnterprise')}}",
                   data:{"remark":remark,"enterpriseId":enterpriseId,"configid":2},
@@ -94,6 +101,8 @@
                           window.location.href="{{asset('/cert_enterprise')}}";
                       }else{
                           alert("审核失败");
+                          $(_that).removeAttr("disabled");
+                          $(_that).html("拒绝审核");
                           window.location.href="{{asset('/cert_enterprise')}}";
                       }
                   }

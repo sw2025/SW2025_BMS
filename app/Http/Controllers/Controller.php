@@ -20,15 +20,18 @@ abstract class Controller extends BaseController
     public function __construct()
 
     {
-        if(session('userId')){
-            $roleid = DB::table('t_rbac_userrole')->where('userid',session('userId'))->first()->roleid;
+
+
+        if (session('userId')) {
+            $roleid = DB::table('t_rbac_userrole')->where('userid', session('userId'))->first()->roleid;
             $data = DB::table('t_rbac_rolepermission')
-                ->leftjoin('t_rbac_permission','t_rbac_rolepermission.permissionid','=','t_rbac_permission.permissionid')
-                ->where('roleid',$roleid)
-                ->select('t_rbac_rolepermission.*','t_rbac_permission.*')
+                ->leftjoin('t_rbac_permission', 't_rbac_rolepermission.permissionid', '=', 't_rbac_permission.permissionid')
+                ->where('roleid', $roleid)
+                ->select('t_rbac_rolepermission.*', 't_rbac_permission.*')
                 ->get();
-            view()->share('rbacdata',$data);
+            view()->share('rbacdata', $data);
         }
+
 
    }
 
