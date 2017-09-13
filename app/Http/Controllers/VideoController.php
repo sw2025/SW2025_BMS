@@ -165,7 +165,6 @@ class VideoController extends Controller
             ->where("t_c_consultresponse.consultid",$consultid)
             ->groupBy('t_u_expert.expertid')
             ->get();
-        dd($expertData);
         $result = DB::table('t_c_consultverifyconfig')->where("configid",$datas->configid)->first();
 
         return view("video.detail",compact('datas','expertData','result'));
