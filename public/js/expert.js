@@ -102,7 +102,7 @@ $(document).ready(function(){
         var valHtml = $(this).html();
         var parentHtml = $(this).parent().siblings().html();
         condition[0]="job";
-        condition[1]=parentHtml+'/'+valHtml;
+        condition[1]=parentHtml+'-'+valHtml;
         getCondition(condition);
         $(this).children('.sub-industry-menu').toggle();
         $(this).closest('.sub-industry').prev('.result-select').html(valHtml);
@@ -147,6 +147,7 @@ $(document).ready(function(){
         var idCard=$.trim($("#idCard").html());
         serveName=(serveName)?serveName:null;
         job=(job!="不限")?job:null;
+        //alert(job);
         location=(location!="全国")?location:"全国";
         idCard=(idCard!="不限")?idCard:null;
         if( $(".order-time").children('i').hasClass('fa-arrow-circle-o-up')){
