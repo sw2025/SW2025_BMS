@@ -114,23 +114,25 @@ class ExpertController extends Controller
     public  function serveIndex(){
 
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
-        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('-',$_GET['job']):null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
-
         if(!empty($idCard)){
             $number=['首页'=>[1],'非首页'=>[0]];
             $idCard=!empty($idCard)? $number[$idCard]:null;
         }else{
             $idCard=range(0,1);
         }
-
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+
         if(!empty($job) && count($job) == 1 ){
             $jobWhere= array("t_u_expert.domain1" => $job[0]);
         } else {
-            $jobWhere=!empty($job)?array("t_u_expert.domain1" => $job[0],'t_u_expert.domain2' => $job[1]):array();
+            $jobWhere=!empty($job)?array("t_u_expert.domain1" => $job[0]):array();
+            $domain2 = $job[1];
         }
+        $domain2=(isset($domain2))?$domain2:null;
+
         $locationWhere=!empty($location)?array("address"=>$location):array();
         $data=DB::table("T_U_USER")
             ->leftJoin("T_U_EXPERT","T_U_USER.USERID","=","T_U_EXPERT.USERID")
@@ -142,18 +144,18 @@ class ExpertController extends Controller
        $count=clone $data;
 
      if(!empty($serveName)){
-         $datas=$data->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->paginate(10);
-         $counts=$count->where("expertname","like","%".$serveName."%")->where($jobWhere)->where($locationWhere)->count();
-
+         $datas=$data->where("expertname","like","%".$serveName."%")->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->paginate(10);
+         $counts=$count->where("expertname","like","%".$serveName."%")->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->count();
        }else{
-         $datas=$data->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(10);
-         $counts= $count->where($jobWhere)->where($locationWhere)->count();
+         $datas=$data->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(10);
+         $counts= $count->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->count();
        }
 
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:"null";
         $label = DB::table('t_common_domaintype')->get();
         return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job","label","idCard"));

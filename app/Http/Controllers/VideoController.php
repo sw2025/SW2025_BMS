@@ -152,22 +152,24 @@ class VideoController extends Controller
             ->leftJoin('t_c_consultresponse','t_c_consultresponse.consultid' ,'=' ,'t_c_consult.consultid')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_c_consult.userid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_c_consultverify','t_c_consultverify.consultid' ,'=' ,'t_c_consult.consultid')
+            ->leftJoin('t_c_consultverifyconfig','t_c_consultverifyconfig.configid' ,'=' ,'t_c_consultverify.configid')
             ->leftJoin('t_u_user','t_c_consult.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid','t_c_consultresponse.state')
+            ->select('t_c_consult.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.enterpriseid','t_u_user.phone','t_c_consultverify.verifytime','t_c_consultverify.configid','t_c_consultresponse.state','t_c_consultverifyconfig.name')
             ->where("T_C_CONSULT.consultid",$consultid)
             ->whereRaw('t_c_consultverify.id in (select max(id) from t_c_consultverify group by consultid)')
-            ->orderBy('t_c_consultresponse.consultid','desc')
+            //->orderBy('t_c_consultresponse.consultid','desc')
             ->first();
         $expertData=DB::table('t_u_expert')
             ->leftJoin('t_c_consultresponse','t_c_consultresponse.expertid' ,'=' ,'t_u_expert.expertid')
             ->leftJoin('t_u_user','t_u_expert.userid' ,'=' ,'t_u_user.userid')
             ->where("t_c_consultresponse.consultid",$consultid)
-            ->groupBy('t_u_expert.expertid')
+            ->whereRaw('t_c_consultresponse.id in (select max(id) from t_c_consultresponse group by consultid)')
+            ->orderBy('t_c_consultresponse.id','desc')
+            ->groupBy('t_c_consultresponse.expertid','t_c_consultresponse.consultid')
             ->get();
-        $result = DB::table('t_c_consultverifyconfig')->where("configid",$datas->configid)->first();
-
-        return view("video.detail",compact('datas','expertData','result'));
+        return view("video.detail",compact('datas','expertData'));
     }
 
 }

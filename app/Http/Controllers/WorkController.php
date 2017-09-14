@@ -140,10 +140,23 @@ class WorkController extends Controller
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
+            ->leftJoin('t_e_eventresponse','t_e_eventresponse.eventid' ,'=' ,'t_e_event.eventid')
             ->leftJoin('t_e_eventverifyconfig','t_e_eventverify.configid' ,'=' ,'t_e_eventverifyconfig.configid')
             ->leftJoin('t_u_user','t_e_event.userid' ,'=' ,'t_u_user.userid')
-            ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_e_event.*','view_userrole.role','t_e_eventverifyconfig.name','t_e_eventverifyconfig.configid','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone')
-            ->where('t_e_event.eventid',$eventid)->first();
-        return view("work.detail",compact('datas'));
+            ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_e_event.*','view_userrole.role','t_e_eventverifyconfig.name','t_e_eventverifyconfig.configid','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventresponse.expertid')
+            ->where('t_e_event.eventid',$eventid)
+            ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
+            ->first();
+
+        $expertData=DB::table('t_e_eventresponse')
+            ->leftJoin('t_u_expert','t_e_eventresponse.expertid' ,'=' ,'t_u_expert.expertid')
+            ->leftJoin('t_u_user','t_u_expert.userid' ,'=' ,'t_u_user.userid')
+            ->select('t_u_user.*','t_e_eventresponse.*','t_u_expert.*')
+            ->where("t_e_eventresponse.eventid",$eventid)
+            ->whereRaw('t_e_eventresponse.id in (select max(id) from t_e_eventresponse group by eventid)')
+            ->orderBy('t_e_eventresponse.id','desc')
+            ->groupBy('t_e_eventresponse.expertid','t_e_eventresponse.eventid')
+            ->get();
+        return view("work.detail",compact('datas','expertData'));
     }
 }
