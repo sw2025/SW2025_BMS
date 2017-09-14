@@ -9,7 +9,7 @@
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
-                    <div class="col-md-12 details-tit"><h2 class="cert-company">【{{$datas->role}}】@if(!empty($datas->expertname) && !empty($datas->enterprisename)){{$datas->enterprisename}}/{{$datas->expertname}} @else {{$datas->expertname or $datas->enterprisename}} @endif</h2></div>
+                    <div class="col-md-12 details-tit"><h2 class="cert-company">{{$datas->enterprisename}}</h2></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">{{$datas->eventtime}}</span></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$datas->phone}}</span></div>
                     <div class="col-md-6 details-tit"><p class="cert-industry">需求分类：{{$datas->domain1}}</p></div>

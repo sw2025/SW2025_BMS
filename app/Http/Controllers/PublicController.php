@@ -44,15 +44,30 @@ class PublicController extends Controller
      * @return mixed
      */
     public  function  selectExpert(){
+        if($_POST['label']=="work"){
+            $userId=DB::table("T_E_EVENT")->where("eventid",$_POST['eventId'])->pluck("userid");
+        }else{
+            $userId=DB::table("T_C_CONSULT")->where("consultid",$_POST['consultId'])->pluck("userid");
+        }
+        $expertids=DB::table("T_U_EXPERT")->where("userid",$userId)->pluck("expertid");
         $types=explode("/",$_POST['type']);
-        $experts=DB::table("T_U_EXPERT")
-                ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERTVERIFY.expertid","=","T_U_EXPERT.expertid")
-                ->select("T_U_EXPERT.*","T_U_EXPERTVERIFY.configid")
-                ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
-                ->where("domain1",$types[0])
-                ->where("domain2","like","%".$types[1]."%")
-                ->where("configid",2)
-                ->paginate(9);
+        $expert=DB::table("T_U_EXPERT")
+            ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERTVERIFY.expertid","=","T_U_EXPERT.expertid")
+            ->select("T_U_EXPERT.*","T_U_EXPERTVERIFY.configid")
+            ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by expertid)')
+            ->where("domain1",$types[0])
+            ->where("domain2","like","%".$types[1]."%")
+            ->where("configid",2);
+        $selectExperts=clone $expert;
+        if($expertids){
+            $experts=$selectExperts->where("T_U_EXPERT.expertid","<>",$expertids) ->paginate(9);
+        }else{
+            $experts=$selectExperts->paginate(9);
+        }
+        foreach ($experts as $expert){
+            $newDomian2=explode(",",$expert->domain2);
+            $expert->domain2=$newDomian2;
+        }
         return $experts;
 
     }

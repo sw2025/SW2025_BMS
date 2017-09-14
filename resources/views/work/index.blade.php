@@ -29,7 +29,7 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/details_work/'.$v->eventid)}}" class="look-link">【{{$v->role}}】@if(!empty($v->enterprisename) && !empty($v->expertname)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->enterprisename or $v->expertname}} @endif</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/details_work/'.$v->eventid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">需求分类：<span>{{$v->domain1}}/{{$v->domain2}}</span></p>
                                         <p class="cert-zone">指定专家：系统匹配</p>
@@ -134,28 +134,7 @@
                 }
             },'json');
         });
-
-        /**
-         * 办事推送
-         */
-        /*$('.eve_put').on('click',function () {
-            var flag = $('#flag').attr('index');
-            $('#flag').attr("index",1);
-            var eve_id=$(this).attr("index");
-            $.post('{{url('changeEvent')}}',{'event_id':eve_id,'config_id':4,'flag':flag},function (data) {
-                if (data.errorMsg == 'success') {
-                    alert("操作成功");
-                    window.location.href = "{{url('cert_work')}}";
-                } else {
-                    alert("推送失败或反应超时");
-                    window.location.href = "{{url('cert_work')}}";
-                }
-            },'json');
-        });*/
-
-        /**
-         * 办事审核不通过
-         */
+         //办事审核不通过
         $(function () {
             $('.reject-reasons button').on('click',function () {
                 var flag = $('#flag').attr('index');
@@ -185,39 +164,6 @@
                 }
             })
         })
-        $(function(){
-            $(".btn-primary").on("click",function (){
-                var remark=$("#textarea").val();
-                $(".btn-primary").attr('disabled','disabled');
-                var consultid=$(this).attr("id");
-                $.ajax({
-                    url:"{{asset('/changeVideo')}}",
-                    data:{"remark":remark,"consultid":consultid,"configid":3},
-                    dataType:"json",
-                    type:"POST",
-                    success:function(res){
-                        if(res['code']=="success"){
-                            window.location.href="{{asset('/cert_video')}}";
-                        }else{
-                            alert("审核失败");
-                            window.location.href="{{asset('/cert_video')}}";
-                        }
-                    }
-                })
-            });
-        })
-        $(".refuse").on("click",function(){
-            var id=$(this).attr('id');
-            $.ajax({
-                url:"{{url('getRemark')}}",
-                data:{"type":"video","id":id},
-                dateType:"json",
-                type:"POST",
-                success:function(res){
-                    layer.alert(res);
-                }
-            })
-        })
         function push(e){
             var type=$(e).closest('.cert-item').find('.cert-scale span').text();
             var eventId=$(e).attr("id");
@@ -227,7 +173,7 @@
             console.log(expertstring);
             $.ajax({
                 url:"{{url('selectExpert')}}",
-                data:{"type":type},
+                data:{"type":type,"eventId":eventId,"label":"work"},
                 dateType:"json",
                 type:"POST",
                 async:false,
@@ -247,10 +193,9 @@
                         str+="<span class='exp-list-video'><i class='fa fa-play-circle-o'></i>视频咨询：<em>免费</em></span>"
                         str+="<span class='exp-list-best'><i class='fa fa-thumbs-o-up'></i>擅长领域：<em>"+value.domain1+"</em></span></div>"
                         str+="<div class='exp-list-lab'>"
-                        str+="<span class='exp-lab-a'>不知道</span>"
-                        str+="<span class='exp-lab-a'>不知道</span>"
-                        str+="<span class='exp-lab-a'>不知道</span>"
-                        str+="<span class='exp-lab-a'>不知道</span>"
+                        $.each(value.domain2,function(domainKey,domainValue){
+                            str+="<span class='exp-lab-a'>"+domainValue+"</span>"
+                        })
                         str+="</div>"
                         str+="</div>"
                         str+="<div class='exp-list-desc'>"

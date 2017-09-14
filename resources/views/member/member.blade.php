@@ -30,7 +30,7 @@
                                         @foreach($datas as $v)
                                         <tr>
                                             <td>{{$v->typename}}</td>
-                                            <td>{{$v->termtime}}月</td>
+                                            <td>{{$v->termtime}}年</td>
                                             <td>{{$v->cost}}</td>
                                             <td>{{$v->consultcount}}</td>
                                             <td>{{$v->eventcount}}</td>
