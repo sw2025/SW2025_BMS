@@ -105,7 +105,7 @@
                     @foreach($datas as $v)
                     <div class="container-fluid cert-item">
                         <div class="col-md-4">
-                            <h2 class="cert-company"><a href="{{url('serve_workDet',$v->eventid)}}" class="look-link">【{{$v->role}}】@if(!empty($v->enterprisename) && !empty($v->expertname)) {{$v->enterprisename.' / '.$v->expertname}} @else {{$v->enterprisename or $v->expertname}} @endif     </a></h2>
+                            <h2 class="cert-company"><a href="{{url('serve_workDet',$v->eventid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
                             <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                             <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
                             <p class="cert-zone">指定专家：@if($v->state === "0") {{  App\Http\Controllers\WorkController::getExpertName($v->expertid) }} @else 系统匹配 @endif</p>

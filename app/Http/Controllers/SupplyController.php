@@ -22,7 +22,7 @@ class SupplyController extends Controller
             ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('view_needstatus as status','status.needid','=','t_n_need.needid')
-            ->select('view_userrole.role','t_u_enterprise.enterprisename as entname','t_u_expert.expertname as extname',"status.configid", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
+            ->select('t_u_enterprise.enterprisename as entname','t_u_expert.expertname as extname',"status.configid", "t_u_user.phone", "t_u_user.name", "t_n_need.*")
             ->orderBy("t_n_need.needid", "desc");
         switch($action){
             case 'all':

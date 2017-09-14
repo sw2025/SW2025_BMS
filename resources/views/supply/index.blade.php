@@ -25,7 +25,7 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{url('/details_supply', $v->needid)}}" class="look-link">【{{$v->role}}】@if(!empty($v->entname) && !empty($v->extname)) {{$v->entname.' / '.$v->extname}} @else {{$v->entname or $v->extname}} @endif </a></h2>
+                                        <h2 class="cert-company"><a href="{{url('/details_supply', $v->needid)}}" class="look-link">【{{$v->needtype}}】@if(!empty($v->entname)) {{$v->entname}} @else {{$v->extname}} @endif </a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
                                     </div>

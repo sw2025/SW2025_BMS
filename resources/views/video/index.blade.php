@@ -171,7 +171,7 @@
             var expertstring=datas.expertids;
             $.ajax({
                 url:"{{url('selectExpert')}}",
-                data:{"type":type},
+                data:{"type":type,"consultId":consultId,"label":"video"},
                 dateType:"json",
                 type:"POST",
                 async:false,
@@ -191,10 +191,9 @@
                        str+="<span class='exp-list-video'><i class='fa fa-play-circle-o'></i>视频咨询：<em>免费</em></span>"
                        str+="<span class='exp-list-best'><i class='fa fa-thumbs-o-up'></i>擅长领域：<em>"+value.domain1+"</em></span></div>"
                        str+="<div class='exp-list-lab'>"
-                       str+="<span class='exp-lab-a'>不知道</span>"
-                       str+="<span class='exp-lab-a'>不知道</span>"
-                       str+="<span class='exp-lab-a'>不知道</span>"
-                       str+="<span class='exp-lab-a'>不知道</span>"
+                        $.each(value.domain2,function(domainKey,domainValue){
+                            str+="<span class='exp-lab-a'>"+domainValue+"</span>"
+                        })
                        str+="</div>"
                        str+="</div>"
                        str+="<div class='exp-list-desc'>"
@@ -238,7 +237,7 @@
         var xuanzhong=function(id){
             $("#consult_"+id).toggleClass('xzchecked');
         }
-            $("#btnOK").on("click",function(){
+        $("#btnOK").on("click",function(){
                 var expertSelect="";
                 $('.xzchecked').each(function(index,element){
                     var ids=$(this).attr('id');
