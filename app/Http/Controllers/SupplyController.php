@@ -139,5 +139,25 @@ class SupplyController extends Controller
         return view("supply.detail",compact('datas'));
     }
 
+    /**
+     * 需求咨询信息删除
+     * @return mixed
+     */
+
+    public function deleteSupply()
+    {
+        $needid = $_GET['needid'];
+        DB::table("t_n_needverify")
+            ->insert([
+                'needid' => $needid,
+                "configid" => 1,
+                'verifytime' => date('Y-m-d H:i:s', time()),
+                "updated_at" => date("Y-m-d H:i:s", time()),
+                "created_at" => date("Y-m-d H:i:s", time())
+            ]);
+
+        return redirect("/serve_supply");
+    }
+
 
 }

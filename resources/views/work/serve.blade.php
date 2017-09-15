@@ -113,6 +113,7 @@
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->eventtime}}</span>
                            {{$v->brief}}
+                            <p><a href="{{asset('deleteWork?eventid='.$v->eventid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
                         </div>
 
                     </div>

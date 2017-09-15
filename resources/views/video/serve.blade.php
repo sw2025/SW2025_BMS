@@ -15,7 +15,7 @@
                     <div class="all-results clearfix">
                         <span class="tip-caption">全部结果 -> </span>
                         <div class="results-unit">
-                            <a href="javascript:;" class="results-unit-del re sults-unit-scale" @if($size!="null") style="display:inline-block" @endif>{{$size}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-scale" @if($size!="null") style="display:inline-block" @endif>{{$size}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!="null") style="display:inline-block" @endif>{{$idCard}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display: inline-block" @endif>{{$job}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="全国") style="display: inline-block" @endif>{{$location}}</a>
@@ -124,15 +124,17 @@
                         <div class="col-md-4">
                             <h2 class="cert-company"><a href="{{url('/serve_videoDet', $data->consultid)}}" class="look-link">{{$data->enterprisename or $data->expertname}}</a></h2>
                             <span class="cert-telephone">联系电话：{{$data->phone}}</span>
-                            <span class="cert-time start-time">开始时间：{{$data->consulttime}}</span>
+                            <span class="cert-time start-time">开始时间：{{$data->starttime}}</span>
                             <span class="cert-time end-ti
-                            me">结束时间：2017-07-02  12:00:00</span>
-                            <p class="cert-scale">需求分类：销售</p>
-                            <p class="cert-zone">指定专家：@if($data->state === "0") {{  App\Http\Controllers\VideoController::getExpertName($data->expertid) }} @else 系统匹配 @endif</p>
+                            me">结束时间：{{$data->endtime}}</span>
+                            <p class="cert-scale">需求分类：{{$data->domain1}}-{{$data->domain2}}</p>
+                            <p class="cert-zone">指定专家：{{--@if($data->state === "0") {{  App\Http\Controllers\VideoController::getExpertName($data->expertid) }} @else 系统匹配 @endif--}}</p>
                         </div>
                         <div class="col-md-8 cert-cap">
-                            <span class="cert-work-time">2017-07-02  12:10:35</span>
-                            <span>{{$data->brief}}------成的专家为您提供所需的一切帮助和建议。婚礼用品部会有现成的专家为您提供所需的一切帮助和建议。</span>
+                            <span class="cert-work-time">{{$data->created_at}}</span>
+                            <span>{{$data->brief}}</span>
+                            <p><a href="{{asset('deleteVideo?consultId='.$data->consultid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+
                         </div>
                     </div>
                     @endforeach
@@ -144,5 +146,24 @@
             </div>
         </section>
     </div>
+    {{--<script>
+        $(".btn-support1").on("click",function(){
+            alert(1);
+            return false;
+            var consultid=$(this).attr("id");
+            $.post('{{url('deleteVideo')}}',{'consultid':consultid,'configid':1},function (data) {
+                if (data.errorMsg == 'success') {
+                    alert("操作成功");
+                    window.location.href = "{{url('/serve_video')}}";
+                } else {
+                    alert("操作失败或反应超时");
+                    window.location.href = "{{url('/serve_video')}}";
+                }
+            },'json');
+
+        })
+
+
+    </script>--}}
     <script src="{{asset('js/video.js')}}" type="text/javascript"></script>
 @endsection

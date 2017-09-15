@@ -13,7 +13,8 @@
                 </div>
                 <div class="serve-results">
                     <div class="all-results clearfix">
-                        <span class="tip-caption">全部结果  <span class="glyphicon glyphicon-arrow-right"></span> </span>
+                        <span class="tip-caption">全部结果
+                            <span class="glyphicon glyphicon-arrow-right"></span> </span>
                         <div class="results-unit">
                             <a href="javascript:;" class="results-unit-del results-unit-scale" @if($size!="null") style="display:inline-block" @endif><span> {{$size}} </span></a>
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display:inline-block" @endif><span> {{$job}} </span></a>
@@ -116,6 +117,7 @@
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->needtime}}</span>
                             <span>{{$v->brief}}</span>
+                            <p><a href="{{asset('deleteSupply?needid='.$v->needid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
                         </div>
                     </div>
                    @endforeach
