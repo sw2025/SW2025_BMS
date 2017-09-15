@@ -102,7 +102,7 @@ $(document).ready(function(){
         var valHtml = $(this).html();
         var parentHtml = $(this).parent().siblings().html();
         condition[0]="job";
-        condition[1]=parentHtml+'/'+valHtml;
+        condition[1]=parentHtml+'-'+valHtml;
         getCondition(condition);
         $(this).children('.sub-industry-menu').toggle();
         $(this).closest('.sub-industry').prev('.result-select').html(valHtml);

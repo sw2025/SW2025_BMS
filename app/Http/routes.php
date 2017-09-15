@@ -139,16 +139,27 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/changeHomePage','ExpertController@changeHomePage');
 //供求信息维护
     Route::any('/serve_supply','SupplyController@serveIndex');
+//供求信息删除
+    Route::get('/deleteSupply','SupplyController@deleteSupply');
 //供求信息维护详情
     Route::get('/serve_supplyDet/{supplyid}','SupplyController@serveDetail');
 //办事信息维护
     Route::any('/serve_work','WorkController@serveIndex');
+    //办事信息删除
+    Route::get('/deleteWork','WorkController@deleteWork');
 //办事信息维护详情
     Route::get('/serve_workDet/{eventid}','WorkController@serveDetail');
 //视频咨询维护
     Route::any('/serve_video','VideoController@serveIndex');
+    //视频咨询删除
+    Route::get('/deleteVideo','VideoController@deleteVideo');
+
 //视频咨询维护详情
     Route::get('/serve_videoDet/{videoId}','VideoController@serveDetail');
+
+    //修改供求审核
+    Route::post('/changeSupply','SupplyController@changeSupply');
+
 //提现信息维护
     Route::get('/serve_recharge','RechargeController@serveIndex');
 //提现信息维护详情

@@ -61,13 +61,13 @@
                         array_push($arr,'/serve_expertDet','/changeHomePage');
                     }
                     if(in_array('/serve_supply',$arr)){
-                        array_push($arr,'/serve_supplyDet');
+                        array_push($arr,'/serve_supplyDet','/deleteSupply');
                     }
                     if(in_array('/serve_work',$arr)){
-                        array_push($arr,'/serve_workDet');
+                        array_push($arr,'/serve_workDet','/deleteWork');
                     }
                     if(in_array('/serve_video',$arr)){
-                        array_push($arr,'/serve_videoDet');
+                        array_push($arr,'/serve_videoDet','/deleteVideo');
                     }
                     if(in_array('/serve_recharge',$arr)){
                         array_push($arr,'/serve_rechargeDet');

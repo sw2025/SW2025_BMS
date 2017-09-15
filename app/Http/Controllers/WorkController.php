@@ -159,4 +159,25 @@ class WorkController extends Controller
             ->get();
         return view("work.detail",compact('datas','expertData'));
     }
+
+    /**
+     * 需求咨询信息删除
+     * @return mixed
+     */
+
+    public function deleteWork()
+    {
+        $eventid = $_GET['eventid'];
+        DB::table("t_e_eventverify")
+            ->insert([
+                'eventid' => $eventid,
+                "configid" => 1,
+                'verifytime' => date('Y-m-d H:i:s', time()),
+                "updated_at" => date("Y-m-d H:i:s", time()),
+                "created_at" => date("Y-m-d H:i:s", time())
+            ]);
+        DB::table("t_e_eventresponse")->where('eventid',$eventid)->delete();
+
+        return redirect("/serve_work");
+    }
 }
