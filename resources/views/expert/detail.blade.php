@@ -35,6 +35,22 @@
                         <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
                     </div>
                 @endif
+                <h3>评论</h3>
+                @foreach($result as $big)
+                    @if($big->parentid==0)
+                        <div class="container-fluid details-bg">
+                            <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">评论：</span>{{$big->content}}</p>
+                            <p><a href="{{asset('deleteExpertContent?id='.$big->id.'&expertid='.$big->expertid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+                            @foreach($result as $small)
+                                @if($small->parentid==$big->id)
+                                    <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">楼中楼：</span>{{$small->content}}</p>
+                                    <p><a href="{{asset('deleteExpertContent?id='.$small->id.'&expertid='.$small->expertid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+
+                                @endif
+                            @endforeach
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </section>
     </div>

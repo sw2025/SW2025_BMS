@@ -194,13 +194,12 @@ class VideoController extends Controller
         DB::table("t_c_consultverify")
                 ->insert([
                     'consultid' => $consultid,
-                    "configid" => 1,
+                    "configid" => 3,
                     'verifytime' => date('Y-m-d H:i:s', time()),
                     "updated_at" => date("Y-m-d H:i:s", time()),
                     "created_at" => date("Y-m-d H:i:s", time())
                 ]);
 
-        DB::table("t_c_consultresponse")->where('consultid',$consultid)->delete();
         return redirect("/serve_video");
     }
 }

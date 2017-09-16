@@ -171,12 +171,11 @@ class WorkController extends Controller
         DB::table("t_e_eventverify")
             ->insert([
                 'eventid' => $eventid,
-                "configid" => 1,
+                "configid" => 3,
                 'verifytime' => date('Y-m-d H:i:s', time()),
                 "updated_at" => date("Y-m-d H:i:s", time()),
                 "created_at" => date("Y-m-d H:i:s", time())
             ]);
-        DB::table("t_e_eventresponse")->where('eventid',$eventid)->delete();
 
         return redirect("/serve_work");
     }

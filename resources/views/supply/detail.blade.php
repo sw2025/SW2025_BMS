@@ -20,6 +20,23 @@
                 <div class="container-fluid details-bg">
                     <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">供求详情：</span>{{$datas->brief}}</p>
                 </div>
+
+                <h3>评论</h3>
+                @foreach($result as $big)
+                    @if($big->parentid==0)
+                    <div class="container-fluid details-bg">
+                        <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">评论：</span>{{$big->content}}</p>
+                        <p><a href="{{asset('deleteSupplyContent?id='.$big->id.'&needid='.$big->needid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+                    @foreach($result as $small)
+                            @if($small->parentid==$big->id)
+                        <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">楼中楼：</span>{{$small->content}}</p>
+                                <p><a href="{{asset('deleteSupplyContent?id='.$small->id.'&needid='.$small->needid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+
+                            @endif
+                            @endforeach
+                    </div>
+                    @endif
+                @endforeach
             </div>
         </section>
     </div>

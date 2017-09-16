@@ -18,7 +18,7 @@
                 <div class="cert-state-btns">
                     <a href="javascript:;" class="ver_all" @if(empty($status) || $status  == 'all') id="hoverstyle" @endif>全部</a>
                     <a href="javascript:;" class="ver_wait" @if(!empty($status) && $status == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_faild" @if(!empty($status) && $status == 'fail') id="hoverstyle" @endif>认证失败</a>
+                    <a href="javascript:;" class="ver_faild" @if(!empty($status) && $status == 'fail') id="hoverstyle" @endif>已删除</a>
                     <a href="javascript:;" class="ver_pendingPush" @if(!empty($status) && $status == 'pendingPush') id="hoverstyle" @endif>待推送</a>
                 </div>
                 <div class="cert-list">
@@ -48,7 +48,7 @@
                             @elseif($data->configid==2)
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction"  id="{{$data->consultid}}" onclick="push(this)">推送</button></a>
                             @else
-                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->consultid}}" >已拒绝</button></a>
+                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->consultid}}" >已删除</button></a>
                             @endif
                         </div>
                     </div>

@@ -136,8 +136,38 @@ class SupplyController extends Controller
             ->select('t_u_enterprise.brief as desc1','t_u_expert.brief as desc2','t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone')
             ->where('needid',$supply_id)
             ->first();
-        return view("supply.detail",compact('datas'));
+
+        $result = DB::table('t_n_messagetoneed')
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_messagetoneed.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_user','t_n_messagetoneed.userid' ,'=' ,'t_u_user.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->where('t_n_messagetoneed.needid',$supply_id)
+            ->where('isdelete',0)
+            ->get();
+        //dd($result);
+        return view("supply.detail",compact('datas','result'));
     }
+
+
+    /**
+     * 需求评论信息删除
+     * @return mixed
+     */
+
+    public function deleteSupplyContent()
+    {
+        $id = $_GET['id'];
+        $needid=$_GET['needid'];
+        DB::table("t_n_messagetoneed")
+            ->where('id',$id)
+            ->update([
+                'isdelete' => 1,
+            ]);
+
+        return redirect("/serve_supplyDet/$needid");
+    }
+
 
     /**
      * 需求咨询信息删除
@@ -150,7 +180,7 @@ class SupplyController extends Controller
         DB::table("t_n_needverify")
             ->insert([
                 'needid' => $needid,
-                "configid" => 1,
+                "configid" => 3,
                 'verifytime' => date('Y-m-d H:i:s', time()),
                 "updated_at" => date("Y-m-d H:i:s", time()),
                 "created_at" => date("Y-m-d H:i:s", time())
