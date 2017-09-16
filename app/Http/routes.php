@@ -135,12 +135,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::any('/serve_expert','ExpertController@serveIndex');
 //专家维护详情
     Route::get('/serve_expertDet/{expertid}','ExpertController@serveDetail');
+//专家维护详情删除
+    Route::get('/deleteExpertContent','ExpertController@deleteExpertContent');
 //专家首页设置
     Route::post('/changeHomePage','ExpertController@changeHomePage');
 //供求信息维护
     Route::any('/serve_supply','SupplyController@serveIndex');
 //供求信息删除
     Route::get('/deleteSupply','SupplyController@deleteSupply');
+//供求评论信息删除
+    Route::get('/deleteSupplyContent','SupplyController@deleteSupplyContent');
 //供求信息维护详情
     Route::get('/serve_supplyDet/{supplyid}','SupplyController@serveDetail');
 //办事信息维护

@@ -20,7 +20,7 @@
                 <div class="cert-state-btns">
                     <a href="javascript:;" class="ver_all" @if(empty($action) || $action  == 'all') id="hoverstyle" @endif>全部</a>
                     <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>认证失败</a>
+                    <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>已删除</a>
                     <a href="javascript:;" class="ver_wput" @if(!empty($action) && $action == 'wput') id="hoverstyle" @endif>待推送</a>
                 </div>
                 <div class="cert-list">
@@ -51,7 +51,7 @@
                                 </div>
                             @elseif($v->configid == 3)
                                 <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->eventid}}">已拒绝</button></a>
+                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->eventid}}">已删除</button></a>
                                 </div>
                             @endif
 

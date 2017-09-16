@@ -58,10 +58,10 @@
                         array_push($arr,'/serve_enterpriseDet');
                     }
                     if(in_array('/serve_expert',$arr)){
-                        array_push($arr,'/serve_expertDet','/changeHomePage');
+                        array_push($arr,'/serve_expertDet','/changeHomePage','/deleteExpertContent');
                     }
                     if(in_array('/serve_supply',$arr)){
-                        array_push($arr,'/serve_supplyDet','/deleteSupply');
+                        array_push($arr,'/serve_supplyDet','/deleteSupply','/deleteSupplyContent');
                     }
                     if(in_array('/serve_work',$arr)){
                         array_push($arr,'/serve_workDet','/deleteWork');

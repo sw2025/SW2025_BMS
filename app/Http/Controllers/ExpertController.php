@@ -173,7 +173,34 @@ class ExpertController extends Controller
             ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
             ->where("t_u_expert.expertid",$expertid)
             ->first();
-        return view("expert.detail",compact('data'));
+
+        $result = DB::table('t_u_messagetoexpert')
+            ->leftJoin('view_userrole','view_userrole.userid', '=','t_u_messagetoexpert.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
+            ->leftJoin('t_u_user','t_u_messagetoexpert.userid' ,'=' ,'t_u_user.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
+            ->where('t_u_messagetoexpert.expertid',$expertid)
+            ->where('isdelete',0)
+            ->get();
+        return view("expert.detail",compact('data','result'));
+    }
+
+    /**
+     * 专家评论信息维护删除
+     * @return mixed
+     */
+
+    public function deleteExpertContent()
+    {
+        $id = $_GET['id'];
+        $expertid=$_GET['expertid'];
+        DB::table("t_u_messagetoexpert")
+            ->where('id',$id)
+            ->update([
+                'isdelete' => 1,
+            ]);
+
+        return redirect("/serve_expertDet/$expertid");
     }
 
     /**专家信息维护设置首页
