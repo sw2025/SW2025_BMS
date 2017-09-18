@@ -147,13 +147,13 @@ class EnterpriseController extends Controller{
             ->leftJoin("T_U_ENTERPRISEMEMBER","T_U_ENTERPRISEMEMBER.enterpriseid","=","T_U_ENTERPRISE.enterpriseid")
             ->select("T_U_USER.phone","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEMEMBER.memberid")
             ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-            ->where("configid",4);
+            ->where("configid",3);
         $count=DB::table("T_U_USER")
             ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
             ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
             ->leftJoin("T_U_ENTERPRISEMEMBER","T_U_ENTERPRISEMEMBER.enterpriseid","=","T_U_ENTERPRISE.enterpriseid")
             ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-            ->where("configid",4);
+            ->where("configid",3);
 
         if(!empty($serveName)){
             if(!empty($idCard)){
@@ -180,6 +180,7 @@ class EnterpriseController extends Controller{
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+        //dd($datas);
         return view("enterprise.serve",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
 
     }
