@@ -74,6 +74,11 @@ class ExpertController extends Controller
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         if($_POST['configid']==2){
+            DB::table('t_u_expertfee')->insert([
+                'expertid' => $_POST['expertid'],
+                'fee' => 0,
+                'state' => 1
+            ]);
             DB::table("T_M_SYSTEMMESSAGE")->insert([
                 "sendid"=>0,
                 "receiveid"=>$receiveId,
