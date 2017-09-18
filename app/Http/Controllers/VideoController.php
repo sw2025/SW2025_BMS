@@ -92,9 +92,9 @@ class VideoController extends Controller
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?"desc":"asc";
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
-
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
 
+        //dd($_GET['job']);
         if(!empty($idCard)){
             $number=['全部' => range(4,9),'已完成'=>[7,8],'正在办事'=>[4,5,6]];
             $idCard=!empty($idCard)? $number[$idCard]:null;
@@ -108,6 +108,7 @@ class VideoController extends Controller
             $jobWhere=!empty($job)?array("t_c_consult.domain1" => $job[0]):array();
             $domain2 = count($job) == 2?array("t_c_consult.domain2" => $job[1]):array();
         }
+
 
         $sizeWhere=!empty($size)?array("size"=>$size):array();
         $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();

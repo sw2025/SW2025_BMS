@@ -102,10 +102,10 @@ class WorkController extends Controller
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_e_eventverify','t_e_eventverify.eventid' ,'=' ,'t_e_event.eventid')
             ->leftJoin('t_e_eventverifyconfig','t_e_eventverify.configid' ,'=' ,'t_e_eventverifyconfig.configid')
-            ->leftJoin('t_e_eventresponse','t_e_eventresponse.eventid' ,'=' ,'t_e_event.eventid')
+            //->leftJoin('t_e_eventresponse','t_e_eventresponse.eventid' ,'=' ,'t_e_event.eventid')
             ->leftJoin('t_u_user','t_e_event.userid' ,'=' ,'t_u_user.userid')
             ->whereRaw('t_e_eventverify.id in (select max(id) from t_e_eventverify group by eventid)')
-            ->select('t_e_eventresponse.state','t_e_eventresponse.expertid','t_e_event.*','t_u_enterprise.address','view_userrole.role','t_e_eventverifyconfig.name','t_e_eventverifyconfig.configid','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventverify.verifytime','t_e_eventverify.configid');
+            ->select('t_e_event.*','t_u_enterprise.address','view_userrole.role','t_e_eventverifyconfig.name','t_e_eventverifyconfig.configid','t_u_enterprise.enterprisename','t_u_expert.expertname','t_u_user.phone','t_e_eventverify.verifytime','t_e_eventverify.configid');
         $obj = $data->whereIn('t_e_eventverify.configid',$sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){

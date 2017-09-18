@@ -49,7 +49,7 @@
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">需求领域：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                不限
+                                @if($job!="null"){{$job}}@else  不限 @endif
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide sub-industry"  role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
