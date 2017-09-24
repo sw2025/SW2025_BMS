@@ -117,7 +117,9 @@
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->needtime}}</span>
                             <span>{{$v->brief}}</span>
-                            <p><a href="{{asset('deleteSupply?needid='.$v->needid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+
+                            <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+
                         </div>
                     </div>
                    @endforeach
@@ -129,5 +131,25 @@
             </div>
         </section>
     </div>
+    <script src="/js/layer/extend/layer.ext.js"></script>
+    <script>
+        $('.deleteSupply').on('click',function () {
+            var needid = $(this).parent('p').attr('value');
+            layer.prompt({title: '请写出删除原因，并确认', formType: 2}, function(text, index){
+                layer.close(index);
+                var remark = text;
+                $.ajax({
+                    url:"{{url('deleteSupply')}}",
+                    data:{"needid":needid,"remark":remark},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        layer.alert(res.code,3);
+                        window.location.href = window.location;
+                    }
+                })
+            });
+        })
+    </script>
     <script src="{{asset('js/supply.js')}}" type="text/javascript"></script>
 @endsection

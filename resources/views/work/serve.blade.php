@@ -112,8 +112,8 @@
                         </div>
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->eventtime}}</span>
-                           {{$v->brief}}
-                            <p><a href="{{asset('deleteWork?eventid='.$v->eventid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+                           <span>{{$v->brief}}</span>
+                            <p  value="{{$v->eventid}}"><a href="javascript:;" class="deleteWork"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
                         </div>
 
                     </div>
@@ -128,5 +128,25 @@
             </div>
         </section>
     </div>
+    <script src="/js/layer/extend/layer.ext.js"></script>
+    <script>
+        $('.deleteWork').on('click',function () {
+            var eventid = $(this).parent('p').attr('value');
+            layer.prompt({title: '请写出删除原因，并确认', formType: 2}, function(text, index){
+                layer.close(index);
+                var remark = text;
+                $.ajax({
+                    url:"{{url('deleteWork')}}",
+                    data:{"eventid":eventid,"remark":remark},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        layer.alert(res.code,3);
+                        window.location.href = window.location;
+                    }
+                })
+            });
+        })
+    </script>
     <script src="{{asset('js/work.js')}}" type="text/javascript"></script>
 @endsection
