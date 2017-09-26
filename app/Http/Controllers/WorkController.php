@@ -165,18 +165,25 @@ class WorkController extends Controller
      * @return mixed
      */
 
-    public function deleteWork()
+    public function deleteWork(Request $request)
     {
-        $eventid = $_GET['eventid'];
-        DB::table("t_e_eventverify")
+        $datas = $request->input();
+        $result=DB::table("t_e_eventverify")
             ->insert([
-                'eventid' => $eventid,
+                'eventid' => $datas['eventid'],
                 "configid" => 3,
+                'remark'=>$datas['remark'],
                 'verifytime' => date('Y-m-d H:i:s', time()),
                 "updated_at" => date("Y-m-d H:i:s", time()),
                 "created_at" => date("Y-m-d H:i:s", time())
             ]);
 
-        return redirect("/serve_work");
+        if($result){
+            $array['code']="操作成功";
+            return $array;
+        }else{
+            $array['code']="操作失败";
+            return $array;
+        }
     }
 }

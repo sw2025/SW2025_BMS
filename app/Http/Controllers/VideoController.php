@@ -189,18 +189,25 @@ class VideoController extends Controller
      * @return mixed
      */
 
-    public function deleteVideo()
+    public function deleteVideo(Request $request)
     {
-        $consultid = $_GET['consultId'];
-        DB::table("t_c_consultverify")
+        $datas = $request->input();
+        $result= DB::table("t_c_consultverify")
                 ->insert([
-                    'consultid' => $consultid,
+                    'consultid' => $datas['consultid'],
                     "configid" => 3,
+                    'remark'=>$datas['remark'],
                     'verifytime' => date('Y-m-d H:i:s', time()),
                     "updated_at" => date("Y-m-d H:i:s", time()),
                     "created_at" => date("Y-m-d H:i:s", time())
                 ]);
 
-        return redirect("/serve_video");
+        if($result){
+            $array['code']="操作成功";
+            return $array;
+        }else{
+            $array['code']="操作失败";
+            return $array;
+        }
     }
 }

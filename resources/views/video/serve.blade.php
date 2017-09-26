@@ -133,7 +133,7 @@
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$data->created_at}}</span>
                             <span>{{$data->brief}}</span>
-                            <p><a href="{{asset('deleteVideo?consultId='.$data->consultid)}}" onclick="return confirm('您确定要删除!')"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+                            <p ><a href="javascript:;" class="deleteVideo" value="{{$data->consultid}}"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
 
                         </div>
                     </div>
@@ -146,24 +146,25 @@
             </div>
         </section>
     </div>
-    {{--<script>
-        $(".btn-support1").on("click",function(){
-            alert(1);
-            return false;
-            var consultid=$(this).attr("id");
-            $.post('{{url('deleteVideo')}}',{'consultid':consultid,'configid':1},function (data) {
-                if (data.errorMsg == 'success') {
-                    alert("操作成功");
-                    window.location.href = "{{url('/serve_video')}}";
-                } else {
-                    alert("操作失败或反应超时");
-                    window.location.href = "{{url('/serve_video')}}";
-                }
-            },'json');
-
+    <script src="/js/layer/extend/layer.ext.js"></script>
+    <script>
+        $('.deleteVideo').on('click',function () {
+            var consultid = $(this).attr('value');
+            layer.prompt({title: '请写出删除原因，并确认', formType: 2}, function(text, index){
+                layer.close(index);
+                var remark = text;
+                $.ajax({
+                    url:"{{url('deleteVideo')}}",
+                    data:{"consultid":consultid,"remark":remark},
+                    dateType:"json",
+                    type:"POST",
+                    success:function(res){
+                        layer.alert(res.code,3);
+                        window.location.href = window.location;
+                    }
+                })
+            });
         })
-
-
-    </script>--}}
+    </script>
     <script src="{{asset('js/video.js')}}" type="text/javascript"></script>
 @endsection

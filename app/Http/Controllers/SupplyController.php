@@ -99,10 +99,15 @@ class SupplyController extends Controller
         $locationWhere=!empty($location)?array("t_u_enterprise.address"=>$location):array();
         $data=DB::table('t_n_need')
             ->leftJoin('view_userrole','view_userrole.userid', '=','t_n_need.userid')
+            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.enterpriseid', '=','view_userrole.enterpriseid')
             ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
-            ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
-            ->select('t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone');
+            ->leftJoin('t_n_needverify','t_n_needverify.needid' ,'=' ,'t_n_need.needid')
+            ->leftJoin('t_n_needverifyconfig','t_n_needverify.configid' ,'=' ,'t_n_needverifyconfig.configid')
+            ->select('t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone')
+            ->whereIn('t_n_needverify.configid',[3,4])
+            ->whereRaw('t_n_needverify.id in (select max(id) from t_n_needverify group by needid)');
+
         $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
         $copy_obj = clone $obj;
         if(!empty($serveName)){
@@ -119,6 +124,7 @@ class SupplyController extends Controller
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
         //查询2级分类
         $cate = DB::table('t_common_domaintype')->get();
+        //dd($datas);
         return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job",'cate'));
 
     }
@@ -174,19 +180,26 @@ class SupplyController extends Controller
      * @return mixed
      */
 
-    public function deleteSupply()
+    public function deleteSupply(Request $request)
     {
-        $needid = $_GET['needid'];
-        DB::table("t_n_needverify")
+        $datas = $request->input();
+        $result = DB::table("t_n_needverify")
             ->insert([
-                'needid' => $needid,
-                "configid" => 3,
+                'needid' => $datas['needid'],
+                "configid" => 2,
+                "remark"=>  $datas['remark'],
                 'verifytime' => date('Y-m-d H:i:s', time()),
                 "updated_at" => date("Y-m-d H:i:s", time()),
                 "created_at" => date("Y-m-d H:i:s", time())
             ]);
 
-        return redirect("/serve_supply");
+        if($result){
+            $array['code']="操作成功";
+            return $array;
+        }else{
+            $array['code']="操作失败";
+            return $array;
+        }
     }
 
 
