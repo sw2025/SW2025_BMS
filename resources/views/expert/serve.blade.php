@@ -129,6 +129,7 @@
                             @if($data->isfirst==0)
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设为首页</button></a>
                             @else
+                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">选择顺序</button></a>
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
                             @endif
                         </div>
@@ -185,6 +186,28 @@
                         window.location.href="{{asset('/serve_expert')}}";
                     }
                 }
+            })
+        })
+
+        $(".btn-support5").on("click",function(){
+            var expertid=$(this).attr("id");
+            layer.prompt({title: '输入首页顺序，并确认', formType: 3}, function(pass, index) {
+                layer.close(index);
+                var order = pass;
+                $.ajax({
+                    url: "{{asset('/changeHomePage')}}",
+                    data: {"expertid": expertid,"order":order},
+                    dataType: "json",
+                    type: "POST",
+                    success: function (res) {
+                        if (res['code'] == "success") {
+                            window.location.href = "{{asset('/serve_expert')}}";
+                        } else {
+                            alert("审核失败");
+                            window.location.href = "{{asset('/serve_expert')}}";
+                        }
+                    }
+                })
             })
         })
     </script>

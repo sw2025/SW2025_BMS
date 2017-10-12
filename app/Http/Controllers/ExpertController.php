@@ -214,12 +214,21 @@ class ExpertController extends Controller
      */
     public  function changeHomePage(){
         $array=array();
-        $result=DB::table("T_U_EXPERT")
-            ->where("expertid",$_POST['expertid'])
-            ->update([
-                "isfirst"=> $_POST['isfirst'],
-                "order"=>$_POST['order']
-            ]);
+        if(!empty($_POST['isfirst'])){
+            $result=DB::table("T_U_EXPERT")
+                ->where("expertid",$_POST['expertid'])
+                ->update([
+                    "isfirst"=> $_POST['isfirst'],
+                    "order"=>empty($_POST['order']) ? 0: $_POST['order']
+                ]);
+        }else{
+            $result=DB::table("T_U_EXPERT")
+                ->where("expertid",$_POST['expertid'])
+                ->update([
+                    "order"=>$_POST['order']
+                ]);
+        }
+
         if($result){
             $array['code']="success";
             return $array;
@@ -227,6 +236,5 @@ class ExpertController extends Controller
             $array['code']="error";
             return $array;
         }
-
     }
 }
