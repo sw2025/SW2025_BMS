@@ -135,32 +135,40 @@
                     </div>
                     @endforeach
                     <div class="pages">
-                        {!! $datas->appends(["serveName"=>$serveName,"location"=>$location,"job"=>$job,"regTime"=>$regTime])->render() !!}
+                        {!! $datas->appends(["serveName"=>$serveName,"location"=>$location,"idCard"=>$idCard,"job"=>$job,"regTime"=>$regTime])->render() !!}
                     </div>
                 </div>
             </div>
         </section>
     </div>
+
+    <script src="/js/layer/extend/layer.ext.js"></script>
     <script>
         /**
          * 设置首页
          */
+
         $(".btn-support1").on("click",function(){
             var expertid=$(this).attr("id");
-            $.ajax({
-                url:"{{asset('/changeHomePage')}}",
-                data:{"isfirst":1,"expertid":expertid},
-                dataType:"json",
-                type:"POST",
-                success:function(res){
-                    if(res['code']=="success"){
-                        window.location.href="{{asset('/serve_expert')}}";
-                    }else{
-                        alert("审核失败");
-                        window.location.href="{{asset('/serve_expert')}}";
+            layer.prompt({title: '输入首页顺序，并确认', formType: 3}, function(pass, index){
+                layer.close(index);
+                var order = pass;
+                $.ajax({
+                    url:"{{asset('/changeHomePage')}}",
+                    data:{"isfirst":1,"expertid":expertid,"order":order},
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=="success"){
+                            window.location.href="{{asset('/serve_expert')}}";
+                        }else{
+                            alert("审核失败");
+                            window.location.href="{{asset('/serve_expert')}}";
+                        }
                     }
-                }
+                })
             })
+
         })
         $(".btn-support2").on("click",function(){
             var expertid=$(this).attr("id");
