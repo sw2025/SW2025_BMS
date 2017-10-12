@@ -128,7 +128,6 @@ class ExpertController extends Controller
         }else{
             $idCard=range(0,1);
         }
-        //dd($idCard);
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
 
         if(!empty($job) && count($job) == 1 ){
@@ -225,7 +224,7 @@ class ExpertController extends Controller
             $result=DB::table("T_U_EXPERT")
                 ->where("expertid",$_POST['expertid'])
                 ->update([
-                    "order"=>$_POST['order']
+                    "order"=>empty($_POST['order']) ? 0: $_POST['order']
                 ]);
         }
 

@@ -21,7 +21,7 @@
                                             <th>会员名称</th>
                                             <th>期限</th>
                                             <th>会费</th>
-                                            <th>咨询次数</th>
+                                            <th>咨询时长</th>
                                             <th>办事次数</th>
                                             <th>操作</th>
                                         </tr>
@@ -32,8 +32,8 @@
                                             <td>{{$v->typename}}</td>
                                             <td>{{$v->termtime}}年</td>
                                             <td>{{$v->cost}}</td>
-                                            <td>{{$v->consultcount}}</td>
-                                            <td>{{$v->eventcount}}</td>
+                                            <td>{{$v->consultcounts}}</td>
+                                            <td>{{$v->eventcounts}}</td>
                                             <td class="operate-btns">
                                                 <a href="{{url('edit_member',$v->memberid)}}"><button type="button" class="btn btn-block ink-reaction btn-inverse">修改</button></a>
                                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-danger" onclick="delmember({{$v->memberid}},this)">删除</button></a>
