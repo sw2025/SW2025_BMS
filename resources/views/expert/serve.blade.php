@@ -112,7 +112,7 @@
                                     <h2 class="cert-company"><a href="{{url('/serve_expertDet',$data->expertid)}}" class="look-link">{{$data->expertname}}</a></h2>
                                     <span class="cert-time">{{$data->created_at}}</span>
                                     <span class="cert-telephone">联系电话：{{$data->phone}}</span>
-                                    <p class="cert-industry">擅长行业：{{$data->industry}}</p>
+                                    @if($data->isfirst=='1')<p class="cert-industry">首页顺序：{{$data->order}}</p>@else @endif
                                     <p class="cert-industry">擅长问题：{{$data->domain1}}-{{join('/',explode(',',$data->domain2))}}</p>
                                     <p class="cert-scale">专家分类：{{$data->category}}</p>
                                     <p class="cert-zone">地区：{{$data->address}}</p>
@@ -122,15 +122,13 @@
                             </div>
                         </div>
                         <div class="col-md-2 set-certificate">
-                            {{--@if($data->configid==1)
-                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设为首页</button></a>
-                                <a href="javascript:;" onclick="showReason({{$data->expertid}});"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">拒绝审核</button></a>
-                            @else @endif--}}
                             @if($data->isfirst==0)
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设为首页</button></a>
                             @else
-                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">选择顺序</button></a>
-                                <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">选择顺序</button></a>
+                                <a href="javascript:;" ><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
                             @endif
                         </div>
                     </div>
@@ -205,6 +203,29 @@
                         } else {
                             alert("审核失败");
                             window.location.href = "{{asset('/serve_expert')}}";
+                        }
+                    }
+                })
+            })
+        })
+
+        $(".btn-support4").on("click",function(){
+            var expertid=$(this).attr("id");
+            layer.prompt({title: '删除原因，并确认', formType: 2}, function(text, index) {
+                layer.close(index);
+                var remark = text;
+                $.ajax({
+                    url:"{{asset('/changeExpert')}}",
+                    data:{"remark":remark,"expertid":expertid,"configid":3},
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['code']=="success"){
+                            alert("操作成功");
+                            window.location.href="{{asset('/serve_expert')}}";
+                        }else{
+                            alert("操作失败");
+                            window.location.href="{{asset('/serve_expert')}}";
                         }
                     }
                 })
