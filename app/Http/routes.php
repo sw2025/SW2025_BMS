@@ -139,6 +139,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/deleteExpertContent','ExpertController@deleteExpertContent');
 //专家首页设置
     Route::post('/changeHomePage','ExpertController@changeHomePage');
+//专家等级设置
+    Route::post('/changeGrade','ExpertController@changeGrade');
 //供求信息维护
     Route::any('/serve_supply','SupplyController@serveIndex');
 //供求信息删除
@@ -182,3 +184,9 @@ Route::post('/eventCountExpert','PublicController@eventCountExpert');
 
 //办事推送成功
 Route::post('/eventPushSelect','PublicController@eventPushSelect');
+
+
+//选取企业
+Route::post('/selectEnterprise','PublicController@selectEnterprise');
+//专家需求推送成功
+Route::post('/needPushSelect','PublicController@needPushSelect');

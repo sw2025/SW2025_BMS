@@ -90,6 +90,9 @@ class SupplyController extends Controller
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
 
+        $level= (isset($_GET['level'])&&$_GET['level']!="null")?$_GET['level']:null;
+
+
         $sizeWhere=!empty($size)?array("needtype"=>$size):array();
         if(!empty($job) && count($job) == 1 ){
             $jobWhere= array("t_n_need.domain1" => $job[0]);
@@ -108,7 +111,13 @@ class SupplyController extends Controller
             ->whereIn('t_n_needverify.configid',[3,4])
             ->whereRaw('t_n_needverify.id in (select max(id) from t_n_needverify group by needid)');
 
-        $obj = $data->where($sizeWhere)->where($jobWhere)->where($locationWhere);
+        if($level=='会员'){
+            $obj = $data->where($sizeWhere)->where("t_n_need.level","<>",0)->where($jobWhere)->where($locationWhere);
+        }else{
+            $levelWhere = isset($level)?array("t_n_need.level"=>0):array();
+            $obj = $data->where($sizeWhere)->where($levelWhere)->where($jobWhere)->where($locationWhere);
+        }
+
         $copy_obj = clone $obj;
         if(!empty($serveName)){
             $datas= $obj->where("t_n_need.brief","like","%".$serveName."%")->orderBy("t_n_need.needtime",$regTime)->paginate(10);
@@ -122,10 +131,11 @@ class SupplyController extends Controller
         $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
         $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+        $level=(isset($_GET['level'])&&$_GET['level']!="null")?$_GET['level']:"null";
         //查询2级分类
         $cate = DB::table('t_common_domaintype')->get();
         //dd($datas);
-        return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job",'cate'));
+        return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job",'cate','level'));
 
     }
 

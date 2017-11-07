@@ -20,6 +20,20 @@ $(document).ready(function(){
         getCondition(condition);
     })
     /**
+     * 是否会员
+     */
+    $('.serve-member-sel').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).children().html();
+        if(valHtml != '不限'){
+            $('.results-unit-member').html(valHtml).show();
+        }
+        condition[0]="level";
+        condition[1]=valHtml;
+        getCondition(condition);
+    });
+
+    /**
      * 发布方
      */
     $('.serve-scale-sel').on('click','li', function(event) {
@@ -89,6 +103,11 @@ $(document).ready(function(){
             condition[0]="location";
             condition[1]="全国";
         }
+        if($(this).hasClass('results-unit-member')){
+            condition[0]="level";
+            condition[1]="null";
+        }
+
 
         getCondition(condition);
 
@@ -113,11 +132,13 @@ $(document).ready(function(){
     var getCondition= function(condition){
         var Condition=condition;
         var serveName=$(".search-bar-inp").val();
+        var level = $.trim($("#level").html());
         var size=$.trim($("#size").html());
         var job=$.trim($("#job").html());
         var location=$.trim($("#location").html());
         serveName=(serveName)?serveName:null;
         size=(size!="不限")?size:null;
+        level=(level!="不限")?level:null;
         job=(job!="不限")?job:null;
         location=(location!="全国")?location:"全国";
 
@@ -134,6 +155,9 @@ $(document).ready(function(){
                 case "size":
                     size=(Condition[1]!="不限")?Condition[1]:null;
                     break;
+                case "level":
+                    level=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
                 case "job":
                     job=(Condition[1]!="不限")?Condition[1]:null;
                     break;
@@ -146,7 +170,7 @@ $(document).ready(function(){
 
             }
         }
-        window.location.href="?serveName="+serveName+"&size="+size+"&job="+job+"&location="+location+"&regTime="+regTime;
+        window.location.href="?serveName="+serveName+"&size="+size+"&level="+level+"&job="+job+"&location="+location+"&regTime="+regTime;
     }
 
 });
