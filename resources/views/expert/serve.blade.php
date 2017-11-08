@@ -112,7 +112,7 @@
                                     <h2 class="cert-company"><a href="{{url('/serve_expertDet',$data->expertid)}}" class="look-link">{{$data->expertname}}</a></h2>
                                     <span class="cert-time">{{$data->created_at}}</span>
                                     <span class="cert-telephone">联系电话：{{$data->phone}}</span>
-                                    @if($data->isfirst=='1')<p class="cert-industry">首页顺序：{{$data->order}}</p>@else @endif
+                                    @if($data->isfirst=='1')<p class="cert-industry">首页顺序：{{$data->order}}&nbsp;&nbsp;|&nbsp;专家等级：{{$data->level}}</p>@else<p class="cert-industry">专家等级：{{$data->level}}</p> @endif
                                     <p class="cert-industry">擅长问题：{{$data->domain1}}-{{join('/',explode(',',$data->domain2))}}</p>
                                     <p class="cert-scale">专家分类：{{$data->category}}</p>
                                     <p class="cert-zone">地区：{{$data->address}}</p>
@@ -123,9 +123,11 @@
                         </div>
                         <div class="col-md-2 set-certificate">
                             @if($data->isfirst==0)
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support3" id="{{$data->expertid}}">专家等级</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设为首页</button></a>
                             @else
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support3" id="{{$data->expertid}}">专家等级</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">选择顺序</button></a>
                                 <a href="javascript:;" ><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
@@ -147,6 +149,32 @@
          * 设置首页
          */
 
+         $(".btn-support3").on("click",function(){
+            var expertid=$(this).attr("id");
+            layer.prompt({title: '输入等级，并确认', formType: 3}, function(pass, index) {
+                layer.close(index);
+                var level = pass;
+                $.ajax({
+                    url: "{{asset('/changeGrade')}}",
+                    data: {"expertid": expertid,"level":level},
+                    dataType: "json",
+                    type: "POST",
+                    success: function (res) {
+                        if (res['code'] == "success") {
+                            alert("操作成功");
+                            window.location.href = "{{asset('/serve_expert')}}";
+                        } else {
+                            alert("操作失败");
+                            window.location.href = "{{asset('/serve_expert')}}";
+                        }
+                    }
+                })
+            })
+        })
+
+        /**
+         * 设置首页
+         */
         $(".btn-support1").on("click",function(){
             var expertid=$(this).attr("id");
             layer.prompt({title: '输入首页顺序，并确认', formType: 3}, function(pass, index){
@@ -159,9 +187,10 @@
                     type:"POST",
                     success:function(res){
                         if(res['code']=="success"){
+                            alert("成功设置首页顺序");
                             window.location.href="{{asset('/serve_expert')}}";
                         }else{
-                            alert("审核失败");
+                            alert("设置首页顺序失败");
                             window.location.href="{{asset('/serve_expert')}}";
                         }
                     }
@@ -178,15 +207,16 @@
                 type:"POST",
                 success:function(res){
                     if(res['code']=="success"){
+                        alert("成功取消首页设置");
                         window.location.href="{{asset('/serve_expert')}}";
                     }else{
-                        alert("审核失败");
+                        alert("取消首页设置失败");
                         window.location.href="{{asset('/serve_expert')}}";
                     }
                 }
             })
         })
-
+        //选择专家首页顺序
         $(".btn-support5").on("click",function(){
             var expertid=$(this).attr("id");
             layer.prompt({title: '输入首页顺序，并确认', formType: 3}, function(pass, index) {
@@ -194,14 +224,15 @@
                 var order = pass;
                 $.ajax({
                     url: "{{asset('/changeHomePage')}}",
-                    data: {"expertid": expertid,"order":order},
+                    data: {"isfirst":1,"expertid": expertid,"order":order},
                     dataType: "json",
                     type: "POST",
                     success: function (res) {
                         if (res['code'] == "success") {
+                            alert("设置成功");
                             window.location.href = "{{asset('/serve_expert')}}";
                         } else {
-                            alert("审核失败");
+                            alert("设置失败");
                             window.location.href = "{{asset('/serve_expert')}}";
                         }
                     }

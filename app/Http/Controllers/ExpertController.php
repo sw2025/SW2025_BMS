@@ -74,11 +74,14 @@ class ExpertController extends Controller
                 "updated_at"=>date("Y-m-d H:i:s",time())
             ]);
         if($_POST['configid']==2){
-            DB::table('t_u_expertfee')->insert([
-                'expertid' => $_POST['expertid'],
-                'fee' => 0,
-                'state' => 1
-            ]);
+            $count= DB::table('t_u_expertfee')->where('expertid',$_POST['expertid'])->count();
+            if(!$count){
+                DB::table('t_u_expertfee')->insert([
+                    'expertid' => $_POST['expertid'],
+                    'fee' => 0,
+                    'state' => 0
+                ]);
+            }
             DB::table("T_M_SYSTEMMESSAGE")->insert([
                 "sendid"=>0,
                 "receiveid"=>$receiveId,
@@ -212,21 +215,35 @@ class ExpertController extends Controller
      * @return mixed
      */
     public  function changeHomePage(){
-        $array=array();
-        if(!empty($_POST['isfirst'])){
+        //$array=array();
+
             $result=DB::table("T_U_EXPERT")
                 ->where("expertid",$_POST['expertid'])
                 ->update([
                     "isfirst"=> $_POST['isfirst'],
                     "order"=>empty($_POST['order']) ? 0: $_POST['order']
                 ]);
+        if($result){
+            $array['code']="success";
+            return $array;
         }else{
+            $array['code']="error";
+            return $array;
+        }
+    }
+    /**专家信息维护设置等级
+     * @return mixed
+     */
+    public function changeGrade(){
+
+            //$array=array();
             $result=DB::table("T_U_EXPERT")
                 ->where("expertid",$_POST['expertid'])
                 ->update([
-                    "order"=>empty($_POST['order']) ? 0: $_POST['order']
+                    //"isfirst"=> $_POST['isfirst'],
+                    "level"=>empty($_POST['level']) ? 0: $_POST['level']
                 ]);
-        }
+
 
         if($result){
             $array['code']="success";
@@ -236,4 +253,5 @@ class ExpertController extends Controller
             return $array;
         }
     }
+
 }

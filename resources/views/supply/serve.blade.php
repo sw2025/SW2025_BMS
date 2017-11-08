@@ -1,5 +1,14 @@
 @extends("layouts.extend")
 @section("content")
+    <style>
+        #hoverstyle{
+            color: #e3643d;
+            border-color: #e3643d;
+        }
+
+    </style>
+    <link rel="stylesheet" href="{{asset('css/list.css')}}">
+    <script src="{{asset('js/jquery.pagination.js')}}" type="text/javascript"></script>
     <div id="content">
         <section>
             <ol class="breadcrumb">
@@ -17,6 +26,7 @@
                             <span class="glyphicon glyphicon-arrow-right"></span> </span>
                         <div class="results-unit">
                             <a href="javascript:;" class="results-unit-del results-unit-scale" @if($size!="null") style="display:inline-block" @endif><span> {{$size}} </span></a>
+                            <a href="javascript:;" class="results-unit-del results-unit-member"@if($level!="null") style="display:inline-block" @endif>{{$level}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!="null") style="display:inline-block" @endif><span> {{$job}} </span></a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone" @if($location!="null" && $location != '全国') style="display:inline-block" @endif><span> {{$location}} </span></a>
                         </div>
@@ -32,6 +42,18 @@
                                 <li><a href="javascript:;">企业</a></li>
                             </ul>
                         </div>
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">是否会员：</span><button type="button" id="level" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                @if($level!="null"){{$level}}@else不限@endif
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-member-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                <li><a href="javascript:;">会员</a></li>
+                                <li><a href="javascript:;">非会员</a></li>
+                            </ul>
+                        </div>
+
                         <div class="btn-group serve-mr">
                             <span style="float:left">
                                 需求领域：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
@@ -118,21 +140,44 @@
                             <span class="cert-work-time">{{$v->needtime}}</span>
                             <span>{{$v->brief}}</span>
 
-                            <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float: right;">删除</button></a></p>
+                            <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float:right;">删除</button></a></p>
+
+                        </div>
+                        <div class="col-md-8 cert-cap">
+                            <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->needid}}" id="{{$v->needid}}" onclick="push(this)" style="width: 100px;float:right;">推送</button></a>
 
                         </div>
                     </div>
                    @endforeach
                     <div class="pages">
-                        {!! $datas->appends(["size"=>$size,"serveName"=>$serveName,"location"=>$location,"job"=>$job,"regTime"=>$regTime])->render() !!}
+                        {!! $datas->appends(["size"=>$size,"level"=>$level,"serveName"=>$serveName,"location"=>$location,"job"=>$job,"regTime"=>$regTime])->render() !!}
                         <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastPage()}}</strong>页</span></div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
+    <div class="modal modal-new-list">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button">关闭</button>
+        </div>
+        <div class="modal-body">
+            <div class="new-list container">
+                <ul class="supply-list clearfix">
+                </ul>
+                <div class="pages myinfo-page">
+                    <div id="Pagination"></div><span class="page-sum">共<strong class="allPage">{{$datas->lastpage()}}</strong>页</span>
+                </div>
+                <div class="btn-two">
+                    <button type="button" class="btn btn-block ink-reaction btn-inverse" data-dismiss="modal">取消</button>
+                    <button type="button" id="btnOK" class="btn btn-block ink-reaction btn-danger" >确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/js/layer/extend/layer.ext.js"></script>
     <script>
+
         $('.deleteSupply').on('click',function () {
             var needid = $(this).parent('p').attr('value');
             layer.prompt({title: '请写出删除原因，并确认', formType: 2}, function(text, index){
@@ -149,6 +194,81 @@
                     }
                 })
             });
+        })
+        /**
+         * 推送
+         */
+        function push(e){
+            var type=$(e).closest('.cert-item').find('.cert-scale span').text();
+            var needId=$(e).attr("id");
+            //alert(eventId);
+            //var datas=getCountExpert(needId);
+            /*var expertCount=datas.expertCount;
+            var expertstring=datas.expertids;*/
+            //alert(expertCount);
+            $.ajax({
+                url:"{{url('selectEnterprise')}}",
+                data:{"needId":needId},
+                dateType:"json",
+                type:"POST",
+                async:false,
+                success:function(res){
+                    var allPage = res.last_page;
+                    
+                    $(".supply-list").html("");
+                    var str="";
+                    $.each(res.data,function(key,value){
+                        console.log(value.showimage);
+                        //var enterpriseid=value.enterpriseid;
+                        str="<li class='col-md-4'>";
+                        str+="<input type='hidden' id='need' value='"+needId+"'>"
+                        str+="<div class='exp-list-top'>"
+                        str+="<span class='exp-list-img'><img src='{{env('ImagePath')}}"+value.showimage+"'></span>"
+                        str+="<div class='exp-list-brief'>"
+                        str+="<span class='exp-list-name'>"+value.enterprisename+"</span>"
+                        str+="<span class='exp-list-name'>"+value.industry+"</span>"
+                        str+="<div class='exp-list-lab'>"
+                        str+="</div>"
+                        str+="</div>"
+                        str+="<div class='exp-list-desc'>"
+                        str+="</div>"
+                        str+="</a>"
+                        //var strEnterpriseid=String(enterpriseid)
+                        str+="<a href='javascript:;' onclick='xuanzhong("+value.userid+")' id='need_"+value.userid+"' class='xuanzhong'><i class='fa fa-check-square'></i></a>"
+                        str+="</li>"
+                        $(".supply-list").append(str);
+                    })
+                    $(".modal-new-list").modal();
+                    $(".btn-primary").attr("id",this);
+                }
+            })
+        }
+
+        var xuanzhong=function(id){
+            $("#need_"+id).toggleClass('xzchecked');
+        }
+        $("#btnOK").on("click",function(){
+            var expertSelect="";
+            $('.xzchecked').each(function(index,element){
+                var ids=$(this).attr('id');
+                var num=ids.lastIndexOf('_')+1;
+                id=ids.substring(num);
+                expertSelect=id+','+expertSelect;
+            })
+            var needId=$("#need").val();
+            if(!expertSelect){
+                alert("请您选择专家");
+                return false;
+            }
+            $.ajax({
+                url:"{{url('needPushSelect')}}",
+                data:{"expertSelect":expertSelect,"needId":needId},
+                dateType:"json",
+                type:"post",
+                success:function(res){
+                   window.location.reload();
+                }
+            })
         })
     </script>
     <script src="{{asset('js/supply.js')}}" type="text/javascript"></script>

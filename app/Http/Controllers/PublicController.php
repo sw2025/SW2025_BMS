@@ -206,4 +206,57 @@ class PublicController extends Controller
         }
 
     }
+
+    /**推送企业的列表
+     * @return mixed
+     */
+    public  function  selectEnterprise(){
+        $needId = $_POST['needId'];
+        $userId = DB::table('T_N_NEED')->where('needid',$needId)->first()->userid;
+        $pushNeedUserId =array();
+        $pushNeed = DB::table('T_N_PUSHNEED')->where('needid',$needId)->get();
+        if($pushNeed){
+            foreach ($pushNeed as $value){
+                $pushNeedUserId[]=$value->userid;
+            }
+        }
+
+        $expert =DB::table("T_U_USER")
+            ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+            ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
+            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+            ->where("configid",3)
+            ->where('T_U_USER.userid','<>',$userId)
+            ->whereNotIn('t_u_user.userid',$pushNeedUserId)
+            ->select('t_u_user.userid','T_U_ENTERPRISE.enterprisename','T_U_ENTERPRISE.enterpriseid','T_U_ENTERPRISE.showimage','T_U_ENTERPRISE.industry');
+        $selectExperts=clone $expert;
+        $experts=$selectExperts->paginate(9);
+        return $experts;
+    }
+
+    public  function needPushSelect(){
+        $expertids=array();
+        $enterpriseSelects=explode(",",$_POST['expertSelect']);
+        $enterpriseSelect=array_filter($enterpriseSelects);
+        try{
+            foreach ($enterpriseSelect as $value) {
+                if (!in_array($value, $expertids)) {
+                    DB::table("T_N_PUSHNEED")->insert([
+                        "userid" => $value,
+                        "needid" => $_POST['needId'],
+                        "created_at" => date("Y-m-d H:i:s", time()),
+                        "updated_at" => date("Y-m-d H:i:s", time()),
+                    ]);
+                }
+            }
+        }catch(Exception $e){
+            throw $e;
+        }
+        if(!isset($e)){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
 }
