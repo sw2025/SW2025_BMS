@@ -135,17 +135,20 @@
                             <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                             <p class="cert-scale">需求分类：{{$v->domain1}}/{{$v->domain2}}</p>
                             <p class="cert-scale">地区：{{$v->address}}</p>
+                            @if($v->configid == '4')
+                            <p><a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support2" style="width: 100px;">已解决</button></a></p>
+                             @else
+                                <p><a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" style="width: 100px;">未解决</button></a></p>
+                            @endif
                         </div>
                         <div class="col-md-8 cert-cap">
                             <span class="cert-work-time">{{$v->needtime}}</span>
                             <span>{{$v->brief}}</span>
 
-                            <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float:right;">删除</button></a></p>
-
                         </div>
-                        <div class="col-md-8 cert-cap">
+                        <div>
+                            <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float:right;">删除</button></a></p>
                             <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->needid}}" id="{{$v->needid}}" onclick="push(this)" style="width: 100px;float:right;">推送</button></a>
-
                         </div>
                     </div>
                    @endforeach
