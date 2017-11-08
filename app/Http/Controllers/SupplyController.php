@@ -107,7 +107,7 @@ class SupplyController extends Controller
             ->leftJoin('t_u_user','t_n_need.userid' ,'=' ,'t_u_user.userid')
             ->leftJoin('t_n_needverify','t_n_needverify.needid' ,'=' ,'t_n_need.needid')
             ->leftJoin('t_n_needverifyconfig','t_n_needverify.configid' ,'=' ,'t_n_needverifyconfig.configid')
-            ->select('t_n_need.*','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone')
+            ->select('t_n_need.*','t_n_needverify.configid','view_userrole.role','t_u_enterprise.enterprisename','t_u_enterprise.address','t_u_expert.expertname','t_u_user.phone')
             ->whereIn('t_n_needverify.configid',[3,4])
             ->whereRaw('t_n_needverify.id in (select max(id) from t_n_needverify group by needid)');
 
