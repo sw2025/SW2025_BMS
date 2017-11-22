@@ -123,11 +123,11 @@
                         </div>
                         <div class="col-md-2 set-certificate">
                             @if($data->isfirst==0)
-                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support3" id="{{$data->expertid}}">专家等级</button></a>
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support6" id="{{$data->expertid}}">专家等级</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
                                 <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->expertid}}">设为首页</button></a>
                             @else
-                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support3" id="{{$data->expertid}}">专家等级</button></a>
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support6" id="{{$data->expertid}}">专家等级</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support4" id="{{$data->expertid}}">删除专家</button></a>
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support5" id="{{$data->expertid}}">选择顺序</button></a>
                                 <a href="javascript:;" ><button type="button" class="btn btn-block ink-reaction btn-support2" id="{{$data->expertid}}">取消首页设置</button></a>
@@ -146,10 +146,9 @@
     <script src="/js/layer/extend/layer.ext.js"></script>
     <script>
         /**
-         * 设置首页
-         */
-
-         $(".btn-support3").on("click",function(){
+         * 设置专家等级
+         **/
+         $(".btn-support6").on("click",function(){
             var expertid=$(this).attr("id");
             layer.prompt({title: '输入等级，并确认', formType: 3}, function(pass, index) {
                 layer.close(index);
@@ -174,7 +173,7 @@
 
         /**
          * 设置首页
-         */
+         * */
         $(".btn-support1").on("click",function(){
             var expertid=$(this).attr("id");
             layer.prompt({title: '输入首页顺序，并确认', formType: 3}, function(pass, index){
