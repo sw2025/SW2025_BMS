@@ -147,10 +147,10 @@
                         </div>
                         <div>
                             <p  value="{{$v->needid}}"><a href="javascript:;" class="deleteSupply"><button type="button" class="btn btn-block ink-reaction btn-support1" style="width: 100px;float:right;">删除</button></a></p>
-                          @if($level == '会员')
-                            <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->needid}}" id="{{$v->needid}}" onclick="push(this)" style="width: 100px;float:right;">推送</button></a>
-                          @else
-                          @endif
+                            @if($v->level=='1' && $v->configid = '3')
+                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->needid}}" id="{{$v->needid}}" onclick="push(this)" style="width: 100px;float:right;">推送</button></a>
+                            @else
+                            @endif
                         </div>
                     </div>
                    @endforeach
