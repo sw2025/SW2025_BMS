@@ -212,7 +212,12 @@ class PublicController extends Controller
      */
     public  function  selectEnterprise(){
         $needId = $_POST['needId'];
-        $userId = DB::table('T_N_NEED')->where('needid',$needId)->first()->userid;
+        $data = DB::table('T_N_NEED')
+                ->select('T_N_NEED.userid','T_N_NEED.needtype')
+                ->where('needid',$needId)
+                ->first();
+        $userId =  $data->userid;
+        $needtype = $data->needtype;
         $pushNeedUserId =array();
         $pushNeed = DB::table('T_N_PUSHNEED')->where('needid',$needId)->get();
         if($pushNeed){
@@ -220,18 +225,30 @@ class PublicController extends Controller
                 $pushNeedUserId[]=$value->userid;
             }
         }
+        if($needtype == '专家'){
+            $enterprise =DB::table("T_U_USER")
+                ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+                ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
+                ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+                ->where("configid",3)
+                ->where('T_U_USER.userid','<>',$userId)
+                ->whereNotIn('t_u_user.userid',$pushNeedUserId)
+                ->select('t_u_user.userid','T_U_ENTERPRISE.enterprisename','T_U_ENTERPRISE.enterpriseid','T_U_ENTERPRISE.showimage','T_U_ENTERPRISE.industry');
+        }else{
+            $enterprise =DB::table("T_U_USER")
+                ->leftJoin("T_U_EXPERT","T_U_USER.userid","=","T_U_EXPERT.userid")
+                ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.expertid")
+                ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
+                ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
+                ->where("configid",3)
+                ->where('T_U_USER.userid','<>',$userId)
+                ->whereNotIn('t_u_user.userid',$pushNeedUserId)
+                ->select('t_u_user.userid','T_U_EXPERT.expertname','T_U_EXPERT.expertid','T_U_EXPERT.showimage','T_U_EXPERT.domain1','T_U_EXPERT.domain2');
+        }
 
-        $expert =DB::table("T_U_USER")
-            ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-            ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
-            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-            ->where("configid",3)
-            ->where('T_U_USER.userid','<>',$userId)
-            ->whereNotIn('t_u_user.userid',$pushNeedUserId)
-            ->select('t_u_user.userid','T_U_ENTERPRISE.enterprisename','T_U_ENTERPRISE.enterpriseid','T_U_ENTERPRISE.showimage','T_U_ENTERPRISE.industry');
-        $selectExperts=clone $expert;
-        $experts=$selectExperts->paginate(9);
+        $selectExperts=clone $enterprise;
+        $experts=$selectExperts->paginate(3);
         return $experts;
     }
 
