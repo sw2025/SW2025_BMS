@@ -29,7 +29,7 @@
                                     <div class="col-md-4 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->showimage}}');" src="{{env('ImagePath').$data->showimage}}" /></div>
                                 </div>
                             </div>
-                            <div class="col-md-2 set-certificate">
+                            <div clas   s="col-md-2 set-certificate">
                                 @if($data->configid==1)
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1" id="{{$data->enterpriseid}}">通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason({{$data->enterpriseid}});" ><button type="button" class="btn btn-block ink-reaction btn-support5" >拒绝审核</button></a>
