@@ -17,18 +17,18 @@ class RechargeController extends Controller
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_u_user','T_U_BILL.userid' ,'=' ,'t_u_user.userid')
             ->select("T_U_USER.phone","T_U_USER.created_at","T_U_EXPERT.*","t_u_enterprise.enterpriseid","t_u_enterprise.enterprisename","T_U_BILL.*")
-            ->orderBy("T_U_BILL.billtime","desc")
-            ->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)');
+            ->orderBy("T_U_BILL.billtime","desc");
+            //->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)');
         //dd($datas);
         switch ($status) {
             case 'all':
-                $datas = $datas->whereIn("type",['在途','收入'])->paginate(10);
+                $datas = $datas->whereIn("type",['在途','收入'])->paginate(12);
                 break;
             case 'wait':
-                $datas = $datas->where("type",'在途')->paginate(10);
+                $datas = $datas->where("type",'在途')->paginate(12);
                 break;
             case 'fail':
-                $datas = $datas->where("type",'收入')->paginate(10);
+                $datas = $datas->where("type",'收入')->paginate(12);
                 break;
         }
         return view("recharge.index",compact("datas","status"));
@@ -126,14 +126,14 @@ class RechargeController extends Controller
             ->leftJoin('t_u_expert','t_u_expert.expertid' ,'=' ,'view_userrole.expertid')
             ->leftJoin('t_u_user','T_U_BILL.userid' ,'=' ,'t_u_user.userid')
             ->select("T_U_USER.phone",'view_userrole.role',"T_U_USER.created_at","T_U_EXPERT.*","t_u_enterprise.enterpriseid","t_u_enterprise.enterprisename","T_U_BILL.*")
-            ->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)')
+            //->whereRaw('T_U_BILL.id in (select max(id) from T_U_BILL group by userid)')
             ->whereIn("TYPE",['支出','充值']);
         $count=clone $data;
         if(!empty($serveName)){
-            $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType)->paginate(10);
+            $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$sizeType)->paginate(9);
             $counts=$count->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }else{
-            $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_BILL.BILLTIME",$regTime) ->paginate(10);
+            $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_BILL.BILLTIME",$regTime) ->paginate(9);
             $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
         }
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";

@@ -10,6 +10,39 @@ use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Null_;
 
 class EnterpriseController extends Controller{
+
+    /*
+     * 注册及企业信息
+     */
+    public function enterpriseData()
+    {
+        $status=!empty($_GET['status'])?$_GET['status']:0;
+        if($status==0){
+            $datas = DB::table('t_u_enterprise')
+                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->orderBy('t_u_enterprise.created_at', 'desc')
+                ->select("T_U_USER.phone","t_u_enterprise.*")
+                ->paginate(5);
+        }elseif($status==1){
+            $datas = DB::table('t_u_enterprise')
+                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+                ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by T_U_ENTERPRISEVERIFY.enterpriseid)')
+                ->orderBy('t_u_enterprise.created_at', 'desc')
+                ->select("T_U_USER.phone","t_u_enterprise.*",'T_U_ENTERPRISEVERIFY.configid')
+                ->paginate(5);
+        }else{
+            $datas = DB::table('t_u_enterprise')
+                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->where('t_u_enterprise.enterprisename',null)
+                ->orderBy('t_u_enterprise.created_at', 'desc')
+                ->select("T_U_USER.phone","t_u_enterprise.*")
+                ->paginate(5);
+        }
+
+        return view("member.enterpriseData",compact('datas','status'));
+    }
+
     /**
      * 专家审核首页
      * @param int $status
@@ -39,6 +72,8 @@ class EnterpriseController extends Controller{
         }
         return view("enterprise.index",compact("datas","status"));
     }
+
+
 
     /**详情
      * @param $enterpriseId
