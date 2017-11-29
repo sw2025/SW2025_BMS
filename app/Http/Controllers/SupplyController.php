@@ -134,7 +134,6 @@ class SupplyController extends Controller
         $level=(isset($_GET['level'])&&$_GET['level']!="null")?$_GET['level']:"null";
         //查询2级分类
         $cate = DB::table('t_common_domaintype')->get();
-        //dd($datas);
         return view("supply.serve",compact("datas","counts","serveName","size","regTime","location","job",'cate','level'));
 
     }

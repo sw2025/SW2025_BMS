@@ -61,6 +61,5 @@ class MemberController extends Controller
         DB::table('t_u_memberright')->where('memberid',$memberid)->update($data);
         return redirect('/member');
     }
-    
 
 }

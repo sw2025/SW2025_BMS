@@ -82,6 +82,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/add_member','MemberController@addMember');
     Route::get('/edit_member/{memberid}','MemberController@editMember');
     /******************************审核操作*************************************************/
+    // 注册及企业信息
+    Route::get('/enterprisedata','EnterpriseController@enterpriseData');
 //企业审核
     Route::get('/cert_enterprise/','EnterpriseController@index');
 //企业审核详情

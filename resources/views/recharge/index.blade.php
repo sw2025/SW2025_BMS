@@ -33,15 +33,15 @@
                                 </div>
                             @else
                                 <div class="cert-recharge-btns">
-                                    <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->id}}" >已拒绝</button></a>
+                                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$data->id}}">已拒绝</button></a>
                                 </div>
                             @endif
                         </div>
                     </div>
                     @endforeach
-                        <div class="pages">
-                            {!! $datas->render() !!}
-                        </div>
+                </div>
+                <div class="pages">
+                    {!! $datas->appends(["status"=>$status])->render() !!}
                 </div>
             </div>
         </section>
