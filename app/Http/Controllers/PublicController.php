@@ -216,6 +216,22 @@ class PublicController extends Controller
                 ->select('T_N_NEED.userid','T_N_NEED.needtype')
                 ->where('needid',$needId)
                 ->first();
+        $confid=DB::table("T_N_NEEDVERIFY")
+            ->leftJoin('T_N_NEED','T_N_NEEDVERIFY.needid','=','T_N_NEED.needid')
+            ->whereRaw('T_N_NEEDVERIFY.id in (select max(id) from T_N_NEEDVERIFY group by  T_N_NEEDVERIFY.needid)')
+            ->where('T_N_NEEDVERIFY.needid',$needId)
+            ->first()->configid;
+
+        if($confid==1){
+            DB::table('T_N_NEEDVERIFY')->insert([
+                'needid'     =>  $needId,
+                "configid"   =>  3,
+                'verifytime' =>  date('Y-m-d H:i:s',time()),
+                "remark"     =>  !empty($datas['remark'])?$datas['remark']:"",
+                "updated_at" =>  date("Y-m-d H:i:s",time()),
+                "created_at" =>  date("Y-m-d H:i:s",time())
+            ]);
+        }
         $userId =  $data->userid;
         $needtype = $data->needtype;
         $pushNeedUserId =array();
@@ -231,7 +247,7 @@ class PublicController extends Controller
                 ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
                 ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
                 ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-                ->where("configid",3)
+                ->where("T_U_ENTERPRISEVERIFY.configid",3)
                 ->where('T_U_USER.userid','<>',$userId)
                 ->whereNotIn('t_u_user.userid',$pushNeedUserId)
                 ->select('t_u_user.userid','T_U_ENTERPRISE.enterprisename','T_U_ENTERPRISE.enterpriseid','T_U_ENTERPRISE.showimage','T_U_ENTERPRISE.industry');
@@ -241,14 +257,14 @@ class PublicController extends Controller
                 ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.expertid")
                 ->leftJoin("T_N_PUSHNEED","T_U_USER.userid","=","T_N_PUSHNEED.userid")
                 ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by  T_U_EXPERTVERIFY.expertid)')
-                ->where("configid",3)
+                ->where("T_U_EXPERTVERIFY.configid",2)
                 ->where('T_U_USER.userid','<>',$userId)
                 ->whereNotIn('t_u_user.userid',$pushNeedUserId)
                 ->select('t_u_user.userid','T_U_EXPERT.expertname','T_U_EXPERT.expertid','T_U_EXPERT.showimage','T_U_EXPERT.domain1','T_U_EXPERT.domain2');
         }
 
         $selectExperts=clone $enterprise;
-        $experts=$selectExperts->paginate(3);
+        $experts=$selectExperts->paginate(46);
         return $experts;
     }
 
