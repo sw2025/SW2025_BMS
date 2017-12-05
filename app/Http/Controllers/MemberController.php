@@ -62,4 +62,45 @@ class MemberController extends Controller
         return redirect('/member');
     }
 
+    /**
+     * 版块
+     */
+    public function modular()
+    {
+        $data = DB::table('t_rbac_permission')->where('level',1)->select('permissionname')->get();
+        return view("member.modular",compact('data'));
+    }
+    /**
+     * 增加版块
+     */
+    public function addModular()
+    {
+        $data=$_POST;
+        if($data['grade']==1){
+            $result = DB::table('t_rbac_permission')
+                        ->insert([
+                        'permissionname'=>$data['name'],
+                        'level'=>1,
+                        'class'=>'fa fa-edit fa-fw',
+                        'pid'=>0,
+                        'created_at'=>date("Y-m-d H:i:s",time()),
+                        'updated_at'=>date("Y-m-d H:i:s",time())
+                    ]);
+        }else{
+            $permissionname = DB::table('t_rbac_permission')->where('level',1)->where('permissionname',$data['typename'])->first()->permissionid;
+            $result = DB::table('t_rbac_permission')
+                ->insert([
+                    'permissionname'=>$data['name'],
+                    'level'=>$data['grade'],
+                    'url'=>'/'.$data['url'],
+                    'pid'=>$permissionname,
+                    'created_at'=>date("Y-m-d H:i:s",time()),
+                    'updated_at'=>date("Y-m-d H:i:s",time())
+                ]);
+        }
+        return redirect('modular');
+
+    }
+
+
 }

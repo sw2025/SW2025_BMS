@@ -43,6 +43,62 @@ class EnterpriseController extends Controller{
         return view("member.enterpriseData",compact('datas','status'));
     }
 
+    /*
+     * 导入企业信息维护
+     */
+    public function importEnterprises()
+    {
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
+        if(!empty($idCard)){
+            if($idCard=="普通"){
+                $idCard=1;
+            }else{
+                $idCard=2;
+            }
+        }
+        $sizeWhere=!empty($size)?array("size"=>$size):array();
+        $jobWhere=!empty($job)?array("industry"=>$job):array();
+        $locationWhere=!empty($location)?array("address"=>$location):array();
+        $data=DB::table("enterpriseuser");
+        $count=DB::table("enterpriseuser");
+
+
+        if(!empty($serveName)){
+            if(!empty($idCard)){
+                $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->paginate(10);
+                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
+            }else{
+                $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->paginate(10);
+                $counts=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+            }
+        }else{
+            if(!empty($idCard)){
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->paginate(10);
+                $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
+            }else{
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->paginate(10);
+                $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
+
+            }
+        }
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:"null";
+        $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?$_GET['sizeType']:"down";
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:"null";
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:"null";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?$_GET['regTime']:"down";
+        $location=(isset($_GET['location'])&&$_GET['location']!="null")?$_GET['location']:"全国";
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
+
+        return view("enterprise.importEnterprises",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
+
+    }
+
     /**
      * 专家审核首页
      * @param int $status

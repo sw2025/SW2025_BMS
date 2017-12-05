@@ -36,9 +36,9 @@
                     if(in_array('/role',$arr)){
                         array_push($arr,"/edit_roleSave","/edit_role","/look_right","/delete_role","/add_role",'/add_roleSave');
                     }
-                    /*if(in_array('/enterprisedata',$arr)){
-                        array_push($arr,"");
-                    }*/
+                    if(in_array('/modular',$arr)){
+                        array_push($arr,'/addModular');
+                    }
                     if(in_array('/cert_enterprise',$arr)){
                         array_push($arr,'/details_enterprise','/changeEnterprise');
                     }
