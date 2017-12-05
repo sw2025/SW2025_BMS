@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Faker\Provider\Image;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -291,5 +292,67 @@ class PublicController extends Controller
         }else{
             return "error";
         }
+    }
+
+    public function changeAvatar(Request $request)
+    {
+        // 声明路径名
+        $destinationPath = 'uploads/';
+        // 取到图片
+        $file = $request->file('avatar');
+        dd($request->input());
+        // 验证
+        $input = array('image' => $file);
+        $rules = array(
+            'image' => 'image'
+        );
+        $validator = \Validator::make($input, $rules);
+        if ( $validator->fails() ) {
+            return \Response::json([
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            ]);
+        }
+
+        // 获得图片的名称 为了保证不重复 我们加上userid和time
+        $file_name = \Auth::user()->id . '_' . time() . $file->getClientOriginalName();
+        // 执行move方法
+        $file->move($destinationPath, $file_name);
+        // 裁剪图片 生成400的缩略图
+        Image::make($destinationPath . $file_name)->fit(500)->save();
+
+        return \Response::json([
+            'success' => true,
+            'avatar' => asset($destinationPath.$file_name),
+        ]);
+    }
+
+    public function cropAvatar(Request $request)
+    {
+//        array:6 [▼
+//  "_token" => "PB7DoFssm6vTQGsDREbpm2zZppSb80BdfKCFpmCf"
+//  "photo" => "http://localhost:8000/uploads/21_1492618494IMG_2332.JPG"
+//  "x" => "0"
+//  "y" => "29"
+//  "w" => "450"
+//  "h" => "450"
+//]
+//        dd($request->all());
+        // 拿到数据
+       // $photo=strstr($request->get('photo'),'uploads');
+        $photo=$request->get('photo');
+        $width = (int) $request->get('w');
+        $height = (int) $request->get('h');
+        $x = (int) $request->get('x');
+        $y = (int) $request->get('y');
+        // 使用Image对图像进行裁剪后保存
+        Image::make('21_1492618494IMG_2332.JPG')->crop($width, $height, $x, $y)->save();
+
+        // 保存到数据库
+        $user = \Auth::user();
+        $user->avatar = '/' . $photo;
+        $user->save();
+dd(123);
+        return redirect('/user/avatar');
     }
 }

@@ -130,5 +130,39 @@
             $auth=DB::table("T_RBAC_PERMISSION")->where("level",$level)->get();
             return $auth;
         }
+
+        /**网易云信accid和token
+         * @param $userId
+         * @param $nickname
+         * @throws Exception
+         */
+        public static  function getAccId($userId,$phone){
+            $AppKey = env('AppKey');
+            $AppSecret = env('AppSecret');
+            $serverApi = new \ServerApiClass($AppKey, $AppSecret);
+            $accid = "sw_" . $userId;
+            $name = substr_replace($phone,'****',3,4);
+            $props="";
+            $icon="/avatar.jpg";
+            $token="";
+            $result = $serverApi->createUserId($accid, $name,$props,$icon,$token);
+            if ($result['code'] == 200) {
+                try {
+                    DB::table("t_u_user")->where("userid", $userId)->update([
+                        "accid" => $accid,
+                        "imtoken" => $result['info']['token'],
+                    ]);
+                } catch (Exception $e) {
+                    throw $e;
+                }
+                if(!isset($e)){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        }
     }
 ?>
