@@ -200,3 +200,11 @@ Route::post('/eventPushSelect','PublicController@eventPushSelect');
 Route::post('/selectEnterprise','PublicController@selectEnterprise');
 //专家需求推送成功
 Route::post('/needPushSelect','PublicController@needPushSelect');
+//专家后台注册
+Route::get('/registerexpert','ExpertController@registerExpert');
+Route::get('/registerexpert2','ExpertController@registerExpert2');
+Route::post('/submitexpert','ExpertController@submitExpert');
+//上传头像缩略图
+//Route::post('/changeavatar','PublicController@changeAvatar');
+Route::post('/changeavatar','PublicController@cropAvatar');
+Route::post('/crop/api', 'UsersController@cropAvatar');
