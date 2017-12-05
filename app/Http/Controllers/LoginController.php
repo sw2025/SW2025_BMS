@@ -196,7 +196,8 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  resetOperator(Request $request){
+    public  function  resetOperator(Request $request)
+    {
         $results=DB::table("T_RBAC_USER")->where("userid",$_GET['userId'])->update([
             "password"=>md5("sw2025"),
             "updated_at"=>date("Y-m-d H:i:s",time()),
@@ -204,6 +205,7 @@ class LoginController extends Controller{
         $request->session()->flush();
         return redirect("/");
     }
+
 
     
 }

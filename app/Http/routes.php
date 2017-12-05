@@ -42,6 +42,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/rechargeData','IndexController@rechargeData');
 
     /***************************基础设置*****************************/
+//板块
+    Route::get('/modular','MemberController@modular');
+//增加板块
+    Route::post('/addModular','MemberController@addModular');
 // 修改密码
     Route::get('/change_pwd','LoginController@changePwd');
 //保存密码
@@ -82,10 +86,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/add_member','MemberController@addMember');
     Route::get('/edit_member/{memberid}','MemberController@editMember');
     /******************************审核操作*************************************************/
-    // 注册及企业信息
+// 注册及企业信息
     Route::get('/enterprisedata','EnterpriseController@enterpriseData');
+
+// 导入企业信息
+    Route::get('/importenterprises','EnterpriseController@importEnterprises');
+
 //企业审核
-    Route::get('/cert_enterprise/','EnterpriseController@index');
+    Route::get('/cert_enterprise','EnterpriseController@index');
 //企业审核详情
     Route::get('/details_enterprise','EnterpriseController@update');
 //修改企业状态
