@@ -101,7 +101,7 @@
                         </div>
                         <div class="btn-group serve-mr">
                             <span style="float:left">身份：</span><button type="button" id="idCard" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                @if($idCard!="null"){{$idCard}}@else  不限 @endif
+                                @if($idCard!="null"){{$idCard}}@else 不限 @endif
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide serve-member-sel" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
@@ -114,35 +114,90 @@
                         <a href="javascript:;" class="order-scale">规模 <i @if($sizeType=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
                         <a href="javascript:;" class="order-time">认证时间 <i @if($regTime=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
                         <span class="counts">数量:{{$counts}}</span>
+                        <span style="float: right;font-size:16px"><a href="javascript:;" id="delete">删除</a><label for="selector" class="control-label">全选</label><input type="checkbox" id="selector" onclick="swapCheck()" />
+                        </span>
                     </div>
                 </div>
                 <div class="cert-list">
                     @foreach($datas as $data)
                         <div class="container-fluid cert-item">
-                            <div class="col-md-12 cert-border">
+                            <input type="checkbox" value="{{$data->id}}" name="r" style="float:right"/>
+                            <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
-                                    <div class="col-md-6">
-                                        <h2 class="cert-company"><a href="" class="look-link">{{$data->enterprisename}}</a></h2>
-                                        <span class="cert-time"></span>
+                                    <div class="col-md-4">
+                                        <h2 class="cert-company"><a href="javascript:;" class="look-link">{{$data->enterprisename}}</a></h2>
+                                        <span class="cert-time">法定人：{{$data->username}}</span>
                                         <span class="cert-telephone">联系电话：{{$data->phone1}}</span>
                                         <span class="cert-telephone">联系电话：{{$data->phone2}}</span>
                                         <p class="cert-industry">行业：{{$data->industry}}</p>
-                                        <p class="cert-scale">规模：{{$data->size}}人</p>
+                                        <p class="cert-scale">规模：{{$data->size}}</p>
                                         <p class="cert-zone">地区：{{$data->address}}</p>
                                     </div>
-                                  {{--  <div class="col-md-3 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->licenceimage}}');" src="{{env('ImagePath').$data->licenceimage}}" /></div>
-                                    <div class="col-md-3 cert-img"><img onclick="javascript:showimage('{{env('ImagePath').$data->showimage}}');" src="{{env('ImagePath').$data->showimage}}" /></div>
---}}                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 set-certificate">
+                                <a href="{{url('/zhanshi',$data->id)}}"><button type="button" class="btn btn-block ink-reaction btn-support1">完善企业数据</button></a>
+                                <a href="javascript:;" onclick="" ><button type="button" class="btn btn-block ink-reaction btn-support1">删除企业数据</button></a>
                             </div>
                         </div>
                     @endforeach
                 </div>
                 <div class="pages">
                     {!! $datas->appends(["size"=>$size,"serveName"=>$serveName,"location"=>$location,"idCard"=>$idCard,"job"=>$job,"regTime"=>$regTime,"sizeType"=>$sizeType])->render() !!}
-                    {{-- <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>--}}
                 </div>
             </div>
         </section>
     </div>
     <script src="{{asset('js/enterprise.js')}}" type="text/javascript"></script>
+    <script type="text/javascript">
+        var a = 123;
+        console.log(a);
+        $('#delete').click(function () {
+            layer.confirm('确认删除数据？', {
+                btn: ['确认', '取消']
+            }, function(index, layero){
+                layer.close(index);
+                text = $("input:checkbox[name='r']:checked").map(function(index,elem){
+                    return $(elem).val();
+                }).get().join(',');
+                $.ajax({
+                    url:"{{asset('/deleteEnterprise')}}",
+                    data:{"text":text},
+                    dataType:"json",
+                    type:"POST",
+                    success:function(res){
+                        if(res['errorMsg']=="success"){
+                            window.location.href=window.location;
+                        }else{
+                            alert("操作失败");
+                           window.location.href=window.location;
+                        }
+                    }
+                })
+            }, function(index){
+                $("input[type='checkbox']").each(function() {
+                    this.checked = false;
+                });
+                isCheckAll = false;
+            });
+        })
+
+        //checkbox 全选/取消全选
+        var isCheckAll = false;
+        function swapCheck() {
+            if (isCheckAll) {
+                $("input[type='checkbox']").each(function() {
+                    this.checked = false;
+                });
+                isCheckAll = false;
+            } else {
+                $("input[type='checkbox']").each(function() {
+                    this.checked = true;
+                });
+                isCheckAll = true;
+            }
+        }
+    </script>
+
+
 @endsection

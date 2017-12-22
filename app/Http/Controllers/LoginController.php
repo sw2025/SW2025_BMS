@@ -136,7 +136,7 @@ class LoginController extends Controller{
      * @param $userId
      * @return mixed
      */
-    public  function  editOperator(){
+    public  function editOperator(){
         session(["login_url"=>$_SERVER["HTTP_REFERER"]]);
         $datas=DB::table("T_RBAC_USER")->leftJoin("T_RBAC_USERROLE","T_RBAC_USER.userid","=","T_RBAC_USERROLE.userid")
             ->leftJoin("T_RBAC_ROLE","T_RBAC_USERROLE.roleid","=","T_RBAC_ROLE.roleid")

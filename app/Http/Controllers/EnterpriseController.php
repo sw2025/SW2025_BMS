@@ -12,35 +12,43 @@ use phpDocumentor\Reflection\Types\Null_;
 class EnterpriseController extends Controller{
 
     /*
-     * 注册及企业信息
+     * 注册及企业、专家信息
      */
     public function enterpriseData()
     {
         $status=!empty($_GET['status'])?$_GET['status']:0;
         if($status==0){
-            $datas = DB::table('t_u_enterprise')
-                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-                ->orderBy('t_u_enterprise.created_at', 'desc')
-                ->select("T_U_USER.phone","t_u_enterprise.*")
-                ->paginate(5);
+            $data = DB::table('T_U_user')
+                ->leftJoin("view_enterprisestatus","T_U_USER.userid","=","view_enterprisestatus.userid")
+                ->leftJoin("view_expertstatus","T_U_USER.userid","=","view_expertstatus.userid")
+                ->orderBy('t_u_user.registertime', 'desc');
+            $counts = clone $data;
+            $datas=$data->paginate(9);
+            $counts=$counts->count();
+            //dd($counts);
         }elseif($status==1){
-            $datas = DB::table('t_u_enterprise')
-                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+            $data = DB::table('T_U_USER')
+                ->leftJoin("t_u_enterprise","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
                 ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
                 ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by T_U_ENTERPRISEVERIFY.enterpriseid)')
-                ->orderBy('t_u_enterprise.created_at', 'desc')
-                ->select("T_U_USER.phone","t_u_enterprise.*",'T_U_ENTERPRISEVERIFY.configid')
-                ->paginate(5);
+                ->orderBy('t_u_user.registertime', 'desc')
+                ->select("T_U_USER.phone","t_u_enterprise.*",'T_U_ENTERPRISEVERIFY.configid','T_U_USER.nickname','T_U_USER.registertime');
+            $counts = clone $data;
+            $datas=$data->paginate(9);
+            $counts=$counts->count();
         }else{
-            $datas = DB::table('t_u_enterprise')
-                ->leftJoin("T_U_user","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-                ->where('t_u_enterprise.enterprisename',null)
-                ->orderBy('t_u_enterprise.created_at', 'desc')
-                ->select("T_U_USER.phone","t_u_enterprise.*")
-                ->paginate(5);
+            $data = DB::table('T_U_USER')
+                ->leftJoin("T_U_expert","T_U_USER.userid","=","T_U_expert.userid")
+                ->leftJoin("T_U_EXPERTVERIFY","T_U_EXPERT.expertid","=","T_U_EXPERTVERIFY.expertid")
+                ->whereRaw('T_U_EXPERTVERIFY.id in (select max(id) from T_U_EXPERTVERIFY group by T_U_EXPERTVERIFY.expertid)')
+                ->orderBy('t_u_user.registertime', 'desc')
+                ->select("T_U_USER.phone","T_U_expert.*",'T_U_USER.nickname','T_U_USER.registertime','T_U_EXPERTVERIFY.configid');
+            $counts = clone $data;
+            $datas=$data->paginate(9);
+            $counts=$counts->count();
         }
 
-        return view("member.enterpriseData",compact('datas','status'));
+        return view("member.enterpriseData",compact('datas','status','counts'));
     }
 
     /*
@@ -68,7 +76,6 @@ class EnterpriseController extends Controller{
         $data=DB::table("enterpriseuser");
         $count=DB::table("enterpriseuser");
 
-
         if(!empty($serveName)){
             if(!empty($idCard)){
                 $datas=$data->where("enterprisename","like","%".$serveName."%")->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->paginate(10);
@@ -79,10 +86,10 @@ class EnterpriseController extends Controller{
             }
         }else{
             if(!empty($idCard)){
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->paginate(10);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->paginate(12);
                 $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
             }else{
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->paginate(10);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->paginate(12);
                 $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
 
             }
@@ -96,7 +103,48 @@ class EnterpriseController extends Controller{
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:"null";
 
         return view("enterprise.importEnterprises",compact("datas","counts","serveName","sizeType","size","idCard","regTime","location","job"));
+    }
+    /*
+     * 删除企业导入数据
+     */
+    public function deleteEnterprise()
+    {
+        $data = $_POST['text'];
+        $datas = explode(",",$data);
+        $result = DB::table('enterpriseuser')->whereIn('id',$datas)->update(['isshow'=>1]);
+        if($result){
+            return json_encode(['errorMsg' => 'success']);
+        }else{
+            return json_encode(['errorMsg' => 'error']);
+        }
+    }
 
+    public function zhanshi($id)
+    {
+        $data = DB::table('enterpriseuser')->where('id',$id)->first();
+        return view('enterprise.perfect',compact('data'));
+    }
+
+    public function baocun(Request $request)
+    {
+        $datas = $request->input();
+
+        if($datas['id']){
+            DB::table('enterpriseuser')
+                ->where('id',$datas['id'])
+                ->update([
+                    'enterprisename' => $datas['enterprisename'],
+                    'username' => $datas['username'],
+                    'phone1' => $datas['phone1'],
+                    'phone2' => $datas['phone2'],
+                    'industry' => $datas['industry'],
+                    'address' => $datas['address'],
+                ]);
+            return json_encode(['errorMsg' => 'success']);
+
+        }else{
+            return json_encode(['errorMsg' => 'error']);
+        }
     }
 
     /**

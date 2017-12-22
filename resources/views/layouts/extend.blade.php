@@ -174,6 +174,9 @@
     if(pathname=='/serve_enterpriseDet'){
         var pathname='/serve_enterprise';
     }
+    if(bb=='/zhanshi'){
+        var bb='/importenterprises';
+    }
     if(bb=='/serve_expertDet'){
         var bb='/serve_expert';
     }
