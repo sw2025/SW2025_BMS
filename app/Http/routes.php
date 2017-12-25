@@ -91,6 +91,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 // 导入企业信息
     Route::get('/importenterprises','EnterpriseController@importEnterprises');
+// 删除导入企业信息
+    Route::post('/deleteEnterprise','EnterpriseController@deleteEnterprise');
+// 展示导入企业信息一条
+    Route::get('/zhanshi/{id?}','EnterpriseController@zhanshi');
+// 保存导入企业信息一条
+    Route::post('/baocun','EnterpriseController@baocun');
 
 //企业审核
     Route::get('/cert_enterprise','EnterpriseController@index');
