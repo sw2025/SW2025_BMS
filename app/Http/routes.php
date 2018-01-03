@@ -98,7 +98,7 @@ Route::group(['middleware' => ['auth']], function () {
 // 保存导入企业信息一条
     Route::post('/baocun','EnterpriseController@baocun');
 
-//企业审核 
+//企业审核
     Route::get('/cert_enterprise','EnterpriseController@index');
 //企业审核详情
     Route::get('/details_enterprise','EnterpriseController@update');
