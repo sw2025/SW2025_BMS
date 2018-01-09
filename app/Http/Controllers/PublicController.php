@@ -355,4 +355,75 @@ class PublicController extends Controller
 dd(123);
         return redirect('/user/avatar');
     }
+
+
+    public function dumpexcel()
+    {
+        $data = DB::table('t_u_expert as expert')
+            ->leftJoin('t_u_user as user','user.userid','=','expert.userid')
+            ->where('expert.expertname','<>','')
+            ->select('user.phone','expert.expertname','expert.category','expert.address','expert.brief','expert.domain1','expert.domain2')
+            ->get();
+        $arr = [];
+        foreach($data as $k => $v){
+            $arr2 = [];
+            foreach($v as $kk => $vv){
+                $arr2[$kk] = addslashes($vv);
+            }
+            $arr[$k] = $arr2;
+        }
+        dd($arr);
+
+        $filename = '升维网专家信息'.date('YmdHis');
+        $header = array('手机号','专家名称','专家分类','所在地区','专家描述','一级领域','二级领域');
+        $index = array('phone','expertname','category','address','brief','domain1','domain2');
+        $this->createtable($arr,$filename,$header,$index);
+    }
+
+    /**
+     * 创建(导出)Excel数据表格
+     * @param  array   $list 要导出的数组格式的数据
+     * @param  string  $filename 导出的Excel表格数据表的文件名
+     * @param  array   $header Excel表格的表头
+     * @param  array   $index $list数组中与Excel表格表头$header中每个项目对应的字段的名字(key值)
+     * 比如: $header = array('编号','姓名','性别','年龄');
+     *       $index = array('id','username','sex','age');
+     *       $list = array(array('id'=>1,'username'=>'YQJ','sex'=>'男','age'=>24));
+     * @return [array] [数组]
+     */
+    protected function createtable($list,$filename,$header=array(),$index = array()){
+       /*header("Content-type:application/vnd.ms-excel");
+        header("Content-Disposition:filename=".$filename.".xls");
+        $teble_header = implode("\t",$header);
+        $strexport = $teble_header."\r";
+        foreach ($list as $row){
+            foreach($index as $val){
+                $strexport.=$row[$val]."\t";
+            }
+            $strexport.="\r";
+
+        }
+        $strexport=iconv('UTF-8',"GB2312//IGNORE",$strexport);
+        exit($strexport);*/
+
+        $str = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:x=\"urn:schemas-microsoft-com:office:excel\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\">\r\n<head>\r\n<meta http-equiv=Content-Type content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>";
+        $str .="<table border=1><head>".'升维网专家信息'."</head>";
+        foreach ($list  as $key=> $rt )
+        {
+            $str .= "<tr>";
+            foreach ( $rt as $k => $v )
+            {
+                $str .= "<td>{$v}</td>";
+            }
+            $str .= "</tr>\n";
+        }
+        $str .= "</table></body></html>";
+        header( "Content-Type: application/vnd.ms-excel; name='excel'" );
+        header( "Content-type: application/octet-stream" );
+        header( "Content-Disposition: attachment; filename=".$filename.".xls" );
+        header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
+        header( "Pragma: no-cache" );
+        header( "Expires: 0" );
+        exit( $str );
+    }
 }

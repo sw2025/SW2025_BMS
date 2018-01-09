@@ -329,6 +329,8 @@ class ExpertController extends Controller
                 "phone" => $data['phonenumber'],
                 "password" => md5($data['password']),
                 "registertime" => date("Y-m-d H:i:s", time()),
+                'avatar' => $data['showimage'],
+                'nickname' => $data['name'],
                 "created_at" => date("Y-m-d H:i:s", time()),
                 "updated_at" => date("Y-m-d H:i:s", time()),
             ]);
@@ -352,6 +354,11 @@ class ExpertController extends Controller
                 'expertid' => $expertid,
                 'configid' => 2,
                 'verifytime' =>  date("Y-m-d H:i:s", time()),
+            ]);
+            DB::table('t_u_expertfee')->insert([
+                'expertid' => $expertid,
+                'fee' => 0,
+                'state' => 0
             ]);
             DB::table("t_m_systemmessage")->insert([
                 "sendid"=>0,
@@ -378,11 +385,6 @@ class ExpertController extends Controller
         } else {
             return redirect('/registerexpert2')->withErrors(['error'=> '注册失败（插入数据失败但是专家数据已录入）']);
         }
-
-
-        dd($data);
-
-
     }
 
 
