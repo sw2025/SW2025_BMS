@@ -50,6 +50,8 @@
         </div>
         <div class="collapse navbar-collapse" id="header-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a class="dropdown-toggle myname" href="{{url('/registerenterprise')}}">企业录入</a></li>
+                <li class="dropdown"><a class="dropdown-toggle myname" href="{{url('/registerexpert2')}}">专家录入</a></li>
                 <li class="dropdown"><a class="dropdown-toggle myname">胖大海</a></li>
                 <li class="dropdown">
                     <a href="javascript:;" id="quit" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-power-off text-danger"></i>退出</a>

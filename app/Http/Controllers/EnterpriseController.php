@@ -310,5 +310,129 @@ class EnterpriseController extends Controller{
         return $ids;
     }
 
+    public function registerEnterprise()
+    {
+        $error = empty($_GET['error']) ? '' : $_GET['error'];
+        $domain1 = DB::table('t_common_domaintype')->where('level',1)->get();
+        $domain2 = DB::table('t_common_domaintype')->where('level',2)->get();
+        return view('enterprise.register',compact('domain1','domain2','error'));
+    }
+
+    public function submitEnterprise(Request $request)
+    {
+        $data = $request->input();
+        foreach($data as $k => $v){
+            if(empty($v)){
+                switch ($k) {
+                    case 'phonenumber':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '电话号是空的']);
+                        break;
+                    case 'password':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '密码不能为空']);
+                        break;
+                    case 'name':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '名称不能为空']);
+                        break;
+                    case 'size':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '企业规模不能为空']);
+                        break;
+                    case 'address':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '地址不能为空']);
+                        break;
+                    case 'industry':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '行业不能为空']);
+                        break;
+                    case 'brief':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '描述不能是空的']);
+                        break;
+                    case 'showimage':
+                        return redirect('/registerenterprise')->withErrors(['error'=> '头像不能是空的']);
+                        break;
+                }
+            }
+        }
+        $isregister = DB::table('t_u_user')->where('phone',$data['phonenumber'])->count();
+        if($isregister){
+            return redirect('/registerenterprise')->withErrors(['error'=> '该手机号码已经注册']);
+        }
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $data['showimage'], $result)){
+            $type = $result[2];
+            $time = time();
+            $new_file = '../../swUpload/images/'.$time.'.'.$type;
+            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $data['showimage'])))){
+                unset($data['showimage']);
+                $data['showimage'] = '/images/'.$time.'.'.$type;
+            } else {
+                return redirect('/registerenterprise')->withErrors(['error'=> '上传头像错误（保存文件失败）']);
+            }
+        } else{
+            return redirect('/registerenterprise')->withErrors(['error'=> '上传头像错误（图像dataurl错误）']);
+        }
+
+        DB::beginTransaction();
+        try {
+            $userid = DB::table("T_U_USER")->insertGetId([
+                "phone" => $data['phonenumber'],
+                "password" => md5($data['password']),
+                "registertime" => date("Y-m-d H:i:s", time()),
+                'avatar' => $data['showimage'],
+                'nickname' => $data['name'],
+                "created_at" => date("Y-m-d H:i:s", time()),
+                "updated_at" => date("Y-m-d H:i:s", time()),
+            ]);
+            $expertid = DB::table('t_u_enterprise')->insertGetId([
+                "userid" => $userid,
+                'enterprisename' => $data['name'],
+                'size' => $data['size'],
+                'address' => $data['address'],
+                'licenceimage' => $data['showimage'],
+                'showimage' => $data['showimage'],
+                'brief' => $data['brief'],
+                'industry' => $data['industry'],
+                "created_at" => date("Y-m-d H:i:s", time()),
+                "updated_at" => date("Y-m-d H:i:s", time()),
+            ]);
+            DB::table('t_u_enterpriseverify')->insert([
+                'enterpriseid' => $expertid,
+                'configid' => 2,
+                'verifytime' =>  date("Y-m-d H:i:s", time()),
+            ]);
+            if($data['isvip']){
+                DB::table("t_c_vipcode")->insert([
+                    "phone"=>$data['phonenumber'],
+                    "vipcode"=>$data['code'],
+                    "starttime"=> date("Y-m-d H:i:s", time()),
+                    "endtime"=>date("Y-m-d H:i:s", time()+60*60*24*365),
+                    "type"=>$data['livepeople'],
+                    "islive"=>1,
+                ]);
+            }
+            DB::table("t_m_systemmessage")->insert([
+                "sendid"=>0,
+                "receiveid"=>$userid,
+                "sendtime"=>date("Y-m-d H:i:s",time()),
+                "title"=>"感谢您注册升维网",
+                "content"=>"您已成功注册升维网",
+                "state"=>0,
+                "created_at"=>date("Y-m-d H:i:s",time()),
+                "updated_at"=>date("Y-m-d H:i:s",time()),
+            ]);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        if (!isset($e)) {
+            $result = \UserClass::getAccId($userid,$data['phonenumber']);
+            if($result){
+                return redirect('/registerenterprise')->withErrors(['error'=> '注册成功']);
+            } else {
+                return redirect('/registerenterprise')->withErrors(['error'=> '注册失败（插入网易云accid失败但是专家数据已录入）']);
+            }
+        } else {
+            return redirect('/registerenterprise')->withErrors(['error'=> '注册失败（插入数据失败但是专家数据已录入）']);
+        }
+    }
+
 
 }
