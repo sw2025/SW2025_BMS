@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="robots" content="all">
-    <title>升维网-后台专家录入</title>
+    <title>升维网-后台企业录入</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <link rel="stylesheet" type="text/css" href="{{asset('myupload/ycbootstrap.css')}}"/>
@@ -19,29 +19,32 @@
 </head>
 <body>
 <div class="page-header" style="margin-left:20px;">
-    <h1>后台专家录入系统 <small><a href="{{url('/index')}}">后台首页</a></small></h1>
+    <h1>后台企业录入系统 <small><a href="{{url('/index')}}">后台首页</a></small></h1>
 </div>
 <h1 style="color:@if(!empty($errors->all()) && $errors->all()[0] == '注册成功') #00c566 @else #f10 @endif  ">{{$errors->all()[0] or ''}}</h1>
     <div class="container col-md-8 col-sm-8 col-xs-8 center-block" style="margin: 10px;" id="submitform">
-        <form action="{{url('/submitexpert')}}" method="post" style="margin-left: 5px;" enctype="multipart/form-data" >
+        <form action="{{url('/submitenterprise')}}" method="post" style="margin-left: 5px;" enctype="multipart/form-data" >
             <div class="form-group">
                 <label for="exampleInputEmail1">手机号码</label>
                 <input type="text" maxlength="11" class="form-control" name="phonenumber" required/>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">密码 </label>
-                <input type="text" name="password"  class="form-control" value="123456" required/>
+                <input type="text" name="password"  class="form-control" value="" placeholder="密码请填写为手机号的后六位" required/>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">专家姓名 </label>
+                <label for="exampleInputPassword1">企业名称 </label>
                 <input type="text" name="name" value="" class="form-control" required/>
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类 </label>
-                <select name="category" class="form-control" required>
-                    <option selected>专家</option>
-                    <option >机构</option>
-                    <option >企业家</option>
+                <label for="exampleInputPassword1">企业规模 </label>
+                <select name="size" class="form-control" required>
+                    <option selected>20人以下</option>
+                    <option>20-99人</option>
+                    <option>100-499人</option>
+                    <option>500-999人</option>
+                    <option>1000-9999人</option>
+                    <option>10000人以上</option>
                 </select>
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
@@ -85,40 +88,40 @@
                 </select>
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类1 </label>
-                <select name="domain1" class="form-control" required>
-                    @foreach($domain1 as $v)
-                        <option>{{$v->domainname}}</option>
-                    @endforeach
+                <label for="exampleInputPassword1">所在行业 </label>
+                <select name="industry" class="form-control" required>
+                    <option selected>金融业</option>
+                    <option>房地产|建筑业</option>
+                    <option>商业服务</option>
+                    <option>贸易|批发|零售|租赁业</option>
+                    <option>文体教育|工艺美术</option>
+                    <option>生产|加工|制造</option>
+                    <option>交通|运输|物流|仓储</option>
+                    <option>服务业</option>
+                    <option>文化|传媒|娱乐|体育</option>
+                    <option>能源|矿产|环保</option>
+                    <option>政府|非盈利机构</option>
+                    <option>农|林|牧|渔|其他</option>
                 </select>
             </div>
+
+
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类2 </label>
-                <select name="domain2" class="form-control" required>
-                    @foreach($domain2 as $v)
-                        <option>{{$v->domainname}}</option>
-                    @endforeach
+                <label for="exampleInputPassword1">是否激活会员 </label>
+                <select name="isvip" class="form-control" required id="order">
+                    <option value="0" selected>否</option>
+                    <option value="1" >是</option>
                 </select>
-            </div>
-            <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家等级 </label>
-                <select name="level" class="form-control" required>
-                        <option value="0">0级(默认请勿修改)</option>
-                        <option value="1">1级</option>
-                        <option value="2">2级</option>
-                </select>
-            </div>
-            <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">是否设为首页 </label>
-                <select name="isfirst" class="form-control" required id="order">
-                    <option value="0">否</option>
-                    <option value="1">是</option>
-                </select>
-                <input type="text" name="order" class="form-control" style="display: none;" placeholder="请输入专家顺序"/>
+                <input type="text" name="code" class="form-control" style="display: none;" placeholder="请输入激活码"/>
             </div>
             <div class="form-group">
-                <label for="exampleInputFile" required>专家简介</label>
+                <label for="exampleInputFile" required>企业介绍</label>
                 <textarea rows="6" name="brief" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">填写人名字 </label>
+                <input type="text" name="livepeople" value="" class="form-control" required/>
             </div>
 
             <div class="form-group">
@@ -161,7 +164,7 @@
 
 
 
-            <button type="submit" class="btn btn-success" style="margin: 20px;width: 250px;" onclick="$('#submitform').submit()">提交专家资料</button>
+            <button type="submit" class="btn btn-success" style="margin: 20px;width: 250px;" onclick="$('#submitform').submit()">提交企业资料</button>
         </form>
     </div>
 

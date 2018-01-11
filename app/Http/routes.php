@@ -210,7 +210,12 @@ Route::post('/needPushSelect','PublicController@needPushSelect');
 Route::get('/registerexpert','ExpertController@registerExpert');
 Route::get('/registerexpert2','ExpertController@registerExpert2');
 Route::post('/submitexpert','ExpertController@submitExpert');
+//企业后台注册
+Route::get('/registerenterprise','EnterpriseController@registerEnterprise');
+Route::post('/submitenterprise','EnterpriseController@submitEnterprise');
 //上传头像缩略图
 //Route::post('/changeavatar','PublicController@changeAvatar');
 Route::post('/changeavatar','PublicController@cropAvatar');
 Route::post('/crop/api', 'UsersController@cropAvatar');
+
+Route::get('dumpexcel','PublicController@dumpexcel');
