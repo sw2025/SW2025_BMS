@@ -265,7 +265,7 @@ class PublicController extends Controller
         }
 
         $selectExperts=clone $enterprise;
-        $experts=$selectExperts->paginate(46);
+        $experts=$selectExperts->paginate(120);
         return $experts;
     }
 
@@ -352,7 +352,6 @@ class PublicController extends Controller
         $user = \Auth::user();
         $user->avatar = '/' . $photo;
         $user->save();
-dd(123);
         return redirect('/user/avatar');
     }
 }
