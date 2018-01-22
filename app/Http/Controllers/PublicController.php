@@ -358,24 +358,30 @@ class PublicController extends Controller
 
     public function dumpexcel()
     {
-        $data = DB::table('t_u_expert as expert')
-            ->leftJoin('t_u_user as user','user.userid','=','expert.userid')
-            ->where('expert.expertname','<>','')
-            ->select('user.phone','expert.expertname','expert.category','expert.address','expert.brief','expert.domain1','expert.domain2')
+        $data = DB::table('t_u_enterprise as enterprise')
+            ->leftJoin('t_u_user as user','user.userid','=','enterprise.userid')
+            //->where('expert.expertname','<>','')
+            //->where('enterprise.category','专家')
+            ->select('enterprise.enterpriseid','enterprise.enterprisename','user.phone','enterprise.address','enterprise.industry')
             ->get();
         $arr = [];
+        $select = ['','中能富宁投资有限公司','ccessssss','11111','测试企业','中通','莫 Rom 破','俺道歉','升维网','中通财富投资有限公司','升维网（北京）数据科技有限公司','江寿（北京）数据科技有限公司','升维网（北京）数据科技有限公司','北京责梦科技有限公司','升维学堂','测试'];
         foreach($data as $k => $v){
             $arr2 = [];
+            if(in_array(trim($v->enterprisename),$select)){
+                //var_dump($v->enterprisename);
+                continue;
+            }
             foreach($v as $kk => $vv){
+
                 $arr2[$kk] = addslashes($vv);
             }
             $arr[$k] = $arr2;
         }
-        dd($arr);
-
-        $filename = '升维网专家信息'.date('YmdHis');
-        $header = array('手机号','专家名称','专家分类','所在地区','专家描述','一级领域','二级领域');
-        $index = array('phone','expertname','category','address','brief','domain1','domain2');
+        //dd($arr);
+        $filename = '升维网企业信息'.date('YmdHis');
+        $header = array('序号','企业名字','手机号','所在地区','行业','联络人');
+        $index = array('enterpriseid','enterprisename','phone','address','industry','enterpriseid');
         $this->createtable($arr,$filename,$header,$index);
     }
 
@@ -406,7 +412,9 @@ class PublicController extends Controller
         exit($strexport);*/
 
         $str = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\nxmlns:x=\"urn:schemas-microsoft-com:office:excel\"\r\nxmlns=\"http://www.w3.org/TR/REC-html40\">\r\n<head>\r\n<meta http-equiv=Content-Type content=\"text/html; charset=utf-8\">\r\n</head>\r\n<body>";
-        $str .="<table border=1><head>".'升维网专家信息'."</head>";
+        $str .="<table border=1><head>".'升维网企业信息'."</head>";
+        $str .="<thead><tr><th>序号</th><th>姓名</th><th>电话</th><th>地址</th><th>行业</th><th>联络人</th></th></tr></thead>";
+
         foreach ($list  as $key=> $rt )
         {
             $str .= "<tr>";
