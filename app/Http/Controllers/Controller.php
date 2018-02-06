@@ -33,7 +33,7 @@ abstract class Controller extends BaseController
         }
 
 
-   }
+    }
 
     public  function  _sendSms($mobile,$time,$action){
         ini_set("display_errors", "on");
@@ -65,6 +65,8 @@ abstract class Controller extends BaseController
             $request->setTemplateCode("SMS_94675025");//设置模板
         }elseif($action=='expertSuccess'){
             $request->setTemplateCode("SMS_94795019");//设置模板
+        }elseif ($action=='registerEnterprise'){
+            $request->setTemplateCode("SMS_123795658");//设置后台企业录入通知模板
         }else{
             $request->setTemplateCode("SMS_94790038");//设置模板
         }
