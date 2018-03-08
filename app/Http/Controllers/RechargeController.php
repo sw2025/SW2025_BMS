@@ -96,7 +96,7 @@ class RechargeController extends Controller
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('/',$_GET['job']):null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?"desc":"asc";
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"asc":"desc";
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
         if(!empty($idCard)){
             if($idCard=="专家"){

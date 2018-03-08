@@ -219,3 +219,27 @@ Route::post('/changeavatar','PublicController@cropAvatar');
 Route::post('/crop/api', 'UsersController@cropAvatar');
 
 Route::get('dumpexcel','PublicController@dumpexcel');
+
+
+//项目评议推送列表
+Route::get('supplyShow/{action?}','ReviewController@supplyShow');
+//项目评议推送列表
+Route::get('/details_show/{showid}','ReviewController@details_show');
+//项目评议推送列表通过按钮
+Route::post('/changeShow','ReviewController@changeShow');
+
+//项目评议推送列表通过按钮
+Route::post('/pushExpert','ReviewController@pushExpert');
+//项目评议推送列表通过按钮
+Route::post('/showSelectExpert','ReviewController@showSelectExpert');
+
+
+//线下约见列表
+Route::get('lineMeet/{action?}','ReviewController@lineMeet');
+//线下约见详情页面
+Route::get('/linemeetdetail/{meetid}','ReviewController@linemeetdetail');
+
+//线下路演列表
+Route::get('roadShow','ReviewController@roadShow');
+//线下路演列表
+Route::get('/roadShowdetail/{roadid}','ReviewController@roadShowdetail');

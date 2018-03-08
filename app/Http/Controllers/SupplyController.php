@@ -88,7 +88,7 @@ class SupplyController extends Controller
         $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('/',$_GET['job']):null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"asc":"desc";
 
         $level= (isset($_GET['level'])&&$_GET['level']!="null")?$_GET['level']:null;
 

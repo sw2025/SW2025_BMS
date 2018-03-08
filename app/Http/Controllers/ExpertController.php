@@ -131,7 +131,7 @@ class ExpertController extends Controller
         }else{
             $idCard=range(0,1);
         }
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"asc":"desc";
 
         if(!empty($job) && count($job) == 1 ){
             $jobWhere= array("t_u_expert.domain1" => $job[0]);
@@ -155,7 +155,7 @@ class ExpertController extends Controller
          $datas=$data->where("expertname","like","%".$serveName."%")->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->paginate(10);
          $counts=$count->where("expertname","like","%".$serveName."%")->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->count();
        }else{
-         $datas=$data->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.created_at",$regTime) ->paginate(10);
+         $datas=$data->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->orderBy("T_U_expert.expertid",$regTime) ->paginate(10);
          $counts= $count->where("domain2","like","%".$domain2."%")->where($jobWhere)->where($locationWhere)->count();
        }
 
@@ -166,6 +166,7 @@ class ExpertController extends Controller
 
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:"null";
         $label = DB::table('t_common_domaintype')->get();
+
         return view("expert.serve",compact("datas","counts","serveName","sizeType","regTime","location","job","label","idCard"));
 
     }
