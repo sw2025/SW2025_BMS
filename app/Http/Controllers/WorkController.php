@@ -87,7 +87,7 @@ class WorkController extends Controller
         $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?explode('/',$_GET['job']):null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"asc":"desc";
         $orderwhere = ['正在办事' => [4,5,6],'已完成' => [7,8],'全部' => range(4,9)];
         $sizeWhere=!empty($size)?$orderwhere[$size]:range(4,9);
         if(!empty($job) && count($job) == 1 ){

@@ -153,26 +153,26 @@ class EnterpriseController extends Controller{
      * @return mixed
      */
     public function index(){
-      /*  $ids=$this->returnIds();*/
+        /*  $ids=$this->returnIds();*/
         $status=!empty($_GET['status'])?$_GET['status']:0;
         if($status==0){
-        $datas=DB::table("T_U_USER")
-            ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEVERIFY.id")
-            ->whereIn("configid",[1,2])
-            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-            ->orderBy("T_U_ENTERPRISE.created_at","desc")
-            ->paginate(10);
+            $datas=DB::table("T_U_USER")
+                ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+                ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid","T_U_ENTERPRISEVERIFY.id")
+                ->whereIn("configid",[1,2])
+                ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+                ->orderBy("T_U_ENTERPRISE.created_at","desc")
+                ->paginate(10);
         }else{
-        $datas=DB::table("T_U_USER")
-            ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-            ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid")
-            ->where("configid",$status)
-            ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
-            ->orderBy("T_U_ENTERPRISE.created_at","desc")
-            ->paginate(10);
+            $datas=DB::table("T_U_USER")
+                ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+                ->select("T_U_USER.phone","T_U_USER.created_at","T_U_ENTERPRISE.*","T_U_ENTERPRISEVERIFY.configid")
+                ->where("configid",$status)
+                ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
+                ->orderBy("T_U_ENTERPRISE.created_at","desc")
+                ->paginate(10);
         }
         return view("enterprise.index",compact("datas","status"));
     }
@@ -184,7 +184,7 @@ class EnterpriseController extends Controller{
      * @return mixed
      */
     public  function update(){
-       $enterpriseId=$_GET['id'];
+        $enterpriseId=$_GET['id'];
         $id=DB::table("T_U_ENTERPRISEVERIFY")->where("enterpriseid",$enterpriseId)->orderBy("verifytime","desc")->take(1)->pluck("id");
         $datas=DB::table("T_U_USER")
             ->leftJoin("T_U_ENTERPRISE","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
@@ -204,26 +204,26 @@ class EnterpriseController extends Controller{
     public  function changeEnterprise(){
         $array=array();
         $res=DB::table("T_U_ENTERPRISE")
-                ->leftJoin("T_U_USER","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
-                ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
-                ->where("T_U_ENTERPRISEVERIFY.enterpriseid",$_POST['enterpriseId'])
-                ->orderBy("T_U_ENTERPRISEVERIFY.id")
-                ->select("T_U_USER.phone","T_U_ENTERPRISEVERIFY.created_at","T_U_USER.userid")
-                ->take(1)
-               ->get();
+            ->leftJoin("T_U_USER","T_U_USER.userid","=","T_U_ENTERPRISE.userid")
+            ->leftJoin("T_U_ENTERPRISEVERIFY","T_U_ENTERPRISE.enterpriseid","=","T_U_ENTERPRISEVERIFY.enterpriseid")
+            ->where("T_U_ENTERPRISEVERIFY.enterpriseid",$_POST['enterpriseId'])
+            ->orderBy("T_U_ENTERPRISEVERIFY.id")
+            ->select("T_U_USER.phone","T_U_ENTERPRISEVERIFY.created_at","T_U_USER.userid")
+            ->take(1)
+            ->get();
         foreach ($res as $value){
             $mobile=$value->phone;
             $time=$value->created_at;
             $receiveId=$value->userid;
         }
         $result=DB::table("T_U_ENTERPRISEVERIFY")->insert([
-                        "configid"=>$_POST['configid'],
-                        "enterpriseid"=>$_POST['enterpriseId'],
-                        "remark"=>isset($_POST['remark'])?$_POST['remark']:"",
-                        "verifytime"=>date("Y-m-d H:i:s",time()),
-                        "created_at"=>date("Y-m-d H:i:s",time()),
-                        "updated_at"=>date("Y-m-d H:i:s",time())
-                    ]);
+            "configid"=>$_POST['configid'],
+            "enterpriseid"=>$_POST['enterpriseId'],
+            "remark"=>isset($_POST['remark'])?$_POST['remark']:"",
+            "verifytime"=>date("Y-m-d H:i:s",time()),
+            "created_at"=>date("Y-m-d H:i:s",time()),
+            "updated_at"=>date("Y-m-d H:i:s",time())
+        ]);
         if($_POST['configid']==3){
             DB::table("T_M_SYSTEMMESSAGE")->insert([
                 "sendid"=>0,
@@ -250,10 +250,10 @@ class EnterpriseController extends Controller{
             $this->_sendSms($mobile,$time,"enterpriseFail");
         }
         if($result){
-           $array['code']="success";
+            $array['code']="success";
             return $array;
         }else{
-           $array['code']="error";
+            $array['code']="error";
             return $array;
         }
     }
@@ -268,7 +268,7 @@ class EnterpriseController extends Controller{
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
         $sizeType=(isset($_GET['sizeType'])&&$_GET['sizeType']!="down")?"desc":"asc";
-        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"desc":"asc";
+        $regTime=(isset($_GET['regTime'])&&$_GET['regTime']!="down")?"asc":"desc";
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
         if(!empty($idCard)){
             if($idCard=="普通"){
@@ -304,10 +304,10 @@ class EnterpriseController extends Controller{
             }
         }else{
             if(!empty($idCard)){
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime)->paginate(10);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->orderBy("T_U_ENTERPRISE.enterpriseid",$regTime)->orderBy("size",$sizeType)->paginate(10);
                 $counts=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->where("memberid",$idCard)->count();
             }else{
-                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("size",$sizeType)->orderBy("T_U_ENTERPRISE.created_at",$regTime) ->paginate(10);
+                $datas=$data->where($sizeWhere)->where($jobWhere)->where($locationWhere)->orderBy("T_U_ENTERPRISE.enterpriseid",$regTime)->orderBy("size",$sizeType)->paginate(10);
                 $counts= $count->where($sizeWhere)->where($jobWhere)->where($locationWhere)->count();
 
             }
@@ -466,6 +466,7 @@ class EnterpriseController extends Controller{
                 "updated_at"=>date("Y-m-d H:i:s",time()),
             ]);
             DB::commit();
+            $this->_sendSms($data['phonenumber'],date("Y-m-d H:i:s", time()),"registerEnterprise");
         } catch (Exception $e) {
             DB::rollback();
             throw $e;

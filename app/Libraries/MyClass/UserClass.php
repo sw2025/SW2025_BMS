@@ -54,9 +54,16 @@
                     if(in_array('/cert_video',$arr)){
                         array_push($arr,'/details_video','/changeVideo');
                     }
+
                     if(in_array('/cert_recharge',$arr)){
                         array_push($arr,'/details_recharge','/changeRecharge');
                     }
+
+                    if(in_array('/supplyShow',$arr)){
+                        array_push($arr,'/details_show','/changeShow','/getRemark','/showSelectExpert','/pushExpert');
+                    }
+
+
                     if(in_array('/serve_enterprise',$arr)){
                         array_push($arr,'/serve_enterpriseDet');
                     }
