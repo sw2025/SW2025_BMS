@@ -259,21 +259,22 @@ class ExpertController extends Controller
     /**
      * 后台手工注册专家
      */
-    public function registerExpert()
+  /*  public function registerExpert()
     {
         return view('expert.register');
-    }
+    }*/
     public function registerExpert2()
     {
         $error = empty($_GET['error']) ? '' : $_GET['error'];
         $domain1 = DB::table('t_common_domaintype')->where('level',1)->get();
-        $domain2 = DB::table('t_common_domaintype')->where('level',2)->get();
-        return view('expert.register2',compact('domain1','domain2','error'));
+        $domain2 = DB::table('t_i_investment')->where('type',1)->get();
+        $domain3 = DB::table('t_i_investment')->where('type',2)->get();
+        return view('expert.register2',compact('domain1','domain2','domain3','error'));
     }
 
     public function submitExpert(Request $request)
     {
-        $data = $request->only('phonenumber','password','name','category','address','domain1','domain2','brief','showimage','level','isfirst','order');
+        $data = $request->input();
         foreach($data as $k => $v){
             if(empty($v)){
                 switch ($k) {
@@ -338,13 +339,18 @@ class ExpertController extends Controller
             $expertid = DB::table('t_u_expert')->insertGetId([
                 "userid" => $userid,
                 'expertname' => $data['name'],
-                'category' => $data['category'],
+                'category' => '专家',
                 'address' => $data['address'],
                 'licenceimage' => $data['showimage'],
                 'showimage' => $data['showimage'],
                 'brief' => $data['brief'],
                 'domain1' => $data['domain1'],
                 'domain2' => $data['domain2'],
+                'preference' => $data['preference'],
+                'workexperience' => $data['preference'],
+                'job' => $data['job'],
+                'worklife' => $data['worklife'],
+                'edubg' => $data['edubg'],
                 'level' => $data['level'],
                 'isfirst' => $data['isfirst'],
                 'order' => $data['order'],
@@ -359,7 +365,8 @@ class ExpertController extends Controller
             DB::table('t_u_expertfee')->insert([
                 'expertid' => $expertid,
                 'fee' => 0,
-                'state' => 0
+                'state' => 0,
+                'linefee' => 1000
             ]);
             DB::table("t_m_systemmessage")->insert([
                 "sendid"=>0,

@@ -10,13 +10,27 @@
     <meta name="description" content="">
     <link rel="stylesheet" type="text/css" href="{{asset('myupload/ycbootstrap.css')}}"/>
     <link rel="stylesheet" type="text/css" href="{{asset('myupload/reset.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-select.min.css')}}"/>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('myupload/iscroll-zoom.js')}}" type="text/javascript" charset="utf-8"></script>
     <script src="{{asset('myupload/hammer.js')}}" type="text/javascript" charset="utf-8"></script>
     <script src="{{asset('myupload/lrz.all.bundle.js')}}" type="text/javascript" charset="utf-8"></script>
     <script src="{{asset('myupload/jquery.photoClip.min.js')}}" type="text/javascript" charset="utf-8"></script>
-
+    <script src="{{asset('js/bootstrap-select.min.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
+  <script type="text/javascript">
+    
+   
+     $(window).on('load', function () {
+        $('.selectpicker').selectpicker({
+               'selectedText': 'cat'
+            });
+    // $('.selectpicker').selectpicker('hide');
+    });
+  
+  </script>
 <body>
 <div class="page-header" style="margin-left:20px;">
     <h1>后台专家录入系统 <small><a href="{{url('/index')}}">后台首页</a></small></h1>
@@ -24,26 +38,35 @@
 <h1 style="color:@if(!empty($errors->all()) && $errors->all()[0] == '注册成功') #00c566 @else #f10 @endif  ">{{$errors->all()[0] or ''}}</h1>
     <div class="container col-md-8 col-sm-8 col-xs-8 center-block" style="margin: 10px;" id="submitform">
         <form action="{{url('/submitexpert')}}" method="post" style="margin-left: 5px;" enctype="multipart/form-data" >
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
                 <label for="exampleInputEmail1">手机号码</label>
                 <input type="text" maxlength="11" class="form-control" name="phonenumber" required/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
                 <label for="exampleInputPassword1">密码 </label>
                 <input type="text" name="password"  class="form-control" value="123456" required/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12 col-sm-12 col-xs-12">
                 <label for="exampleInputPassword1">专家姓名 </label>
                 <input type="text" name="name" value="" class="form-control" required/>
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类 </label>
-                <select name="category" class="form-control" required>
-                    <option selected>专家</option>
-                    <option >机构</option>
-                    <option >企业家</option>
-                </select>
+                <label for="exampleInputPassword1">专家所在机构 </label>
+                <input type="text" name="organiza" value="" class="form-control" required/>
             </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                <label for="exampleInputPassword1">专家职位 </label>
+                <input type="text" name="job" value="" class="form-control" required/>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                <label for="exampleInputPassword1">工作年限 </label>
+                <input type="text" name="worklife" value="" class="form-control" required/>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
+                <label for="exampleInputPassword1">教育背景 </label>
+                <input type="text" name="edubg" value="" class="form-control" required/>
+            </div>
+           
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
                 <label for="exampleInputPassword1">所在地区 </label>
                 <select name="address"  class="form-control" >
@@ -85,20 +108,37 @@
                 </select>
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类1 </label>
-                <select name="domain1" class="form-control" required>
-                    @foreach($domain1 as $v)
+               
+                <label for="id_select">专家领域分类(可多选 选择了风险投资请填写下方两项)</label>
+                <select id="id_select" name="" class="form-control selectpicker bla bla bli" multiple data-live-search="false">
+                      @foreach($domain1 as $v)
                         <option>{{$v->domainname}}</option>
                     @endforeach
-                </select>
+                    </optgroup>
+                  </select>
+                <input type="hidden" name="domain1" value="">
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
-                <label for="exampleInputPassword1">专家分类2 </label>
-                <select name="domain2" class="form-control" required>
-                    @foreach($domain2 as $v)
-                        <option>{{$v->domainname}}</option>
+                
+                <label for="id_select">专家投资领域 (可多选,领域分类有风险投资必须选择)</label>
+                <select id="id_select" name="" class="form-control selectpicker bla bla bli" multiple data-live-search="false">
+                     @foreach($domain2 as $v)
+                        <option>{{$v->name}}</option>
                     @endforeach
-                </select>
+                    </optgroup>
+                  </select>
+                <input type="hidden" name="domain2" value="">
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-6">
+               
+                <label for="id_select">专家投资偏好(可多选,领域分类有风险投资必须选择) </label>
+                <select id="id_select" name="" class="form-control selectpicker bla bla bli" multiple data-live-search="false">
+                    @foreach($domain3 as $v)
+                        <option>{{$v->name}}</option>
+                    @endforeach
+                    </optgroup>
+                  </select>
+                <input type="hidden" name="preference" value="">
             </div>
             <div class="form-group col-md-6 col-sm-6 col-xs-6">
                 <label for="exampleInputPassword1">专家等级 </label>
@@ -116,10 +156,16 @@
                 </select>
                 <input type="text" name="order" class="form-control" style="display: none;" placeholder="请输入专家顺序"/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12 col-sm-12 col-xs-12">
                 <label for="exampleInputFile" required>专家简介</label>
                 <textarea rows="6" name="brief" class="form-control"></textarea>
             </div>
+             <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                <label for="exampleInputFile" required>工作经历</label>
+                <textarea rows="6" name="workexperience" class="form-control"></textarea>
+            </div>
+
+
 
             <div class="form-group">
                 <label for="exampleInputFile">上传专家图片</label>
