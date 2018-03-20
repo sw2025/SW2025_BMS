@@ -186,60 +186,61 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/serve_recharge','RechargeController@serveIndex');
 //提现信息维护详情
     Route::get('/serve_rechargeDet/{rechargeid}','RechargeController@serveDetail');
-});
-//获取拒绝原因
-Route::post('/getRemark','PublicController@getRemark');
+
+    //获取拒绝原因
+    Route::post('/getRemark','PublicController@getRemark');
 //选取专家
-Route::post('/selectExpert','PublicController@selectExpert');
+    Route::post('/selectExpert','PublicController@selectExpert');
 //获取推送专家的个数
-Route::post('/returnCountExpert','PublicController@returnCountExpert');
+    Route::post('/returnCountExpert','PublicController@returnCountExpert');
 //推送成功
-Route::post('/pushSelect','PublicController@pushSelect');
+    Route::post('/pushSelect','PublicController@pushSelect');
 //办事获取推送专家的个数
-Route::post('/eventCountExpert','PublicController@eventCountExpert');
+    Route::post('/eventCountExpert','PublicController@eventCountExpert');
 
 //办事推送成功
-Route::post('/eventPushSelect','PublicController@eventPushSelect');
+    Route::post('/eventPushSelect','PublicController@eventPushSelect');
 
 
 //选取企业
-Route::post('/selectEnterprise','PublicController@selectEnterprise');
+    Route::post('/selectEnterprise','PublicController@selectEnterprise');
 //专家需求推送成功
-Route::post('/needPushSelect','PublicController@needPushSelect');
+    Route::post('/needPushSelect','PublicController@needPushSelect');
 //专家后台注册
-Route::get('/registerexpert','ExpertController@registerExpert');
-Route::get('/registerexpert2','ExpertController@registerExpert2');
-Route::post('/submitexpert','ExpertController@submitExpert');
+    Route::get('/registerexpert','ExpertController@registerExpert');
+    Route::get('/registerexpert2','ExpertController@registerExpert2');
+    Route::post('/submitexpert','ExpertController@submitExpert');
 //企业后台注册
-Route::get('/registerenterprise','EnterpriseController@registerEnterprise');
-Route::post('/submitenterprise','EnterpriseController@submitEnterprise');
+    Route::get('/registerenterprise','EnterpriseController@registerEnterprise');
+    Route::post('/submitenterprise','EnterpriseController@submitEnterprise');
 //上传头像缩略图
 //Route::post('/changeavatar','PublicController@changeAvatar');
-Route::post('/changeavatar','PublicController@cropAvatar');
-Route::post('/crop/api', 'UsersController@cropAvatar');
+    Route::post('/changeavatar','PublicController@cropAvatar');
+    Route::post('/crop/api', 'UsersController@cropAvatar');
 
-Route::get('dumpexcel','PublicController@dumpexcel');
+    Route::get('dumpexcel','PublicController@dumpexcel');
 
 
 //项目评议推送列表
-Route::get('supplyShow/{action?}','ReviewController@supplyShow');
+    Route::get('supplyShow/{action?}','ReviewController@supplyShow');
 //项目评议推送列表
-Route::get('/details_show/{showid}','ReviewController@details_show');
+    Route::get('/details_show/{showid}','ReviewController@details_show');
 //项目评议推送列表通过按钮
-Route::post('/changeShow','ReviewController@changeShow');
+    Route::post('/changeShow','ReviewController@changeShow');
 
 //项目评议推送列表通过按钮
-Route::post('/pushExpert','ReviewController@pushExpert');
+    Route::post('/pushExpert','ReviewController@pushExpert');
 //项目评议推送列表通过按钮
-Route::post('/showSelectExpert','ReviewController@showSelectExpert');
+    Route::post('/showSelectExpert','ReviewController@showSelectExpert');
 
 
 //线下约见列表
-Route::get('lineMeet/{action?}','ReviewController@lineMeet');
+    Route::get('lineMeet/{action?}','ReviewController@lineMeet');
 //线下约见详情页面
-Route::get('/linemeetdetail/{meetid}','ReviewController@linemeetdetail');
+    Route::get('/linemeetdetail/{meetid}','ReviewController@linemeetdetail');
 
 //线下路演列表
-Route::get('roadShow','ReviewController@roadShow');
+    Route::get('roadShow','ReviewController@roadShow');
 //线下路演列表
-Route::get('/roadShowdetail/{roadid}','ReviewController@roadShowdetail');
+    Route::get('/roadShowdetail/{roadid}','ReviewController@roadShowdetail');
+});

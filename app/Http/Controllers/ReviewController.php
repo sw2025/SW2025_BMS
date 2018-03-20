@@ -18,16 +18,24 @@ class ReviewController extends Controller
         $datas = DB::table('t_s_show')
             ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
+            //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
             ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
             ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
             ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_s_showverify.configid')
             ->orderBy('t_s_show.showtime','desc');
 
+
+
         $pushOk = DB::table('t_s_pushshow')
             ->leftJoin('t_u_expert','t_s_pushshow.expertid','=','t_u_expert.expertid')
-            ->leftJoin('t_s_messagetoshow','t_s_pushshow.showid','=','t_s_messagetoshow.showid')
-            ->select('t_s_pushshow.expertid','t_s_pushshow.showid','t_u_expert.expertname','t_u_expert.expertid','t_u_expert.userid')
+            ->whereRaw('t_s_pushshow.id in (select max(id) from t_s_pushshow group by showid,expertid)')
+            ->select('t_s_pushshow.id','t_s_pushshow.expertid','t_s_pushshow.showid','t_u_expert.expertname','t_u_expert.expertid','t_u_expert.userid','t_s_pushshow.state')
             ->get();
+
+
+        $config = ['1'=>'待支付','3'=>'未通过','4'=>'已推送','5'=>'已完成','6'=>'已评议'];
+
+        //dd($pushOk);
 
         $result= DB::table('t_s_messagetoshow')
             ->where('isdelete',0);
@@ -45,16 +53,19 @@ class ReviewController extends Controller
             case 'wait':
                 $datas = $datas->where("configid", 1)->paginate(10);
                 break;
-            case 'fail':
+            case 'wput':
                 $datas = $datas->where("configid", 2)->paginate(10);
                 break;
-            case 'wput':
+            case 'fail':
                 $datas = $datas->where("configid", 3)->paginate(10);
+                break;
+            case 'pushok':
+                $datas = $datas->where("configid", 4)->paginate(10);
                 break;
         }
 
 
-        return view('Review.index',compact('datas','action','pushOk','message','counts'));
+        return view('Review.index',compact('datas','action','pushOk','message','counts','config'));
     }
 
     /**
@@ -71,21 +82,26 @@ class ReviewController extends Controller
             ->where('t_s_show.showid',$showid)
             ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_s_showverify.configid')
             ->first();
+
         $pushOk = DB::table('t_s_pushshow')
             ->leftJoin('t_u_expert','t_s_pushshow.expertid','=','t_u_expert.expertid')
-            ->select('t_s_pushshow.expertid','t_s_pushshow.showid','t_u_expert.expertname','t_u_expert.expertid','t_u_expert.userid')
+            ->whereRaw('t_s_pushshow.id in (select max(id) from t_s_pushshow group by showid,expertid)')
+            ->select('t_s_pushshow.id','t_s_pushshow.expertid','t_s_pushshow.showid','t_u_expert.expertname','t_u_expert.expertid','t_u_expert.userid','t_s_pushshow.state')
             ->get();
 
         $result= DB::table('t_s_messagetoshow')
+            ->leftJoin('t_u_expert','t_s_messagetoshow.userid','=','t_u_expert.userid')
             ->where('isdelete',0)
             ->where('showid',$showid);
+        $config = ['2'=>'已支付','3'=>'未通过','4'=>'已推送','5'=>'已完成','6'=>'已评议'];
+
 
         $datamessage = clone $result;
         $message = $datamessage->get();
         $counts = $datamessage->count();
 
         //dd($message);
-        return view('Review.detail',compact('datas','pushOk','counts','message'));
+        return view('Review.detail',compact('datas','pushOk','counts','message','config'));
     }
 
     /**
@@ -126,9 +142,8 @@ class ReviewController extends Controller
             ->leftJoin('t_u_expertverify','t_u_expertverify.expertid','=','t_u_expert.expertid')
             ->whereRaw('t_u_expertverify.id in (select max(id) from t_u_expertverify group by expertid)')
             ->where('t_u_expertverify.configid',2)
-            ->where('t_u_expert.domain1','找资金')
+            ->where('t_u_expert.domain1','找技术')
             ->get();
-
 
         return $expertData;
 
@@ -187,34 +202,36 @@ class ReviewController extends Controller
      */
     public function lineMeet($action = 'all')
     {
-        $datas = DB::table('t_l_linemeet')
-            ->leftJoin('t_u_expert','t_l_linemeet.expertid','=','t_u_expert.expertid')
-            ->leftJoin('t_u_user','t_u_user.userid','=','t_l_linemeet.userid')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_l_linemeet.userid')
-            ->leftJoin('t_l_linemeetverify','t_l_linemeetverify.meetid','=','t_l_linemeet.id')
-            ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
-            ->orderBy('t_l_linemeet.puttime','desc')
-            ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_enterprise.enterprisename','t_u_user.phone','t_l_linemeetverify.configid');
+        $datas = DB::table('t_m_meet')
+            ->leftJoin('t_u_expert','t_m_meet.expertid','=','t_u_expert.expertid')
+            ->leftJoin('t_u_user','t_u_user.userid','=','t_m_meet.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_m_meet.userid')
+            ->leftJoin('t_m_meetverify','t_m_meetverify.meetid','=','t_m_meet.meetid')
+            ->whereRaw('t_m_meetverify.id in (select max(id) from t_m_meetverify group by meetid)')
+            ->orderBy('t_m_meet.puttime','desc')
+            ->select('t_m_meet.*','t_u_expert.expertname','t_u_enterprise.enterprisename','t_u_user.phone','t_m_meetverify.configid');
+
+        $config = ['1'=>'已提交','2'=>'已支付','3'=>'已响应','4'=>'未通过','5'=>'已完成'];
 
         switch ($action){
             case 'all':
-                $datas = $datas->whereIn("configid", [1,2,3,4])->paginate(10);
+                $datas = $datas->whereIn("configid", [1,2,3,4,5])->paginate(8);
                 break;
             case 'wait':
-                $datas = $datas->where("configid", 1)->paginate(10);
+                $datas = $datas->where("configid", 2)->paginate(8);
                 break;
             case 'fail':
-                $datas = $datas->where("configid", 2)->paginate(10);
+                $datas = $datas->where("configid", 4)->paginate(8);
                 break;
             case 'wput':
-                $datas = $datas->where("configid", 3)->paginate(10);
+                $datas = $datas->where("configid", 3)->paginate(8);
                 break;
             case 'ver_pushok':
-                $datas = $datas->where("configid", 4)->paginate(10);
+                $datas = $datas->where("configid", 5)->paginate(8);
                 break;
         }
 
-        return view('review.linemeet',compact('datas'),compact('action'));
+        return view('review.linemeet',compact('datas'),compact('action','config'));
     }
 
     /**
@@ -222,17 +239,19 @@ class ReviewController extends Controller
      */
     public function linemeetdetail($meetid)
     {
-        $datas = DB::table('t_l_linemeet')
-            ->leftJoin('t_u_expert','t_l_linemeet.expertid','=','t_u_expert.expertid')
-            ->leftJoin('t_u_user','t_u_user.userid','=','t_l_linemeet.userid')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_l_linemeet.userid')
-            ->leftJoin('t_l_linemeetverify','t_l_linemeetverify.meetid','=','t_l_linemeet.id')
-            ->where('t_l_linemeet.id',$meetid)
-            ->whereRaw('t_l_linemeetverify.id in (select max(id) from t_l_linemeetverify group by meetid)')
-            ->select('t_l_linemeet.*','t_u_expert.expertname','t_u_enterprise.enterprisename','t_u_user.phone','t_l_linemeetverify.configid')
+        $config = ['1'=>'已提交','2'=>'已支付','3'=>'已响应','4'=>'未通过','5'=>'已完成'];
+
+        $datas = DB::table('t_m_meet')
+            ->leftJoin('t_u_expert','t_m_meet.expertid','=','t_u_expert.expertid')
+            ->leftJoin('t_u_user','t_u_user.userid','=','t_m_meet.userid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_m_meet.userid')
+            ->leftJoin('t_m_meetverify','t_m_meetverify.meetid','=','t_m_meet.meetid')
+            ->where('t_m_meet.meetid',$meetid)
+            ->whereRaw('t_m_meetverify.id in (select max(id) from t_m_meetverify group by meetid)')
+            ->select('t_m_meet.*','t_u_expert.expertname','t_u_enterprise.enterprisename','t_u_user.phone','t_m_meetverify.configid')
         ->first();
 
-        return view('review.linemeetdetail',compact('datas'));
+        return view('review.linemeetdetail',compact('datas','config'));
     }
 
 
@@ -242,11 +261,14 @@ class ReviewController extends Controller
 
     public function roadShow()
     {
-        $result = DB::table('t_s_roadshow')
-            ->leftJoin('t_u_user','t_u_user.userid','=','t_s_roadshow.userid')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_roadshow.userid')
-            ->orderBy('t_s_roadshow.roadtime','desc');
-
+        $result = DB::table('t_s_show')
+            ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
+            //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
+            ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
+            ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
+            ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_s_showverify.configid')
+            ->orderBy('t_s_show.showtime','desc');
 
         $datas = clone $result;
         $datass = clone $result;
@@ -261,10 +283,14 @@ class ReviewController extends Controller
      * */
     public function roadShowdetail($roadid)
     {
-        $datas = DB::table('t_s_roadshow')
-            ->leftJoin('t_u_user','t_u_user.userid','=','t_s_roadshow.userid')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_roadshow.userid')
-            ->where('t_s_roadshow.roadshowid',$roadid)
+        $datas = DB::table('t_s_show')
+            ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
+            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
+            //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
+            ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
+            ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
+            ->where('t_s_show.showid',$roadid)
+            ->orderBy('t_s_show.showtime','desc')
             ->first();
 
         return view('review.roadShowdetail',compact('datas'));

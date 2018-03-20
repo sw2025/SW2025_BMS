@@ -9,7 +9,7 @@
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
-                    <div class="col-md-12 details-tit"><h1 class="cert-company">{{$datas->enterprisename}}<span style="float: right;">申请时间：{{$datas->roadtime}}</span></h1></div>
+                    <div class="col-md-12 details-tit"><h1 class="cert-company">{{$datas->enterprisename}}<span style="float: right;">申请时间：{{$datas->showtime}}</span></h1></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$datas->phone}}</span></div>
 
 

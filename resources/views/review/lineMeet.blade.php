@@ -21,18 +21,18 @@
                     <a href="javascript:;" class="ver_all" @if(empty($action) || $action  == 'all') id="hoverstyle" @endif>全部</a>
                     <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>待接受</a>
                     <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>未通过</a>
-                    <a href="javascript:;" class="ver_wput" @if(!empty($action) && $action == 'wput') id="hoverstyle" @endif>已通过</a>
+                    <a href="javascript:;" class="ver_wput" @if(!empty($action) && $action == 'wput') id="hoverstyle" @endif>已响应</a>
                     <a href="javascript:;" class="ver_pushok" @if(!empty($action) && $action == 'ver_pushok') id="hoverstyle" @endif>已完成</a>
                 </div>
                 <div class="cert-list">
                     @foreach($datas as $v)
-                        <div class="container-fluid cert-item">
+                        <div class="container-fluid cert-item" style="height:220px;">
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/linemeetdetail/'.$v->id)}}" class="look-link">{{$v->enterprisename}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/linemeetdetail/'.$v->meetid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
-                                        <p class="cert-scale">企业建议时间：<span>{{$v->suggetime}}</span></p>
+                                        <p class="cert-scale">企业建议时间：<span>{{$v->puttime}}</span></p>
                                         <p class="cert-scale">专家姓名：<span>{{$v->expertname}}</span></p>
                                         <p class="cert-scale">约见时长：<span>{{$v->timelot}}/小时</span></p>
                                         <p class="cert-scale">约见费用：<span>{{$v->price}}</span></p>
@@ -42,36 +42,22 @@
 
                                     <p class="cert-zone" style="float: right;color:black "><b>申请时间：{{$v->puttime}}</b></p>
 
-                                    <div class="col-md-8 cert-cap">
+                                    <div class="col-md-8 cert-cap" style="overflow: hidden; height:150px;">
 
-                                        <span>{{$v->contents}}</span>
+                                        <span >{{$v->contents}}</span>
                                     </div>
                                 </div>
                             </div>
-                           @if($v->configid == 1)
-                            <div class="col-md-2 set-certificate">
-                                <a href="javascript:;"><button type="button" class="btn btn-block" style="background-color: darkgreen;color:white; ">待接受</button></a>
-                            </div>
-                            @elseif($v->configid == 2)
-                                <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;"><button type="button" class="btn btn-block " style="background-color: red;color:white; ">未通过</button></a>
-                                </div>
-                            @elseif($v->configid == 3)
-                                <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;"><button type="button" class="btn btn-block">已通过</button></a>
 
-                                </div>
-                            @elseif($v->configid == 4)
-                                <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;"><button type="button" class="btn btn-block">已完成</button></a>
-                                </div>
-                            @endif
+                            <div class="col-md-2 set-certificate">
+                                <a href="javascript:;"><button type="button" class="btn btn-block " style="background-color:#d5d5d5;color:black ">{{$config[$v->configid]}}</button></a>
+                            </div>
+
 
                         </div>
                     @endforeach
                     <div class="pages">
                         {!! $datas->render() !!}
-                        {{-- <div class="oh"><div id="Pagination"></div><span class="page-sum">共<strong class="allPage">1</strong>页</span></div>--}}
                     </div>
                 </div>
             </div>
