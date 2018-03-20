@@ -22,31 +22,15 @@
 
 
                 <div class="container-fluid details-bg">
-                    <p class="cert-scale">企业建议时间：<span>{{$datas->suggetime}}</span></p>
+                    <p class="cert-scale">企业建议时间：<span>{{$datas->puttime}}</span></p>
                     <p class="cert-scale">专家姓名：<span>{{$datas->expertname}}</span></p>
                     <p class="cert-scale">约见时长：<span>{{$datas->timelot}}/小时</span></p>
                     <p class="cert-scale">约见费用：<span>{{$datas->price}}</span></p>
                 </div>
 
-                @if($datas->configid == 1)
-                    <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block" style="background-color: darkgreen;color:white; ">待接受</button></a>
-                    </div>
-                @elseif($datas->configid == 2)
-                    <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block " style="background-color: red;color:white; ">未通过</button></a>
-                    </div>
-                @elseif($datas->configid == 3)
-                    <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block">已通过</button></a>
-
-                    </div>
-                @elseif($datas->configid == 4)
-                    <div class="col-md-2 set-certificate">
-                        <a href="javascript:;"><button type="button" class="btn btn-block">已完成</button></a>
-                    </div>
-                @endif
-
+                <div class="col-md-2 set-certificate">
+                    <a href="javascript:;"><button type="button" class="btn btn-block" style="background-color:#d5d5d5;color:black; ">{{$config[$datas->configid]}}</button></a>
+                </div>
 
             </div>
         </section>

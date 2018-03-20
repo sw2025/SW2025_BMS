@@ -19,9 +19,9 @@
             <div class="section-body change-pwd">
                 <div class="cert-state-btns">
                     <a href="javascript:;" class="ver_all" @if(empty($action) || $action  == 'all') id="hoverstyle" @endif>全部</a>
-                    <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>待认证</a>
-                    <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>已删除</a>
-                    <a href="javascript:;" class="ver_wput" @if(!empty($action) && $action == 'wput') id="hoverstyle" @endif>待推送</a>
+                    <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>待支付</a>
+                    <a href="javascript:;" class="ver_wput" @if(!empty($action) && $action == 'wput') id="hoverstyle" @endif>已支付，待审核</a>
+                    <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>未通过</a>
                     <a href="javascript:;" class="ver_pushok" @if(!empty($action) && $action == 'ver_pushok') id="hoverstyle" @endif>已推送</a>
                 </div>
                 <div class="cert-list">
@@ -32,34 +32,23 @@
                                     <div class="col-md-4">
                                         <h2 class="cert-company"><a href="{{asset('/details_show/'.$v->showid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
-                                        <p class="cert-scale">需求分类：<span>{{$v->domain1}}/{{$v->domain2}}</span></p>
-                                        @if($v->configid >= 4)
-                                            <p class="cert-zone">专家数量：{{$v->basicdata}}</p>
+                                        <p class="cert-scale">需求分类：<span>{{$v->domain1}}{{--/{{$v->domain2}}--}}</span></p>
 
+                                        @if($v->configid >= 4)
+                                            {{--<p class="cert-zone">项目专家：{{$v->expertids}}</p>--}}
                                             @foreach($pushOk as $value)
                                                @if($v->showid==$value->showid)
                                                     <p class="cert-zone"><b>已推送专家姓名：<a style="cursor:pointer;text-decoration:none;">{{$value->expertname}}</a></b>
-
-                                                        @if($counts!=0)
-                                                            @foreach($message as $expert)
-                                                                @if($value->showid==$expert->showid)
-                                                                    @if($value->userid==$expert->userid)
-                                                                        (已评议)
-                                                                    @else
-                                                                        (未评议)
-                                                                    @endif
-                                                                 @endif
-                                                            @endforeach
+                                                        @if($value->state==2)
+                                                             (已评议)
                                                         @else
                                                              (未评议)
                                                         @endif
-
                                                     </p>
                                                @endif
                                             @endforeach
-                                        @else
-                                            <p class="cert-zone">专家数量：{{$v->basicdata}}</p>
                                         @endif
+
                                         <br/>
                                         <span>提交项目：<a href="{{env('ImagePath')}}/show/{{$v->bpurl}}" target="_blank">{{$v->bpname}}</a></span>
 
@@ -68,29 +57,35 @@
                                     </div>
                                     <p class="cert-zone" style="float: right;color:black ">时间：{{$v->showtime}}</p>
 
-                                    <div class="col-md-8 cert-cap">
+                                    <div class="col-md-8 cert-cap" style="overflow: hidden;height: 150px;">
                                         <span>{{$v->brief}}</span>
                                     </div>
                                 </div>
                             </div>
-                            @if($v->configid == 1)
-                            <div class="col-md-2 set-certificate">
-                                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1 sup_allow" index="{{$v->showid}}" >通过审核</button></a>
-                                <a href="javascript:;" onclick="showReason(); $('.reject-reasons button').attr('id',{{$v->showid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
-                            </div>
-                            @elseif($v->configid == 2)
+                            @if($v->configid == 2)
+                                <div class="col-md-2 set-certificate">
+                                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1 sup_allow" index="{{$v->showid}}" >通过审核</button></a>
+                                    <a href="javascript:;" onclick="showReason(); $('.reject-reasons button').attr('id',{{$v->showid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
+                                </div>
+                            @else
+                                <div class="col-md-2 set-certificate">
+                                    <a href="javascript:;"><button type="button" class="btn btn-block " style="background-color: green;color:white; ">{{$config[$v->configid]}}</button></a>
+                                </div>
+                            @endif
+                                {{--
+                            @elseif($v->configid == 3)
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;"><button type="button" class="btn btn-block " style="background-color: red;color:white; ">未通过</button></a>
                                 </div>
-                            @elseif($v->configid == 3)
+                            @elseif($v->configid == 2)
                                 <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->showid}}" id="{{$v->showid}}" onclick="push(this)" >推送项目BP</button></a>
 
+                                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->showid}}" id="{{$v->showid}}" onclick="push(this)" >推送项目BP</button></a>
                                 </div>
                             @elseif($v->configid == 4)
-                                <div class="col-md-2 set-certificate">
-                                    <a href="javascript:;"><button type="button" class="btn btn-block">已推送</button></a>
-                                </div>
+                                    <div class="col-md-2 set-certificate">
+                                        <a href="javascript:;"><button type="button" class="btn btn-block">已推送</button></a>
+                                    </div>
                             @elseif($v->configid == 5)
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->showid}}">已完成</button></a>
@@ -99,8 +94,7 @@
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->showid}}">已评价</button></a>
                                 </div>
-                            @endif
-
+                            @endif--}}
                         </div>
                     @endforeach
                     <div class="pages">
@@ -163,6 +157,9 @@
         $('.ver_wput').on('click',function () {
             window.location = '{{url('supplyShow','wput')}}';
         });
+        $('.ver_pushok').on('click',function () {
+            window.location = '{{url('supplyShow','pushok')}}';
+        });
         /**
          *项目审核通过按钮
          */
@@ -183,7 +180,7 @@
             $('.reject-reasons button').on('click',function () {
                 var remark=$(".reject-reasons textarea").val();
                 var showid=$(this).attr("id");
-                $.post('{{url('changeShow')}}',{'showid':showid,'remark':remark,'configid':2},function (data) {
+                $.post('{{url('changeShow')}}',{'showid':showid,'remark':remark,'configid':3},function (data) {
                     if (data.errorMsg == 'success') {
                         alert("操作成功");
                         window.location.href = "{{url('/supplyShow')}}";

@@ -36,18 +36,14 @@
                                 </div>
                             </div>
                             @if($v->configid == 1)
-
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-support1 sup_allow" index="{{$v->needid}}" >通过审核</button></a>
                                     <a href="javascript:;" onclick="showReason(); $('.reject-reasons button').attr('id',{{$v->needid}})"><button type="button" class="btn btn-block ink-reaction btn-support5">拒绝审核</button></a>
                                 </div>
-
                             @elseif($v->configid == 2)
-
                                 <div class="col-md-2 set-certificate">
                                     <a href="javascript:;" class="reject"><button type="button" class="btn btn-block ink-reaction btn-default refuse" id="{{$v->needid}}">已删除</button></a>
                                 </div>
-
                             @endif
 
                         </div>
