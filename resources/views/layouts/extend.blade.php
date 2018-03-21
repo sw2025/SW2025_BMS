@@ -140,6 +140,7 @@
     var pathname = window.document.location.pathname;
     var bb = pathname.substring(0,pathname.substr(1).indexOf('/')+1);
 
+
     if(pathname=='/add_operator' || pathname=='/edit_operator'){
         var pathname = '/operate_people';
     }
@@ -194,13 +195,19 @@
     if(bb=='/serve_rechargeDet'){
         var bb ='/serve_recharge';
     }
+
+    if(bb=='/linemeetdetail'){
+        var bb ='/lineMeet';
+    }
+
     if(bb==''){
         var url = pathname;
     }else{
         var url = bb;
     }
     $('.main-menu li ul li a').each(function () {
-        if($(this).attr('href') == url){
+        if($.trim($(this).attr('href')) == url){
+
             $(this).addClass('active');
         }
     });

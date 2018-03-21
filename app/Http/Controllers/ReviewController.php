@@ -20,6 +20,7 @@ class ReviewController extends Controller
             ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
             //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
             ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
+            ->where('t_s_show.userid', '<>',0)
             ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
             ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_s_showverify.configid')
             ->orderBy('t_s_show.showtime','desc');
@@ -65,7 +66,7 @@ class ReviewController extends Controller
         }
 
 
-        return view('Review.index',compact('datas','action','pushOk','message','counts','config'));
+        return view('review.index',compact('datas','action','pushOk','message','counts','config'));
     }
 
     /**
@@ -266,8 +267,9 @@ class ReviewController extends Controller
             ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
             //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
             ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
+            ->where('t_s_show.level',0)
             ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
-            ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_s_showverify.configid')
+            ->select('t_u_user.phone','t_s_show.*','t_u_enterprise.enterprisename','t_u_enterprise.industry','t_s_showverify.configid')
             ->orderBy('t_s_show.showtime','desc');
 
         $datas = clone $result;

@@ -34,8 +34,9 @@
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">需求分类：<span>{{$v->domain1}}{{--/{{$v->domain2}}--}}</span></p>
 
-                                        @if($v->configid >= 4)
+
                                             {{--<p class="cert-zone">项目专家：{{$v->expertids}}</p>--}}
+
                                             @foreach($pushOk as $value)
                                                @if($v->showid==$value->showid)
                                                     <p class="cert-zone"><b>已推送专家姓名：<a style="cursor:pointer;text-decoration:none;">{{$value->expertname}}</a></b>
@@ -47,7 +48,6 @@
                                                     </p>
                                                @endif
                                             @endforeach
-                                        @endif
 
                                         <br/>
                                         <span>提交项目：<a href="{{env('ImagePath')}}/show/{{$v->bpurl}}" target="_blank">{{$v->bpname}}</a></span>
