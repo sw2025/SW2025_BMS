@@ -47,7 +47,7 @@ class Authenticate
             return redirect('/');
         }
 
-        $str = session('str');
+       /* $str = session('str');
         $str = \Illuminate\Support\Facades\Crypt::decrypt($str);
         $b = explode('/', $_SERVER['REQUEST_URI']);
         $b = '/'.$b[1];
@@ -59,7 +59,7 @@ class Authenticate
         $result2 = in_array($b,self::$publicarr);
         if(!$result && !$result2){
             return "<script> alert('你没有权限访问');window.history.back(-1);   </script>";
-        }
+        }*/
 
         return $next($request);
 
