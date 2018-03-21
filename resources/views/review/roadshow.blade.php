@@ -33,7 +33,7 @@
                                     <div class="col-md-4">
                                         <h2 class="cert-company"><a href="{{asset('/roadShowdetail/'.$v->showid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
-                                        <p class="cert-scale">行业：<span>{{--{{$v->industry}}--}}</span></p><br><br>
+                                        <p class="cert-scale">行业：<span>{{$v->industry}}</span></p><br><br>
 
                                         <p class="cert-scale">项目标题：<span>{{$v->title}}</span></p>
                                         <p class="cert-scale">项目名称：<span><a href="{{env('ImagePath')}}/show/{{$v->bpurl}}" target="_blank">{{$v->bpname}}</a></span></p>
@@ -46,7 +46,12 @@
                                 </div>
                             </div>
                             <div class="col-md-2 set-certificate">
+                                @if($v->level==2)
                                 <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->showid}}" id="{{$v->showid}}" onclick="push(this)" >推送项目BP</button></a>
+                                 @else
+                                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-error eve_put"  index="{{$v->showid}}" id="{{$v->showid}}"  >免费通道提交的项目</button></a>
+
+                                @endif
                             </div>
                         </div>
 

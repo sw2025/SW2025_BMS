@@ -200,6 +200,9 @@
     if(bb=='/serve_rechargeDet'){
         var bb ='/serve_recharge';
     }
+    if(bb=='/linemeetdetail'){
+        var bb ='/lineMeet';
+    }
     if(bb==''){
         var url = pathname;
     }else{
