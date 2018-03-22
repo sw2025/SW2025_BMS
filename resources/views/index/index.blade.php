@@ -36,7 +36,7 @@
                         y2: 60
                     },
                     legend: {
-                        data:['企业数', '专家数', '既是企业又是专家', '注册数'],
+                        data:['企业数', '专家数','注册数'],
                         orient: 'vertical',
                         x:'right',
                         y:'top'
@@ -48,7 +48,7 @@
                             splitLine : {
                                 show: false
                             },
-                            data: ['企业数', '专家数', '既是企业又是专家', '注册数']
+                            data: ['企业数', '专家数','注册数']
                         }
                     ],
                     yAxis: [
@@ -69,7 +69,7 @@
                                     color: function(params) {
                                         // build a color map as your need.
                                         var colorList = [
-                                            '#FB6E52','#48CFAE','#EC87BF','#FFCE55'
+                                            '#FB6E52','#48CFAE','#FFCE55'
                                         ];
                                         return colorList[params.dataIndex]
                                     },
@@ -188,19 +188,19 @@
                 };
                 option3 = {
                     title : {
-                        text: '会员费',
+                        text: '项目中心信息',
                         x:'center'
                     },
                     tooltip : {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
-                    color:['#D87A80','#5AB1EF'],
+                    color:['#D87A80','#5AB1EF','#EC87BF'],
                     legend: {
                         orient : 'vertical',
                         x : 'right',
                         y : 'top',
-                        data:['支付宝','微信']
+                        data:['直通路演（免费）','直通路演（定点投递）','项目评议']
                     },
                     series : [
                         {
@@ -208,10 +208,32 @@
                             type:'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
-                            data:[
-                                {value:3350, name:'支付宝'},
-                                {value:3100, name:'微信'}
-                            ],
+                            data: (function () {
+                                var data9;
+                                $.ajax({
+                                    url: '{{url('memberData')}}',
+                                    type: 'post',
+                                    data: {},
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (data) {
+                                        if (data)
+                                        {
+                                            data9 = [
+                                                {value:data.roadDatas, name:'直通路演（免费）'},
+                                                {value:data.roadData, name:'直通路演（定点投递）'},
+                                                {value:data.showData, name:'项目评议'}
+                                            ]
+                                        }
+                                    },
+                                    error: function (errorMsg)
+                                    {
+                                        alert("项目中心暂无数据");
+                                    }
+                                })
+                                return data9;
+                            })(),
+
                             itemStyle:{
                                 normal:
                                 {
@@ -221,7 +243,8 @@
                                     },
                                     labelLine :{show:true}
                                 }
-                            }
+                            },
+
                         }
                     ]
                 };

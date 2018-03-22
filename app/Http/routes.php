@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/registerData','IndexController@registerData');
 //供求数据
     Route::post('/supplyData','IndexController@supplyData');
+//供求数据
+    Route::post('/memberData','IndexController@memberData');
 //视频数据
     Route::post('/videoData','IndexController@videoData');
 //办事数据

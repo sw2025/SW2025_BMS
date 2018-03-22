@@ -51,7 +51,7 @@ class IndexController extends Controller
             ->whereRaw('T_U_ENTERPRISEVERIFY.id in (select max(id) from T_U_ENTERPRISEVERIFY group by  T_U_ENTERPRISEVERIFY.enterpriseid)')
             ->count();
 
-            return json_encode(['data' => [$enterprise,$expert,$result,$user]]);
+            return json_encode(['data' => [$enterprise,$expert,$user]]);
 
     }
 
@@ -82,6 +82,25 @@ class IndexController extends Controller
     }
 
     /**
+     * 项目中心
+     * @return mixed
+     */
+    public function memberData()
+    {
+        $result = DB::table('t_s_show')->where('userid','<>',0)->where('state',1);
+
+        $data = clone $result;
+        $data1 = clone $result;
+        $data2 = clone $result;
+        $showData = $data->where('level',1)->count();
+        $roadDatas = $data1->where('level',0)->count();//免费
+        $roadData = $data2->where('level',2)->count();//定点投递
+
+        return json_encode(['roadDatas' => $roadDatas,'roadData'=>$roadData,'showData'=>$showData]);
+
+    }
+
+    /**
      * 供求信息
      * @return mixed
      */
@@ -103,14 +122,7 @@ class IndexController extends Controller
 
     }
 
-    /**
-     * 会员费
-     * @return mixed
-     */
-    public function memberData()
-    {
 
-    }
 
     /**
      * 办事信息
