@@ -25,6 +25,7 @@
                     <a href="javascript:;" class="ver_pushok" @if(!empty($action) && $action == 'ver_pushok') id="hoverstyle" @endif>已推送</a>
                 </div>
                 <div class="cert-list">
+                    <h4 style="color:red;">数量：{{$counts or ''}}</h4>
                     @foreach($datas as $v)
                         <div class="container-fluid cert-item">
                             <div class="col-md-10 cert-border">

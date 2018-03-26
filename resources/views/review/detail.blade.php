@@ -17,8 +17,8 @@
                     @if($datas->configid >= 4)
                         @foreach($pushOk as $value)
                             @if($datas->showid==$value->showid)
-                                <p class="cert-zone"><b>已推送专家姓名：<a style="cursor:pointer;text-decoration:none;"> {{$value->expertname}}</a></b>&nbsp;&nbsp;
-                                    @if($value->state==2)
+                                <p class="cert-zone"><b>推送专家：<a style="cursor:pointer;text-decoration:none;"> {{$value->expertname}}</a></b>&nbsp;&nbsp;
+                                    @if($value->state >= 2)
                                         (已评议)
                                     @else
                                         (未评议)

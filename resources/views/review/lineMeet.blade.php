@@ -25,6 +25,7 @@
                     <a href="javascript:;" class="ver_pushok" @if(!empty($action) && $action == 'ver_pushok') id="hoverstyle" @endif>已完成</a>
                 </div>
                 <div class="cert-list">
+                    <h4 style="color:red;">数量：{{$counts or ''}}</h4>
                     @foreach($datas as $v)
                         <div class="container-fluid cert-item" style="height:220px;">
                             <div class="col-md-10 cert-border">
@@ -36,8 +37,6 @@
                                         <p class="cert-scale">专家姓名：<span>{{$v->expertname}}</span></p>
                                         <p class="cert-scale">约见时长：<span>{{$v->timelot}}/小时</span></p>
                                         <p class="cert-scale">约见费用：<span>{{$v->price}}</span></p>
-
-
                                     </div>
 
                                     <p class="cert-zone" style="float: right;color:black "><b>申请时间：{{$v->puttime}}</b></p>
