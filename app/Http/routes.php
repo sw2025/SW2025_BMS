@@ -242,7 +242,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/linemeetdetail/{meetid}','ReviewController@linemeetdetail');
 
 //线下路演列表
-    Route::get('roadShow','ReviewController@roadShow');
+    Route::get('roadShow/{action?}','ReviewController@roadShow');
 //线下路演列表
     Route::get('/roadShowdetail/{roadid}','ReviewController@roadShowdetail');
 });

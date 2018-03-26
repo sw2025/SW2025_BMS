@@ -17,6 +17,28 @@
                 </div>
 
                 <div class="container-fluid details-bg">
+
+                    @if($datas->level==2)
+                        @foreach($pushOk as $value)
+                            @if($datas->showid==$value->showid)
+                                <p class="details-tit details-desc"><b>推送专家：<a style="cursor:pointer;text-decoration:none;">{{$value->expertname}}</a></b>
+                                    @if($value->state >= 2)
+                                        @foreach($message as $vv)
+                                            @if($vv->isyes==1)
+                                              有兴趣
+                                            @else
+                                              无兴趣
+                                            @endif
+                                        @endforeach
+                                    @else
+                                         (未评价)
+
+                                    @endif
+                                </p>
+                            @endif
+                        @endforeach
+                    @endif
+
                     <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">项目标题：</span>{{$datas->title}}</p>
 
                     <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">项目详情：</span>{{$datas->brief}}</p>
@@ -29,6 +51,17 @@
                     <p class="cert-scale">项目：<span><a href="{{env('ImagePath')}}/show/{{$datas->bpurl}}" target="_blank">{{$datas->bpname}}</a></span></p>
                 </div>
             </div>
+
+            @if($datas->level==2)
+                @if($datas->configid == 4)
+                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-error eve_put"   style="background: yellow;" >推送项目（已推送）</button></a>
+                @else
+                    <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$datas->showid}}" id="{{$datas->showid}}" onclick="push(this)" >推送项目BP</button></a>
+
+                @endif
+            @else
+                <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-error eve_put"   >免费通道提交的项目</button></a>
+            @endif
         </section>
     </div>
 @endsection

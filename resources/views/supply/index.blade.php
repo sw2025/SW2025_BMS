@@ -80,6 +80,7 @@
                             }
                         },'json');
                     });
+
                     $(function () {
                         $('.reject-reasons button').on('click',function () {
                             var flag = $('#flag').attr('index');

@@ -3,8 +3,8 @@
     <div id="content">
         <section>
             <ol class="breadcrumb">
-                <li>项目评议</li>
-                <li><a href="">项目评议列表</a> </li>
+                <li>线下约见</li>
+                <li><a href="">线下约见列表</a> </li>
                 <li class="active">详情</li>
             </ol>
             <div class="section-body contain-lg change-pwd">

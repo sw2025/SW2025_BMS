@@ -199,6 +199,12 @@
     if(bb=='/linemeetdetail'){
         var bb ='/lineMeet';
     }
+    if(bb=='/details_show'){
+        var bb ='/supplyShow';
+    }
+    if(bb=='/roadShowdetail'){
+        var bb ='/roadShow';
+    }
 
     if(bb==''){
         var url = pathname;

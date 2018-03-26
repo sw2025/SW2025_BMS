@@ -3,7 +3,7 @@
 .new-list a:hover{text-decoration: none;}
 .new-list ul{padding:0;}
 .xuanzhong{position: absolute;top: 0;right: 26px;}
-.xuanzhong i{color:#ccc;font-size: 30px;}
+.xuanzhong i{color:#ccc;font-size: 50px;}
 .xzchecked i{color:#00a7ed;}
 /***********专家列表 start***********/
 .expert-list{margin-left: -12px;margin-right: -12px;}
