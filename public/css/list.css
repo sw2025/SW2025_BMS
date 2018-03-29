@@ -20,7 +20,7 @@
 .exp-list-lab{overflow: hidden;max-height: 44px;}
 .exp-list-lab span{float: left;display: block;border: 1px solid #ccc;color:#999;border-radius: 3px;line-height: 1.4;margin-right: 4px;margin-bottom: 8px;white-space: nowrap;font-size: 12px;}
 .exp-list-lab span:first-child{margin-left: 105px;}
-.exp-list-desc{text-indent: 2em;color:#333;line-height:20px;height:60px;text-align: justify;overflow: hidden;}
+.exp-list-desc{text-indent: 2em;color:#333;line-height:20px;height:60px;text-align: justify;overflow: hidden;margin-top:25px;}
 .exp-list-icon,.supp-list-icon{position: absolute;bottom:10px;}
 .exp-list-icon{right: 20px;}
 .supp-list-icon{right: 30px;}
