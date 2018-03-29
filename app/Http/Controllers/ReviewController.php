@@ -112,19 +112,41 @@ class ReviewController extends Controller
     {
         $showid = $_POST['showid'];
         $configid = $_POST['configid'];
-        $result = DB::table('t_s_showverify')->where('showid',$showid)->insert([
-            'showid'=>$showid,
-            'configid'=>$configid,
-            'verifytime'=>date('Y-m-d,H-i-s',time()),
-            'created_at'=>date('Y-m-d,H-i-s',time()),
-            'updated_at'=>date('Y-m-d,H-i-s',time())
-        ]);
+        $expetid =  DB::table("t_s_show")->where('t_s_show.showid',$showid)->first();
+        $expetid=explode(",",$expetid->expertids);
+        $expetid=array_filter($expetid);
 
-        if($result){
-            return ['errorMsg'=>'success'];
-        }else{
-            return ['errorMsg'=>'error'];
+        DB::beginTransaction();
+        try {
+            DB::table('t_s_showverify')->where('showid',$showid)->insert([
+                'showid'=>$showid,
+                'configid'=>$configid,
+                'verifytime'=>date('Y-m-d,H-i-s',time()),
+                'created_at'=>date('Y-m-d,H-i-s',time()),
+                'updated_at'=>date('Y-m-d,H-i-s',time())
+            ]);
+
+            if($configid!=3){
+                foreach ($expetid as $value){
+                    DB::table('t_s_pushshow')->insert([
+                        'expertid'=>$value,
+                        'showid'=>$showid,
+                        'created_at'=>date('Y-m-d,H-i-s',time()),
+                        'updated_at'=>date('Y-m-d,H-i-s',time()),
+                        'pushtime'=>date('Y-m-d,H-i-s',time())
+                    ]);
+                }
+            }
+            DB::commit();
+            $msg = ['msg' => 'success'];
+        } catch (Exception $e) {
+            //异常处理
+            $msg = ['msg' => 'error'];
+            throw $e;
         }
+
+        return $msg;
+
     }
 
     /**
