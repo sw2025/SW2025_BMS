@@ -75,6 +75,20 @@ $(document).ready(function(){
          condition[1]=valHtml;
         getCondition(condition);
     });
+    /**
+     * 时间段筛选
+     */
+    $('.serve-scale-sel').on('click','li', function(event) {
+        event.preventDefault();
+        var valHtml = $(this).children().html();
+
+       /* if(valHtml != '不限'){
+         $('.results-unit-stage').html(valHtml).show();
+         }*/
+         condition[0]="scale";
+         condition[1]=valHtml;
+        getCondition(condition);
+    });
 
 
     $('.results-unit').on('click','a', function(event) {
@@ -98,6 +112,10 @@ $(document).ready(function(){
         }
         if($(this).hasClass('results-unit-stage')){
             condition[0]="stage";
+            condition[1]=null;
+        }
+        if($(this).hasClass('results-unit-scale')){
+            condition[0]="scale";
             condition[1]=null;
         }
 
@@ -168,11 +186,13 @@ $(document).ready(function(){
         var location=$.trim($("#location").html());
         var idCard=$.trim($("#idCard").html());
         var stage=$.trim($("#stage").html());
+        var scale=$.trim($("#scale").html());
         serveName=(serveName)?serveName:null;
         job=(job!="不限")?job:null;
         location=(location!="全国")?location:"全国";
         idCard=(idCard!="不限")?idCard:null;
         stage=(stage!="不限")?stage:null;
+        scale=(scale!="不限")?scale:null;
         if( $(".order-time").children('i').hasClass('fa-arrow-circle-o-up')){
             var regTime="up";
         }else{
@@ -196,12 +216,15 @@ $(document).ready(function(){
                 case "stage":
                     stage=(Condition[1]!="不限")?Condition[1]:null;
                     break;
+                case "scale":
+                    scale=(Condition[1]!="不限")?Condition[1]:null;
+                    break;
                 case "regTime":
                     regTime=Condition[1];
 
             }
         }
-        window.location.href="?serveName="+serveName+"&idCard="+idCard+"&stage="+stage+"&job="+job+"&location="+location+"&regTime="+regTime;
+        window.location.href="?serveName="+serveName+"&idCard="+idCard+"&stage="+stage+"&job="+job+"&scale="+scale+"&location="+location+"&regTime="+regTime;
     }
 
 });

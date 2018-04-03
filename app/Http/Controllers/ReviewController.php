@@ -313,7 +313,6 @@ class ReviewController extends Controller
                         "enterprisename"=>$data['enterprisename'],
                         "job"=>$data['username'],
                         'industry' => $data['industry']
-
                        ];
         $result =  DB::table('t_s_show')->where("showid",$data['showid'])->update([
 
@@ -337,18 +336,27 @@ class ReviewController extends Controller
      * 线下路演
      */
 
-    public function roadShow($action = 'all')
+    public function roadShow()
     {
         $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
         $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
         $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
         $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
-        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $scale=(isset($_GET['scale'])&&$_GET['scale']!="null")?$_GET['scale']:null;
         $stage=(isset($_GET['stage'])&&$_GET['stage']!="null")?$_GET['stage']:null;
 
-        if($job=='免费通道'){$action='wait';}elseif ($job=='定点推送'){$action='fail';}
+        if($job=='免费通道'){$number=0;$symbol='=';}elseif ($job=='定点推送'){$number=2;$symbol='=';}else{$number=1;$symbol='<>';}
+
         $industryWhere = !empty($idCard)?array("t_s_show.domain1" => $idCard):array();
         $stageWhere = !empty($stage)?array("t_s_show.preference" => $stage):array();
+
+   /*     echo date("Y-m-d",strtotime("-1 week")), "\n";
+        echo date("Ymd",strtotime("-1 week")), "\n";
+        echo date("Ymd",strtotime("+0 week")), "\n";
+        echo date("Ymd",strtotime("+0 week")), "\n";*/
+        $date = ['一周前'=>  date("Y-m-d",strtotime("-1 week")),'一个月前'=>  date("Y-m-d",strtotime("-1 month")),'三个月前'=>  date("Y-m-d",strtotime("-3 month"))/*,'三个月后'=>  ,*/];
+/*        $scaleWhere = !empty($scale)?array("t_s_show.showtime" => array('lt',$date[$scale])):array();*/
+
 
         $result = DB::table('t_s_show')
             ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
@@ -373,26 +381,29 @@ class ReviewController extends Controller
 
         $datas = clone $result;
         $datass = clone $result;
-        //$datas = $datas->paginate(10);
-        //$counts = $datass->count();
-        switch ($action) {
-            case 'all':
-                $datas = $datas->where('t_s_show.level','<>',1)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
-                $counts = $datass->where('t_s_show.level','<>',1)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
-                break;
+
+        if($scale){
+            $datas = $datas->where('t_s_show.level',$symbol,$number)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->where('t_s_show.showtime','<',$date[$scale])->paginate(10);
+            $counts = $datass->where('t_s_show.level',$symbol,$number)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->where('t_s_show.showtime','<',$date[$scale])->count();
+        }else{
+            $datas = $datas->where('t_s_show.level',$symbol,$number)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+            $counts = $datass->where('t_s_show.level',$symbol,$number)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
+        }
+               /*        break;
             case 'wait':
-                $datas =$datas->where('t_s_show.level',0)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
-                $counts = $datass->where('t_s_show.level',0)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
+                $datas =$datas->where('t_s_show.level',0)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+                $counts = $datass->where('t_s_show.level',0)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
                 break;
             case 'fail':
-                $datas = $datas->where('t_s_show.level',2)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
-                $counts = $datass->where('t_s_show.level',2)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
+                $datas = $datas->where('t_s_show.level',2)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+                $counts = $datass->where('t_s_show.level',2)->where("t_s_show.title","like","%".$serveName."%")->where("t_s_show.bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
                 break;
-        }
+        }*/
+
         $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
         $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
 
-        return view('review.roadshow',compact('datas','counts','pushOk','message','action','job','idCard','location','size','cate1','cate2','stage','serveName'));
+        return view('review.roadshow',compact('datas','counts','pushOk','message','action','job','idCard','location','size','cate1','cate2','stage','serveName','scale'));
     }
     /**
      * 线下路演详情页面
