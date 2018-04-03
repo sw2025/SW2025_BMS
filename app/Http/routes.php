@@ -243,6 +243,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 //线下路演列表
     Route::get('roadShow/{action?}','ReviewController@roadShow');
+//线下路演完善
+    Route::get('perfectRoadShow/{showid}','ReviewController@perfectRoadShow');
+//线下路演保存
+    Route::post('preservation','ReviewController@preservation');
 //线下路演列表
     Route::get('/roadShowdetail/{roadid}','ReviewController@roadShowdetail');
 });

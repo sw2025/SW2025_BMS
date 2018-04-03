@@ -282,6 +282,56 @@ class ReviewController extends Controller
         return view('review.linemeetdetail',compact('datas','config'));
     }
 
+    /**
+     * 完善
+     */
+    public function perfectRoadShow($showid)
+    {
+        $data =  DB::table('t_s_show')
+            ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
+            //->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
+            //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
+            ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
+            //->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')
+            ->where("t_s_show.showid",$showid)
+            ->orderBy('t_s_show.showtime','desc')
+            ->first();
+        $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
+        $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
+
+        return view('review.perfectRoadShow',compact('data','cate2','cate1'));
+
+    }
+    /**
+     * 保存
+     */
+    public function preservation(Request $request)
+    {
+        $data = $request->input();
+
+         $basicdata = [
+                        "enterprisename"=>$data['enterprisename'],
+                        "job"=>$data['username'],
+                        'industry' => $data['industry']
+
+                       ];
+        $result =  DB::table('t_s_show')->where("showid",$data['showid'])->update([
+
+            "title"=>$data['title'],
+            "oneword"=>$data['oneword'],
+            "domain1"=>$data['domain1'],
+            "preference"=>$data['preference'],
+            "brief"=>$data['brief'],
+            'basicdata' => serialize($basicdata)
+
+        ]);
+        //return view('enterprise.perfectRoadShow',compact('data'));
+        if($result){
+            return ['errorMsg'=>'success'];
+        }else{
+            return ['errorMsg'=>'error'];
+        }
+    }
 
     /**
      * 线下路演
@@ -289,6 +339,17 @@ class ReviewController extends Controller
 
     public function roadShow($action = 'all')
     {
+        $serveName=(isset($_GET['serveName'])&&$_GET['serveName']!="null")?$_GET['serveName']:null;
+        $job=(isset($_GET['job'])&&$_GET['job']!="null")?$_GET['job']:null;
+        $idCard=(isset($_GET['idCard'])&&$_GET['idCard']!="null")?$_GET['idCard']:null;
+        $location=( isset($_GET['location'])&&$_GET['location']!="全国")?$_GET['location']:null;
+        $size=(isset($_GET['size'])&&$_GET['size']!="null")?$_GET['size']:null;
+        $stage=(isset($_GET['stage'])&&$_GET['stage']!="null")?$_GET['stage']:null;
+
+        if($job=='免费通道'){$action='wait';}elseif ($job=='定点推送'){$action='fail';}
+        $industryWhere = !empty($idCard)?array("t_s_show.domain1" => $idCard):array();
+        $stageWhere = !empty($stage)?array("t_s_show.preference" => $stage):array();
+
         $result = DB::table('t_s_show')
             ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
             ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
@@ -314,22 +375,24 @@ class ReviewController extends Controller
         $datass = clone $result;
         //$datas = $datas->paginate(10);
         //$counts = $datass->count();
-
         switch ($action) {
             case 'all':
-                $datas = $datas->where('t_s_show.level','<>',1)->paginate(10);
-                $counts = $datass->where('t_s_show.level','<>',1)->count();
+                $datas = $datas->where('t_s_show.level','<>',1)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+                $counts = $datass->where('t_s_show.level','<>',1)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
                 break;
             case 'wait':
-                $datas =$datas->where('t_s_show.level',0)->paginate(10);
-                $counts = $datass->where('t_s_show.level',0)->count();
+                $datas =$datas->where('t_s_show.level',0)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+                $counts = $datass->where('t_s_show.level',0)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
                 break;
             case 'fail':
-                $datas = $datas->where('t_s_show.level',2)->paginate(10);
-                $counts = $datass->where('t_s_show.level',2)->count();
+                $datas = $datas->where('t_s_show.level',2)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->paginate(10);
+                $counts = $datass->where('t_s_show.level',2)->where("title","like","%".$serveName."%")->where("bpname","like","%".$serveName."%")->where($industryWhere)->where($stageWhere)->count();
                 break;
         }
-        return view('review.roadshow',compact('datas','counts','pushOk','message','action'));
+        $cate1 = DB::table('t_i_investment')->where('type', 1)->get();
+        $cate2 = DB::table('t_i_investment')->where('type', 2)->get();
+
+        return view('review.roadshow',compact('datas','counts','pushOk','message','action','job','idCard','location','size','cate1','cate2','stage','serveName'));
     }
     /**
      * 线下路演详情页面
@@ -339,7 +402,7 @@ class ReviewController extends Controller
     {
         $datas = DB::table('t_s_show')
             ->leftJoin('t_s_showverify','t_s_showverify.showid','=','t_s_show.showid')
-            ->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
+            //->leftJoin('t_u_enterprise','t_u_enterprise.userid','=','t_s_show.userid')
             //->leftJoin('t_s_pushshow','t_s_pushshow.showid','=','t_s_show.showid')
             ->leftJoin('t_u_user','t_u_user.userid','=','t_s_show.userid')
             ->whereRaw('t_s_showverify.id in (select max(id) from t_s_showverify group by showid)')

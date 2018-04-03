@@ -9,8 +9,9 @@
             </ol>
             <div class="section-body contain-lg change-pwd">
                 <div class="container-fluid details-bg">
-                    <div class="col-md-12 details-tit"><h1 class="cert-company">{{$datas->enterprisename}}<span style="float: right;">申请时间：{{$datas->showtime}}</span></h1></div>
+                    <div class="col-md-12 details-tit"><h1 class="cert-company">@if(unserialize($datas->basicdata)['enterprisename']){{unserialize($datas->basicdata)['enterprisename']}}@else @endif<span style="float: right;">申请时间：{{$datas->showtime}}</span></h1></div>
                     <div class="col-md-6 details-tit"><span class="cert-industry">联系电话：{{$datas->phone}}</span></div>
+                    <div class="col-md-6 details-tit"><span class="cert-industry">公司行业：@if(unserialize($datas->basicdata)['industry']){{unserialize($datas->basicdata)['industry']}}@else @endif</span></div>
 
 
 
@@ -40,6 +41,8 @@
                     @endif
 
                     <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">项目标题：</span>{{$datas->title}}</p>
+                    <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">项目领域：</span>{{$datas->domain1}}</p>
+                    <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">一句话简介：</span>{{$datas->oneword}}</p>
 
                     <p class="details-tit details-desc"><span style="font-size: 14px;font-weight: bold;">项目详情：</span>{{$datas->brief}}</p>
                 </div>
