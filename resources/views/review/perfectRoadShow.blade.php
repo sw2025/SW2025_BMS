@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="col-lg-8 col-sm-9">
                                         <a href="{{env('ImagePath')}}/show/{{$datas->bpurl or ''}}"><strong>{{$data->bpname or ''}}</strong></a>
-                                      {{--  <button>重新上传</button>--}}
+                                       <button>重新上传</button>
                                     </div>
                                 </div>
 

@@ -31,9 +31,10 @@
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/details_show/'.$v->showid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/details_show/'.$v->showid)}}" class="look-link">{{unserialize($v->basicdata)['enterprisename']}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
                                         <p class="cert-scale">项目领域：<span>{{$v->domain1}}{{--/{{$v->domain2}}--}}</span></p>
+                                        <p class="cert-scale">项目阶段：<span>{{$v->preference}}</span></p>
 
 
                                             {{--<p class="cert-zone">项目专家：{{$v->expertids}}</p>--}}

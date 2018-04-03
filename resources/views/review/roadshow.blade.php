@@ -31,7 +31,7 @@
                             <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!=null)style="display:inline-block"@endif>{{$job}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!=null) style="display:inline-block" @endif>{{$idCard}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-stage"@if($stage!=null) style="display: inline-block" @endif>{{$stage}}</a>
-                            <a href="javascript:;" class="results-unit-del results-unit-size"@if($size!=null) style="display: inline-block" @endif>{{$size}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-scale"@if($scale!=null) style="display: inline-block" @endif>{{$scale}}</a>
                             <a href="javascript:;" class="results-unit-del results-unit-zone"@if($location!=null) style="display: inline-block" @endif>{{$location}}</a>
 
                         </div>
@@ -73,17 +73,15 @@
                         </div>
 
                         <div class="btn-group serve-mr">
-                            <span style="float:left">时间段：</span><button type="button" id="size" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
-                                {{$size or '不限'}}
+                            <span style="float:left">时间段：</span><button type="button" id="scale" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                {{$scale or '不限'}}
                             </button>
                             <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" role="menu" style="text-align: left;">
                                 <li><a href="javascript:;">不限</a></li>
-                                <li><a href="javascript:;">20人以下</a></li>
-                                <li><a href="javascript:;">20-99人</a></li>
-                                <li><a href="javascript:;">100-499人</a></li>
-                                <li><a href="javascript:;">500-999人</a></li>
-                                <li><a href="javascript:;">1000-9999人</a></li>
-                                <li><a href="javascript:;">10000人以上</a></li>
+                                <li><a href="javascript:;">一周前</a></li>
+                                <li><a href="javascript:;">一个月前</a></li>
+                                <li><a href="javascript:;">三个月前</a></li>
+                                <li><a href="javascript:;">三个月后</a></li>
                             </ul>
                         </div>
 
