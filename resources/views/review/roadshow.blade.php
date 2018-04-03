@@ -141,6 +141,7 @@
          * */
         function push(e){
             var type=$.trim($(e).closest('.cert-item').find('.cert-scale span').text());//领域
+            console.log(type);
             var showId=$(e).attr("id");
 
             $.ajax({
@@ -150,7 +151,7 @@
                 type:"POST",
                 async:false,
                 success:function(res){
-                    //console.log(res=='');
+                    console.log(res=='');
                     if(res!=''){
                         $(".supply-list").html("");
                         var str="";
@@ -158,7 +159,7 @@
                             var ExpertId=value.expertid;
                             str="<li class='col-md-4'>";
                             str+="<input type='hidden' id='show' value='"+showId+"'>"
-                            str+="<a href='{{'serve_expertDet'}}/"+value.expertid+"' class='expert-list-link' target='_blank'>";
+                            str+="<a href='{{'serve_expertDet'}}/"+value.expertid+"' class='expert-list-link'>";
                             str+="<div class='exp-list-top'>"
                             str+="<span class='exp-list-img'><img src='{{env('ImagePath')}}"+value.showimage+"'></span>";
                             str+="<div class='exp-list-brief'>"
@@ -194,7 +195,7 @@
                                             var ExpertId = value.expertid;
                                             str = "<li class='col-md-4'>";
                                             str += "<input type='hidden' id='show' value='" + showId + "'>"
-                                            str += "<a href='{{'serve_expertDet'}}/" + value.expertid + "' class='expert-list-link' target='_blank'>";
+                                            str += "<a href='{{'serve_expertDet'}}/" + value.expertid + "' class='expert-list-link'>";
                                             str += "<div class='exp-list-top'>"
                                             str += "<span class='exp-list-img'><img src='{{env('ImagePath')}}" + value.showimage + "'></span>";
                                             str += "<div class='exp-list-brief'>"

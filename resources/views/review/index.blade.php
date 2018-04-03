@@ -167,7 +167,7 @@
         $('.btn-support1').on('click',function () {
             var showid = $('.btn-support1').attr('index');
             $.post('{{url('changeShow')}}',{'showid':showid,'configid':4},function (data) {
-                if (data.msg == 'success') {
+                if (data.errorMsg == 'success') {
                     alert("操作成功");
                     window.location.href = "{{url('supplyShow')}}";
                 } else {
@@ -182,7 +182,7 @@
                 var remark=$(".reject-reasons textarea").val();
                 var showid=$(this).attr("id");
                 $.post('{{url('changeShow')}}',{'showid':showid,'remark':remark,'configid':3},function (data) {
-                    if (data.msg == 'success') {
+                    if (data.errorMsg == 'success') {
                         alert("操作成功");
                         window.location.href = "{{url('/supplyShow')}}";
                     } else {
