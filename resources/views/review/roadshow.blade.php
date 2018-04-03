@@ -17,21 +17,146 @@
                 <li class="active">直通路演列表</li>
             </ol>
             <div class="section-body change-pwd">
-                <div class="cert-state-btns">
-                    <a href="javascript:;" class="ver_all" @if(empty($action) || $action  == 'all') id="hoverstyle" @endif>全部</a>
-                    <a href="javascript:;" class="ver_wait" @if(!empty($action) && $action == 'wait') id="hoverstyle" @endif>免费通道</a>
-                    <a href="javascript:;" class="ver_fail" @if(!empty($action) && $action == 'fail') id="hoverstyle" @endif>定点推送</a>
+
+                <!-- 筛选始-->
+                <div class="search-bar clearfix">
+                    <input class="search-bar-inp" type="text" placeholder="请输入路演标题或项目名称" value="{{$serveName or ''}}"  />
+                    <input type="submit" value="搜索" class="btn btn-support2 search-bar-btn">
                 </div>
+
+               <div class="serve-results">
+                    <div class="all-results clearfix">
+                        <span class="tip-caption">全部结果 -> </span>
+                        <div class="results-unit">
+                            <a href="javascript:;" class="results-unit-del results-unit-industry" @if($job!=null)style="display:inline-block"@endif>{{$job}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-member"@if($idCard!=null) style="display:inline-block" @endif>{{$idCard}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-stage"@if($stage!=null) style="display: inline-block" @endif>{{$stage}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-size"@if($size!=null) style="display: inline-block" @endif>{{$size}}</a>
+                            <a href="javascript:;" class="results-unit-del results-unit-zone"@if($location!=null) style="display: inline-block" @endif>{{$location}}</a>
+
+                        </div>
+                    </div>
+                    <div class="choice-condition clearfix">
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">通道分类：</span><button type="button" id="job" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                              {{$job or '不限'}}
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide  serve-passageway-sel"  role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                <li><a href="javascript:;">免费通道</a></li>
+                                <li><a href="javascript:;">定点推送</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">领域分类：</span><button type="button" id="idCard" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                {{$idCard or '不限'}}
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-member-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                @foreach($cate1 as $v)
+                                    <li><a href="javascript:;">{{$v->name}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">项目阶段：</span><button type="button" id="stage" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                {{$stage or '不限'}}
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-stage-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                @foreach($cate2 as $v)
+                                    <li><a href="javascript:;">{{$v->name}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">时间段：</span><button type="button" id="size" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                {{$size or '不限'}}
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-scale-sel" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">不限</a></li>
+                                <li><a href="javascript:;">20人以下</a></li>
+                                <li><a href="javascript:;">20-99人</a></li>
+                                <li><a href="javascript:;">100-499人</a></li>
+                                <li><a href="javascript:;">500-999人</a></li>
+                                <li><a href="javascript:;">1000-9999人</a></li>
+                                <li><a href="javascript:;">10000人以上</a></li>
+                            </ul>
+                        </div>
+
+
+
+                        <div class="btn-group serve-mr">
+                            <span style="float:left">所在地区：</span><button type="button" id="location" class="result-select btn btn-support3 dropdown-toggle" data-toggle="dropdown">
+                                {{$location or '全国'}}
+                            </button>
+                            <ul class="demo-list dropdown-menu animation-slide serve-zone-sel" index="address" role="menu" style="text-align: left;">
+                                <li><a href="javascript:;">全国</a></li>
+                                <li><a href="javascript:;">北京</a></li>
+                                <li><a href="javascript:;">上海</a></li>
+                                <li><a href="javascript:;">天津</a></li>
+                                <li><a href="javascript:;">重庆</a></li>
+                                <li><a href="javascript:;">河北</a></li>
+                                <li><a href="javascript:;">山西</a></li>
+                                <li><a href="javascript:;">内蒙古</a></li>
+                                <li><a href="javascript:;">辽宁</a></li>
+                                <li><a href="javascript:;">吉林</a></li>
+                                <li><a href="javascript:;">黑龙江</a></li>
+                                <li><a href="javascript:;">江苏</a></li>
+                                <li><a href="javascript:;">浙江</a></li>
+                                <li><a href="javascript:;">安徽</a></li>
+                                <li><a href="javascript:;">福建</a></li>
+                                <li><a href="javascript:;">江西</a></li>
+                                <li><a href="javascript:;">山东</a></li>
+                                <li><a href="javascript:;">河南</a></li>
+                                <li><a href="javascript:;">湖北</a></li>
+                                <li><a href="javascript:;">湖南</a></li>
+                                <li><a href="javascript:;">广东</a></li>
+                                <li><a href="javascript:;">广西</a></li>
+                                <li><a href="javascript:;">海南</a></li>
+                                <li><a href="javascript:;">四川</a></li>
+                                <li><a href="javascript:;">贵州</a></li>
+                                <li><a href="javascript:;">云南</a></li>
+                                <li><a href="javascript:;">西藏</a></li>
+                                <li><a href="javascript:;">陕西</a></li>
+                                <li><a href="javascript:;">甘肃</a></li>
+                                <li><a href="javascript:;">青海</a></li>
+                                <li><a href="javascript:;">宁夏</a></li>
+                                <li><a href="javascript:;">新疆</a></li>
+                                <li><a href="javascript:;">台湾</a></li>
+                                <li><a href="javascript:;">香港</a></li>
+                                <li><a href="javascript:;">澳门</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="result-order">
+{{--
+                        <a href="javascript:;" class="order-time">认证时间 <i @if($regTime=="up") class="fa fa-arrow-circle-o-up" @else class="fa fa-arrow-circle-o-down" @endif></i></a>
+--}}
+                        <h4 style="color:red;">数量：{{$counts or ''}}</h4>
+                    </div>
+                </div>
+                <!-- 筛选未-->
+
+
+
+
                 <div class="cert-list">
-                    <h4 style="color:red;">数量：{{$counts or ''}}</h4>
                     @foreach($datas as $v)
                         <div class="container-fluid cert-item">
+                            <a href="{{url('perfectRoadShow',$v->showid)}}" style="float: right">完善</a>
                             <div class="col-md-10 cert-border">
                                 <div class="container-fluid">
                                     <div class="col-md-4">
-                                        <h2 class="cert-company"><a href="{{asset('/roadShowdetail/'.$v->showid)}}" class="look-link">{{$v->enterprisename}}</a></h2>
+                                        <h2 class="cert-company"><a href="{{asset('/roadShowdetail/'.$v->showid)}}" class="look-link">{{unserialize($v->basicdata)['enterprisename']}}</a></h2>
                                         <span class="cert-telephone">联系电话：{{$v->phone}}</span>
-                                        <p class="cert-scale">领域：<span>{{$v->oneword}}</span></p>
+                                        <p class="cert-scale">项目领域：<span>{{$v->domain1}}</span></p>
+                                        <p class="cert-scale">项目阶段：<span>{{$v->preference}}</span></p>
                                         @if($v->level==2)
                                             @foreach($pushOk as $value)
                                                 @if($v->showid==$value->showid)
@@ -68,7 +193,6 @@
                                 @if($v->level==2)
                                     @if($v->configid >= 4)
                                         <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-error eve_put"  style="background: yellow;" >推送项目（已推送）</button></a>
-
                                     @else
                                         <a href="javascript:;"><button type="button" class="btn btn-block ink-reaction btn-success eve_put" index="{{$v->showid}}" id="{{$v->showid}}" onclick="push(this)" >推送项目BP</button></a>
 
@@ -262,4 +386,5 @@
             })
         })
     </script>
+    <script src="{{asset('js/review.js')}}" type="text/javascript"></script>
 @endsection

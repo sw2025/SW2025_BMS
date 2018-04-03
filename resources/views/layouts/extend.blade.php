@@ -205,7 +205,6 @@
     if(bb=='/roadShowdetail'){
         var bb ='/roadShow';
     }
-
     if(bb==''){
         var url = pathname;
     }else{
