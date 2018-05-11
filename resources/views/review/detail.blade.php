@@ -35,13 +35,15 @@
                 </div>
                 <h3>项目BP</h3>
                 <div class="container-fluid details-bg">
-                    <p class="details-tit details-desc"><h3><b><a href="{{env('ImagePath')}}/show/{{$datas->bpurl}}" target="_blank">{{$datas->bpname}}</a></b></h3></p>
+                    <p class="details-tit details-desc"><h3><b><a href="{{asset('./show/'.$datas->bpurl)}}" target="_blank">{{$datas->bpname}}</a></b></h3></p>
                 </div>
                 <h3>专家评议</h3>
                 <div class="container-fluid details-bg">
                     @foreach($message as $v)
                         <h3>{{$v->expertname}}</h3>
-                        <p class="details-tit details-desc"><b><a href="{{env('ImagePath')}}/show/{{$datas->bpurl}}" target="_blank">{{$v->content}}</a></b></p>
+{{--
+                        <p class="details-tit details-desc"><b><a href="{{asset('./show/')}}.{{$datas->bpurl}}" target="_blank">{{$v->content}}</a></b></p>
+--}}
                     @endforeach
                 </div>
 
