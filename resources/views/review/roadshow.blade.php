@@ -177,7 +177,7 @@
                                             @endforeach
                                         @endif
                                         <p>项目标题：<span>{{$v->title}}</span></p>
-                                        <p>项目名称：<span><a href="{{env('ImagePath')}}/show/{{$v->bpurl}}" target="_blank">{{$v->bpname}}</a></span></p>
+                                        <p>项目名称：<span><a href="{{asset('./show/'.$v->bpurl)}}" target="_blank">{{$v->bpname}}</a></span></p>
 
                                     </div>
                                     <p class="cert-zone" style="float: right;color:black;"><b>提交时间：{{$v->showtime}}</b></p>

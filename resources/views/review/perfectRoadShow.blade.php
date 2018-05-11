@@ -127,7 +127,7 @@
                                         <label for="phone2" class="control-label">商业计划书</label>
                                     </div>
                                     <div class="col-lg-8 col-sm-9">
-                                        <a href="{{env('ImagePath')}}/show/{{$datas->bpurl or ''}}"><strong>{{$data->bpname or ''}}</strong></a>
+                                        <a href="{{asset('./show/'.$data->bpurl)}}"><strong>{{$data->bpname or ''}}</strong></a>
                                        <button>重新上传</button>
                                     </div>
                                 </div>

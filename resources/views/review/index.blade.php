@@ -52,7 +52,7 @@
                                             @endforeach
 
                                         <br/>
-                                        <span>提交项目：<a href="{{env('ImagePath')}}/show/{{$v->bpurl}}" target="_blank">{{$v->bpname}}</a></span>
+                                        <span>提交项目：<a href="{{asset('./show/'.$v->bpurl)}}" target="_blank">{{$v->bpname}}</a></span>
 
 
 

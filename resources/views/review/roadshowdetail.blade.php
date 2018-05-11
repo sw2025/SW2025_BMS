@@ -51,7 +51,7 @@
                 <div class="container-fluid details-bg">
                     <p><b><h4>提交的项目：</h4></b></p>
                     <p class="cert-scale"><span> </span></p>
-                    <p class="cert-scale">项目：<span><a href="{{env('ImagePath')}}/show/{{$datas->bpurl}}" target="_blank">{{$datas->bpname}}</a></span></p>
+                    <p class="cert-scale">项目：<span><a href="{{asset('./show/'.$datas->bpurl)}}" target="_blank">{{$datas->bpname}}</a></span></p>
                 </div>
             </div>
 
